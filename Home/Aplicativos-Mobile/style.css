@@ -1,0 +1,65 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.checklist-item {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.checklist-item:hover {
+  transform: scale(1.015);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.status-indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-right: 14px;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease;
+}
+
+.item-info {
+  flex-grow: 1;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-info .item-number {
+  font-weight: 600;
+  color: var(--bs-primary);
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.item-info .item-date {
+  font-size: 13px;
+  color: var(--bs-secondary);
+}
+
+.arrow-icon {
+  font-size: 22px;
+  color: var(--bs-primary);
+  transition: transform 0.3s ease;
+}
+
+.checklist-item:hover .arrow-icon {
+  transform: translateX(4px);
+}

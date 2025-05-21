@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
+    <style>
+        /* Modal com overflow oculto para evitar que a imagem ultrapasse os limites */
+        .modal-dialog {
+            max-width: 100%;
+            overflow: hidden;
+            /* Impede o conteúdo de transbordar para fora do modal */
+        }
+
+        .scanner-container {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            /* Defina uma altura fixa mais apropriada */
+            max-width: 100%;
+            background-color: #000;
+            border: 2px solid blue;
+            /* Borda azul */
+            overflow: hidden;
+            /* Impede que a imagem ultrapasse a área do scanner */
+        }
+
+        #scannerBox {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #barcodeScanLine {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: red;
+            top: -5%;
+            /* Inicialmente a linha fica acima */
+            animation: scan 2s linear infinite;
+            /* Movimento contínuo */
+        }
+
+        /* Animação para o risco vermelho movendo-se */
+        @keyframes scan {
+            0% {
+                top: -5%;
+            }
+
+            50% {
+                top: 50%;
+            }
+
+            100% {
+                top: 105%;
+            }
+        }
+
+        /* Estilos para o resultado do código */
+        #outputField {
+            display: none;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 17px;
+            width: 17px;
+            border-radius: 50%;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        input:checked+.slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        body,
+        .bg-light,
+        .bg-dark,
+        .text-dark,
+        .text-light {
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        #themeToggle:checked+.slider {
+            background-color: #007bff !important;
+        }
+
+        #themeToggle:not(:checked)+.slider {
+            background-color: #ccc;
+        }
+
+        #signInLink,
+        #aboutLink {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        #signInLink:hover,
+        #aboutLink:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .buttons button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #007bff;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+        }
+
+        .nav-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 100%;
+            border-radius: 10%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .nav-item.active {
+            background-color: #013f81;
+            transform: scale(1.2);
+        }
+
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.3em;
+        }
+
+        @media (min-width: 992px) {
+            .desktop-img {
+                max-width: 90%;
+                max-height: 1000px;
+            }
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-light text-dark" id="theme">
+
+    <!-- Header -->
+    <div class="container justify-content-between">
+        <header class="lh-1 py-3">
+            <div class="container d-flex justify-content-between align-items-center">
+                <nav class="d-flex" id="navLinks">
+                    <!-- Links de navegação -->
+                </nav>
+
+                <div class="theme-switch-wrapper d-flex align-items-center">
+                    <label class="theme-switch d-flex align-items-center">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <i class="fas fa-sun ms-2" style="color: #007bff; font-size: 24px;" aria-label="Alterar tema"></i>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div class="col-12 col-md-6 d-flex justify-content-center mt-5">
+        <img src="https://multilaser.vtexassets.com/arquivos/logo-multi-header-novo.svg" alt="Logo" class="logo" />
+    </div>
+
+    <!-- Container principal para o conteúdo -->
+    <main class="container d-flex align-items-center justify-content-center mt-5" id="mainContent">
+        <div class="row w-100 justify-content-between align-items-center">
+            <div class="col-12 col-md-6 px-4 text-md-start text-center">
+                <h1 class="display-4">Transferência para Manaus</h1>
+                <p class="lead my-3">
+                    Desenvolvimento de um sistema eficiente e otimizado para o carregamento de telas para a região de
+                    Manaus, com foco em agilidade operacional, alto desempenho e suporte técnico.
+                </p>
+                <button class="btn btn-primary btn-lg mt-4" id="aboutLink" data-bs-toggle="modal"
+                    data-bs-target="#aboutModal">Iniciar Carregamento</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Barra de navegação -->
+    <footer class="nav-bar">
+        <!-- Botão original - UPC Scan -->
+        <div class="nav-item active">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upc-scan"
+                viewBox="0 0 16 16">
+                <path
+                    d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z" />
+            </svg>
+        </div>
+
+        <!-- Botão Lista de Tarefas -->
+        <div class="nav-item" data-bs-toggle="modal" data-bs-target="#taskListModal" id="fetchUcTrigger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-task"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z" />
+                <path
+                    d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z" />
+                <path fill-rule="evenodd"
+                    d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z" />
+            </svg>
+        </div>
+
+        <!-- Novo Botão - Adicionar Carregamento LCD -->
+        <div class="nav-item" data-bs-toggle="modal" data-bs-target="#modalCarregamentoLCD">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ui-checks"
+                viewBox="0 0 16 16">
+                <path
+                    d="M7 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zM2 1a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 8a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2zm.854-3.646a.5.5 0 0 1-.708 0l-1-1a.5.5 0 1 1 .708-.708l.646.647 1.646-1.647a.5.5 0 1 1 .708.708zm0 8a.5.5 0 0 1-.708 0l-1-1a.5.5 0 0 1 .708-.708l.646.647 1.646-1.647a.5.5 0 0 1 .708.708zM7 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+            </svg>
+        </div>
+    </footer>
+
+
+
+    <!-- Modal UCs-->
+    <div class="modal fade" id="taskListModal" tabindex="-1" aria-labelledby="taskListModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskListModalLabel">Lista de Tarefas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    Aqui você pode adicionar ou visualizar suas tarefas.
+
+                    <!-- Spinner de carregamento -->
+                    <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+
+                    <!-- Tabela de DOCA e Unidades Comerciais Bipadas com scroll -->
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">DOCA</th>
+                                    <th scope="col">Unidades Comerciais Bipadas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ucCarregadas">
+                                <!-- Infos serão inseridos aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Modal BIPAGEM DE UCs/SKU -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">TRANSFERÊNCIA PARA MANAUS</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="subtitle">CARREGAMENTO DE TELAS</div>
+
+                        <!-- Botão para iniciar o scanner -->
+                        <button id="startScannerButton" class="btn btn-primary w-100 mb-3">Ler Código de Barras</button>
+
+                        <!-- Modal para a Câmera -->
+                        <div class="modal fade" id="cameraModal" tabindex="-1" aria-labelledby="cameraModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div id="scannerContainer" class="scanner-container">
+                                            <div id="scannerBox">
+                                                <!-- Risco vermelho para a leitura -->
+                                                <div id="barcodeScanLine"></div>
+                                            </div>
+                                        </div>
+                                        <div id="outputField" class="alert alert-info mt-3" style="display: none;">
+                                            Código detectado: <span id="barcodeResult"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulário para validação -->
+                        <form id="modalForm">
+                            <!-- Select Motorista -->
+                            <label for="motorista" class="mt-3">MOTORISTA:</label>
+                            <select id="tag" name="tag" class="form-select" required>
+
+                            </select>
+
+                            <!-- Campo SKU -->
+                            <div class="form-group mt-3">
+                                <input type="text" id="sku" name="sku" placeholder="SKU" class="form-control" required>
+                            </div>
+
+                            <!-- Campo Unidade Comercial -->
+                            <div class="form-group mt-2">
+                                <input type="number" id="pallet" name="pallet" placeholder="UNIDADE COMERCIAL (UC)"
+                                    class="form-control" required>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="buttons mt-3 d-flex justify-content-center gap-3">
+                                <button type="button" id="enviarBtn" class="btn btn-success w-50"
+                                    onclick="enviarResposta()">Enviar</button>
+                                <button type="button" class="btn btn-danger w-50" data-bs-dismiss="modal"
+                                    onclick="resetModal()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal Carregamento LCD -->
+    <div class="modal fade" id="modalCarregamentoLCD" tabindex="-1" aria-labelledby="modalCarregamentoLCDLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCarregamentoLCDLabel">Carregamento LCD</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="carregamentoForm">
+
+                        <!-- Campo do conferente -->
+                        <div class="mb-3">
+                            <label for="conferente" class="form-label">Nome do Conferente</label>
+                            <input type="text" class="form-control" id="conferente" name="conferente"
+                                placeholder="Digite seu nome" required>
+                        </div>
+
+                        <!-- Tabela de códigos -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center align-middle" id="tabelaCodigos"
+                                style="font-size: 0.85rem;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 45%;">Código LCD</th>
+                                        <th style="width: 25%;">Quantidade</th>
+                                        <th style="width: 20%;">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" class="form-control form-control-sm" name="codigo[]"
+                                                required></td>
+                                        <td><input type="number" class="form-control form-control-sm"
+                                                name="quantidade[]" min="1" required></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                                onclick="removerLinha(this)">Remover</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-between my-3">
+                            <button type="button" class="btn btn-outline-primary" onclick="adicionarLinha()">➕ Adicionar Linha</button>
+                            <button type="submit" onclick="sendDataToSheet()" class="btn btn-success">Enviar para Planilha</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Loader -->
+    <div id="loader" style="display: none;" class="loader-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+
+
+
+    <script>
+        function adicionarLinha() {
+            const tabela = document.querySelector("#tabelaCodigos tbody");
+            const novaLinha = tabela.rows[0].cloneNode(true);
+            novaLinha.querySelectorAll("input").forEach(input => input.value = "");
+            tabela.appendChild(novaLinha);
+        }
+
+        function removerLinha(botao) {
+            const linha = botao.closest("tr");
+            const tabela = document.querySelector("#tabelaCodigos tbody");
+            if (tabela.rows.length > 1) {
+                linha.remove();
+            }
+        }
+    </script>
+
+
+
+    <script>
+        function updateOptions() {
+            google.script.run.withSuccessHandler(function (options) {
+                const select = document.getElementById('tag2');
+                select.innerHTML = ''; // Limpa opções anteriores
+                options.forEach(function (option) {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.innerHTML = option;
+                    select.appendChild(opt);
+                });
+            }).getOptions();
+        }
+
+        function updateProgress() {
+            const selectedValue = document.getElementById('tag2').value;
+            google.script.run.withSuccessHandler(function (totalBipados) {
+                const progressBar = document.getElementById('progressBar');
+                const progressStatus = document.getElementById('progressStatus');
+
+                // Supondo que o total máximo seja 100 (ajuste conforme necessário)
+                const maxBipados = 100;
+                const percentage = (totalBipados / maxBipados) * 100;
+
+                // Atualiza a barra de progresso
+                progressBar.style.width = percentage + '%';
+                progressBar.setAttribute('aria-valuenow', percentage);
+                progressBar.innerText = Math.round(percentage) + '%';
+
+                // Atualiza o status
+                if (totalBipados > 0) {
+                    progressStatus.innerText = totalBipados + ' paletes bipados.';
+                } else {
+                    progressStatus.innerText = 'Nenhum palete bipado ainda.';
+                }
+            }).getBipagemData(selectedValue);
+        }
+
+        window.onload = function () {
+            updateOptions();
+            document.getElementById('tag2').addEventListener('change', updateProgress);
+        };
+    </script>
+
+
+
+    <script>
+        document.getElementById("fetchUcTrigger").addEventListener("click", function () {
+            // Exibe o SweetAlert2 enquanto os dados estão sendo carregados
+            Swal.fire({
+                title: 'Carregando...',
+                text: 'Por favor, aguarde enquanto os dados estão sendo carregados.',
+                allowOutsideClick: false, // Impede de fechar ao clicar fora
+                backdrop: true,           // Fundo escuro
+                didOpen: () => {
+                    Swal.showLoading();  // Exibe o spinner de carregamento
+                }
+            });
+
+            fetchuc(); // Chama a função para buscar e atualizar as informações
+        });
+
+        function fetchuc() {
+            google.script.run
+                .withSuccessHandler(function (values) {
+                    console.log("Dados recebidos:", values); // Verificar o conteúdo no console
+
+                    const tbody = document.getElementById("ucCarregadas");
+                    tbody.innerHTML = ""; // Limpa a tabela antes de adicionar os novos dados
+
+                    if (!values || values.length === 0) {
+                        // Mostra mensagem se os dados estiverem vazios
+                        const tr = document.createElement("tr");
+                        const td = document.createElement("td");
+                        td.colSpan = 2; // Define que ocupa 2 colunas
+                        td.textContent = "Nenhum dado encontrado";
+                        tr.appendChild(td);
+                        tbody.appendChild(tr);
+                    } else {
+                        // Adiciona os dados à tabela
+                        values.forEach(function (row) {
+                            const tr = document.createElement("tr");
+                            row.forEach(function (cell) {
+                                const td = document.createElement("td");
+                                td.textContent = cell;
+                                tr.appendChild(td);
+                            });
+                            tbody.appendChild(tr);
+                        });
+                    }
+
+                    // Fecha o SweetAlert2 APÓS os dados serem carregados e a tabela ser atualizada
+                    Swal.close(); // Fecha o loader
+                })
+                .withFailureHandler(function (error) {
+                    console.error("Erro ao buscar dados:", error);
+
+                    // Fecha o SweetAlert2 em caso de erro
+                    Swal.close(); // Fecha o loader
+                })
+                .getuc();
+        }
+
+    </script>
+
+
+
+
+    <script>
+        function executeWithRetry(func) {
+            var maxRetries = 5;
+            var retryDelay = 3000; // 1 segundo
+            for (var i = 0; i < maxRetries; i++) {
+                try {
+                    return func();
+                } catch (e) {
+                    if (e.message.includes("Too Many Requests")) {
+                        Utilities.sleep(retryDelay);
+                        retryDelay *= 2; // Backoff exponencial
+                    } else {
+                        throw e;
+                    }
+                }
+            }
+            throw new Error("Número máximo de tentativas excedido.");
+        }
+
+    </script>
+
+
+
+    <!-- Imports de script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navItems = document.querySelectorAll('.nav-item');
+            const firstNavItem = navItems[0];
+
+            // Função para remover a classe 'active' de todos os itens
+            function clearActive() {
+                navItems.forEach(item => item.classList.remove('active'));
+            }
+
+            // Adiciona evento de clique aos itens para definir 'active'
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    clearActive();
+                    item.classList.add('active');
+                });
+            });
+
+            // Define o primeiro item como 'active' ao fechar qualquer modal
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('hidden.bs.modal', () => {
+                    clearActive();
+                    firstNavItem.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.onload = function () {
+            google.script.run.withSuccessHandler(preencherOpcoesTAG).getOpcoesTAG();
+        };
+
+        function preencherOpcoesTAG(opcoes) {
+            const selectTag = document.getElementById("tag");
+            const optionElement = document.createElement("option");
+            optionElement.value = "";
+            optionElement.text = "";
+            selectTag.appendChild(optionElement);
+            opcoes.forEach(opcao => {
+                const optionElement = document.createElement("option");
+                optionElement.value = opcao;
+                optionElement.text = opcao;
+                selectTag.appendChild(optionElement);
+            });
+        }
+
+        function enviarResposta() {
+            const tag = document.getElementById("tag").value;
+            const sku = document.getElementById("sku").value;
+            const pallet = document.getElementById("pallet").value.trim(); // Remove espaços extras
+
+            if (tag === "") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Atenção!",
+                    text: "Selecione uma MOTORISTA antes de enviar!",
+                });
+                return;
+            }
+            if (sku === "") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Atenção!",
+                    text: "O campo SKU não pode estar vazio!",
+                });
+                return;
+            }
+            if (pallet === "") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Atenção!",
+                    text: "O campo UC não pode estar vazio!",
+                });
+                return;
+            }
+            if (pallet.length !== 18) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Atenção!",
+                    text: "O código UC deve ter exatamente 18 caracteres!",
+                });
+                return;
+            }
+
+            // Exibe o loading enquanto processa o envio
+            Swal.fire({
+                title: "Processando...",
+                text: "Por favor, aguarde enquanto salvamos os dados.",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Chama o Apps Script para salvar os dados
+            google.script.run.withSuccessHandler((response) => {
+                Swal.close(); // Fecha o loading quando o processamento termina
+
+                if (response === "Valor já existe") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Erro",
+                        text: "O PALLET que você está tentando inserir já existe na planilha!",
+                    });
+                } else if (response === "Dados salvos com sucesso") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Sucesso",
+                        text: "Dados salvos com sucesso!",
+                    }).then(() => {
+                        document.getElementById("sku").value = "";
+                        document.getElementById("pallet").value = "";
+                    });
+                }
+            }).salvarResposta(tag, sku, pallet);
+        }
+
+
+        function finalizar() {
+            document.getElementById("tag").selectedIndex = 0;
+            document.getElementById("pallet").value = "";
+            document.getElementById("sku").value = "";
+        }
+
+        function verificarEnter(event) {
+            if (event.key === "Enter") {
+                enviarResposta();
+            }
+        }
+    </script>
+
+
+
+    <script>
+        function resetModal() {
+            document.getElementById('tag').value = '';
+            document.getElementById('sku').value = '';
+            document.getElementById('pallet').value = '';
+        }
+    </script>
+
+
+    <script>
+        const totalPallets = 50;
+        let currentBipped = 0;
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById("progressBar");
+            const progressStatus = document.getElementById("progressStatus");
+
+            const progressPercent = Math.min((currentBipped / totalPallets) * 100, 100);
+
+            progressBar.style.width = `${progressPercent}%`;
+            progressBar.setAttribute("aria-valuenow", progressPercent);
+            progressBar.textContent = `${Math.round(progressPercent)}%`;
+
+            if (progressPercent >= 100) {
+                progressStatus.textContent = `Todos os ${totalPallets} paletes foram bipados com sucesso!`;
+            } else {
+                progressStatus.textContent = `${currentBipped} de ${totalPallets} paletes bipados.`;
+            }
+        }
+
+        function simulateRFID() {
+            if (currentBipped < totalPallets) {
+                currentBipped++;
+                updateProgressBar();
+            }
+        }
+
+        document.getElementById('truckModal').addEventListener('show.bs.modal', () => {
+            currentBipped = 0;
+            updateProgressBar();
+        });
+    </script>
+
+    <!-- Cameras -->
+    <script>
+        let isSkuFieldActive = true; // Para controlar se o campo ativo é o SKU ou UC
+        let skuValue = ''; // Armazenar o SKU lido
+        let ucValue = ''; // Armazenar o UC lido
+        let html5QrCode = null; // Definir o scanner globalmente para ser utilizado nas leituras
+
+        // Função que inicializa e reinicia o scanner
+        function startScanner() {
+            const scannerContainer = document.getElementById('scannerContainer');
+            const outputField = document.getElementById('outputField');
+            const barcodeResult = document.getElementById('barcodeResult');
+            const skuInput = document.getElementById('sku');
+            const unidadeComercialInput = document.getElementById('uc');
+            const cameraModal = new bootstrap.Modal(document.getElementById('cameraModal'));
+
+            // Exibir o modal
+            cameraModal.show(); // Abre o modal
+
+            // Criar e exibir a linha vermelha imediatamente ao clicar no botão
+            const barcodeScanLine = document.createElement('div');
+            barcodeScanLine.id = 'barcodeScanLine'; // A linha vermelha
+            scannerContainer.appendChild(barcodeScanLine);
+
+            // Esperar o modal ser completamente exibido antes de iniciar o scanner
+            $('#cameraModal').on('shown.bs.modal', function () {
+                // Garantir que o scanner seja reiniciado
+                if (html5QrCode) {
+                    html5QrCode.stop().catch(err => console.error("Erro ao parar o scanner:", err)); // Garantir que o scanner anterior seja parado antes de iniciar novo
+                }
+
+                html5QrCode = new Html5Qrcode("scannerContainer"); // Reiniciar o QR code scanner
+
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    {
+                        fps: 10,
+                        qrbox: { width: 200, height: 80 } // Ajustar para tamanho adequado para código de barras
+                    },
+                    (decodedText, decodedResult) => {
+                        // Exibir o código lido
+                        barcodeResult.textContent = decodedText;
+                        outputField.style.display = "block"; // Exibir a área de resultado
+
+                        // Preencher o campo SKU ou UC dependendo do campo ativo
+                        if (isSkuFieldActive) {
+                            if (skuValue === decodedText) {
+                                return; // Não permitir duplicação de SKU
+                            }
+                            skuInput.value = decodedText;
+                            skuValue = decodedText; // Armazenar SKU lido
+                            // Fechar o scanner após a primeira leitura
+                            html5QrCode.stop().then(() => {
+                                scannerContainer.innerHTML = ""; // Limpar a div da câmera
+                                cameraModal.hide(); // Fechar o modal após a leitura
+                            }).catch(err => console.error("Erro ao parar o scanner:", err));
+                        } else {
+                            if (ucValue === decodedText) {
+                                return; // Não permitir duplicação de UC
+                            }
+                            unidadeComercialInput.value = decodedText;
+                            ucValue = decodedText; // Armazenar UC lido
+                            // Fechar o scanner após a segunda leitura
+                            html5QrCode.stop().then(() => {
+                                scannerContainer.innerHTML = ""; // Limpar a div da câmera
+                                cameraModal.hide(); // Fechar o modal após a leitura
+                            }).catch(err => console.error("Erro ao parar o scanner:", err));
+                        }
+
+                        // Alternar para o próximo campo a ser preenchido após cada leitura
+                        isSkuFieldActive = !isSkuFieldActive;
+
+                        // Exibir a área de resultado por um breve momento
+                        setTimeout(() => {
+                            outputField.style.display = "none"; // Esconder a área de resultado
+                        }, 1000); // Ajuste o tempo conforme necessário
+                    },
+                    (errorMessage) => {
+                        console.log("Erro de escaneamento:", errorMessage);
+                    }
+                ).catch(err => console.error("Erro ao iniciar o scanner:", err));
+            });
+
+            // Quando o modal for fechado ou o scanner parar, a linha vermelha é ocultada
+            $('#cameraModal').on('hidden.bs.modal', function () {
+                const barcodeScanLine = document.getElementById('barcodeScanLine');
+                if (barcodeScanLine) {
+                    barcodeScanLine.style.display = "none";
+                }
+                // Garantir que o scanner seja parado ao fechar o modal
+                if (html5QrCode) {
+                    html5QrCode.stop().catch(err => console.error("Erro ao parar o scanner:", err));
+                }
+            });
+        }
+
+        // Função para reiniciar o scanner
+        document.getElementById('startScannerButton').addEventListener('click', function () {
+            startScanner(); // Iniciar ou reiniciar o scanner
+        });
+
+    </script>
+
+    <!-- Alterar tema -->
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const theme = document.getElementById('theme');
+        const footer = document.getElementById('footer') || document.querySelector('.nav-bar'); // Ajusta para a nova barra
+        const navLinks = document.querySelectorAll('.nav-bar a') || []; // Atualiza para buscar links na barra
+        const mainContent = document.getElementById('mainContent');
+        const modals = document.querySelectorAll('.modal-content');
+
+        function switchToDarkMode() {
+            if (theme) {
+                theme.classList.remove('bg-light', 'text-dark');
+                theme.classList.add('bg-dark', 'text-light');
+            }
+            if (mainContent) {
+                mainContent.classList.remove('text-dark');
+                mainContent.classList.add('text-light');
+            }
+            themeToggle.checked = true;
+            navLinks.forEach(link => {
+                link.classList.remove('text-dark');
+                link.classList.add('text-light');
+            });
+            modals.forEach(modal => {
+                modal.classList.remove('bg-light', 'text-dark');
+                modal.classList.add('bg-dark', 'text-light');
+            });
+            localStorage.setItem('theme', 'dark');
+        }
+
+        function switchToLightMode() {
+            if (theme) {
+                theme.classList.remove('bg-dark', 'text-light');
+                theme.classList.add('bg-light', 'text-dark');
+            }
+            if (mainContent) {
+                mainContent.classList.remove('text-light');
+                mainContent.classList.add('text-dark');
+            }
+            themeToggle.checked = false;
+            navLinks.forEach(link => {
+                link.classList.remove('text-light');
+                link.classList.add('text-dark');
+            });
+            modals.forEach(modal => {
+                modal.classList.remove('bg-dark', 'text-light');
+                modal.classList.add('bg-light', 'text-dark');
+            });
+            localStorage.setItem('theme', 'light');
+        }
+
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark') {
+            switchToDarkMode();
+        } else {
+            switchToLightMode();
+        }
+
+        if (themeToggle) {
+            themeToggle.addEventListener('change', () => {
+                if (themeToggle.checked) {
+                    switchToDarkMode();
+                } else {
+                    switchToLightMode();
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
