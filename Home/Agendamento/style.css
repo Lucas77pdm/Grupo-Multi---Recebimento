@@ -1,0 +1,108 @@
+ .table-dark {
+     background: linear-gradient(90deg, #005e5e, #007777);
+     border-color: #007777;
+ }
+
+ .table-hover tbody tr:hover {
+     background-color: rgba(0, 120, 120, 0.05);
+ }
+
+ .offcanvas-body {
+     scrollbar-width: thin;
+     scrollbar-color: #008888 #f1f1f1;
+ }
+
+ .offcanvas-body::-webkit-scrollbar {
+     width: 6px;
+ }
+
+ .offcanvas-body::-webkit-scrollbar-track {
+     background: #f1f1f1;
+ }
+
+ .offcanvas-body::-webkit-scrollbar-thumb {
+     background-color: #008888;
+     border-radius: 6px;
+ }
+
+ /* Estilo para o scroll da tabela */
+ .table-responsive::-webkit-scrollbar {
+     height: 8px;
+     width: 8px;
+ }
+
+ .table-responsive::-webkit-scrollbar-track {
+     background: #f1f1f1;
+     border-radius: 0 0 4px 4px;
+ }
+
+ .table-responsive::-webkit-scrollbar-thumb {
+     background-color: #008888;
+     border-radius: 4px;
+ }
+
+ /* Agendar evento */
+
+ .table thead th {
+     position: relative;
+ }
+
+ .table thead th .badge {
+     position: absolute;
+     bottom: -10px;
+     left: 50%;
+     transform: translateX(-50%);
+     min-width: 30px;
+ }
+
+ .table tbody td {
+     vertical-align: middle;
+ }
+
+ .form-select-sm.complexidade {
+     width: 90px;
+     display: inline-block;
+     cursor: pointer;
+ }
+
+ /* Cores para os níveis de complexidade */
+ .form-select-sm.complexidade option[value="Baixa"] {
+     background-color: #d1e7dd;
+ }
+
+ .form-select-sm.complexidade option[value="Média"] {
+     background-color: #fff3cd;
+ }
+
+ .form-select-sm.complexidade option[value="Alta"] {
+     background-color: #f8d7da;
+ }
+
+
+ /* checklist */
+
+ /* Estilos customizados para o modal */
+ .modal-content {
+     border-radius: 0.5rem;
+     box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+ }
+
+ .bg-gradient {
+     border-top-left-radius: 0.5rem;
+     border-top-right-radius: 0.5rem;
+ }
+
+ .form-control,
+ .form-select {
+     transition: all 0.2s ease;
+ }
+
+ .form-control:focus,
+ .form-select:focus {
+     border-color: #dc3545;
+     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+ }
+
+ .table-hover tbody tr:hover {
+     background-color: rgba(220, 53, 69, 0.05);
+ }

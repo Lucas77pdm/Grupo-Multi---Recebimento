@@ -1,0 +1,175 @@
+/* Estilos gerais para o modal de relatórios */
+#modalRelatorios .modal-xxl {
+    max-width: 1400px;
+}
+
+/* Header com gradiente e padrão */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+}
+
+.bg-pattern {
+    background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, transparent 20%);
+    opacity: 0.15;
+}
+
+/* Cards de relatórios */
+.report-card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.report-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-color: rgba(0,0,0,0.1);
+}
+
+.hover-scale:hover {
+    transform: translateY(-5px);
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Imagem do card com overlay */
+.card-img-top {
+    position: relative;
+}
+
+.bg-gradient-dark-top {
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+
+/* Badges de categoria */
+.badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.35em 0.65em;
+    border-radius: 6px;
+}
+
+/* Botões e interações */
+.btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.825rem;
+}
+
+.rounded-pill {
+    border-radius: 50px !important;
+}
+
+.stretched-link-view::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    content: "";
+}
+
+/* Barra de pesquisa */
+.search-box {
+    position: relative;
+}
+
+.search-box i {
+    transition: all 0.3s ease;
+    z-index: 4;
+}
+
+.search-box input {
+    transition: all 0.3s ease;
+    padding-left: 2.5rem !important;
+}
+
+.search-box input:focus {
+    background-color: #fff !important;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+/* Dropdowns estilizados */
+.dropdown-menu {
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.825rem;
+}
+
+.dropdown-item:active {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Transições suaves */
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+/* Efeito de zoom na imagem */
+.object-fit-cover {
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.report-card:hover .object-fit-cover {
+    transform: scale(1.05);
+}
+
+/* Visualização em lista (alternativa) */
+#reportsGrid.list-view {
+    display: block !important;
+}
+
+#reportsGrid.list-view .col-md-6 {
+    max-width: 100%;
+    flex: 0 0 100%;
+}
+
+#reportsGrid.list-view .report-card {
+    flex-direction: row !important;
+    height: auto !important;
+}
+
+#reportsGrid.list-view .card-img-top {
+    width: 200px;
+    height: auto;
+    border-radius: 10px 0 0 10px !important;
+}
+
+#reportsGrid.list-view .card-body {
+    flex: 1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #reportsGrid.list-view .report-card {
+        flex-direction: column !important;
+    }
+    
+    #reportsGrid.list-view .card-img-top {
+        width: 100%;
+        height: 120px;
+        border-radius: 10px 10px 0 0 !important;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .modal-footer > div {
+        width: 100%;
+        justify-content: center !important;
+    }
+}

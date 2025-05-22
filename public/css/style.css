@@ -10,7 +10,8 @@ body {
   color: white !important;
   position: fixed;
   width: 250px;
-  z-index: 1040; /* se sobrepõe ao conteúdo */
+  z-index: 1040;
+  /* se sobrepõe ao conteúdo */
 }
 
 
@@ -32,9 +33,11 @@ body {
 .sidebar .dropdown-menu {
   background-color: #343a40 !important;
   border: 1px solid #495057;
-  z-index: 9999 !important; /* sobreposição garantida */
+  z-index: 9999 !important;
+  /* sobreposição garantida */
   position: absolute !important;
-  left: 100%; /* abre para a direita */
+  left: 100%;
+  /* abre para a direita */
   top: 0;
   margin-left: 0.25rem;
   min-width: 180px;
@@ -126,7 +129,7 @@ body {
   font-size: 0.9rem;
   padding: 6px 10px;
   border-radius: 8px;
-  
+
 }
 
 .table th {
@@ -165,23 +168,23 @@ h5 {
   max-width: 90%;
   width: 100%;
   margin: 30px auto;
-  height: 90%; 
+  height: 90%;
 }
 
 .modal-content {
-  height: 100%; 
+  height: 100%;
 }
 
 .modal-body {
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 .btn-close {
-  color: white; 
+  color: white;
   font-size: 1.2rem;
 }
 
-/* CHECKLIST */ 
+/* CHECKLIST */
 
 .checklist-container {
   width: 100%;
@@ -242,6 +245,7 @@ select.form-select:invalid {
   margin: 0 auto;
   padding: 20px;
 }
+
 .card-section {
   background: #fff;
   border-radius: 15px;
@@ -249,19 +253,22 @@ select.form-select:invalid {
   padding: 25px;
   margin-bottom: 25px;
 }
+
 .card-section h6 {
   font-weight: 600;
   color: #333;
   margin-bottom: 20px;
 }
+
 label {
   font-weight: 500;
   margin-bottom: 6px;
   color: #555;
 }
-input[type="text"], 
-input[type="number"], 
-input[type="file"], 
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
 select {
   border-radius: 10px;
   padding: 10px;
@@ -269,17 +276,21 @@ select {
   width: 100%;
   transition: 0.3s;
 }
-input:focus, select:focus {
+
+input:focus,
+select:focus {
   border-color: #0d6efd;
   outline: none;
   box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
 }
+
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
+
 .checkbox-group div {
   background: #f8f9fa;
   padding: 8px 15px;
@@ -288,19 +299,23 @@ input:focus, select:focus {
   cursor: pointer;
   user-select: none;
 }
+
 .checkbox-group input[type="checkbox"] {
   margin-right: 5px;
 }
+
 .file-upload-group {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
+
 @media (max-width: 768px) {
   .file-upload-group {
     grid-template-columns: 1fr;
   }
 }
+
 .btn-submit {
   background-color: #198754;
   border: none;
@@ -311,6 +326,54 @@ input:focus, select:focus {
   color: white;
   transition: 0.3s;
 }
+
 .btn-submit:hover {
   background-color: #157347;
+}
+
+
+/* agendar evento */
+
+.horario-card {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 107, 107, 0.1);
+}
+
+.horario-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 107, 107, 0.1);
+  border-color: rgba(0, 107, 107, 0.3);
+}
+
+.horario-card.selected {
+  background-color: rgba(0, 136, 136, 0.1);
+  border: 1px solid #008888;
+}
+
+/* Scroll personalizado */
+.table-responsive::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0 0 4px 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #008888;
+  border-radius: 4px;
+}
+
+/* Ajustes para o modal */
+.modal-lg {
+  max-width: 900px;
+}
+
+/* Efeito para os botões */
+.btn:not(.btn-outline-danger):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

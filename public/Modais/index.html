@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/Modais/style.css">
+
+</head>
+
+<body>
+
+    <!-- Modais -->
+    <!-- Modal checklist -->
+    <div class="modal fade" id="modalChecklist" tabindex="-1" aria-labelledby="modalChecklistLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" style="width: 80%; max-width: none;">
+            <div class="modal-content border-0" style="min-height: 80vh;">
+
+                <!-- Cabeçalho com gradiente moderno -->
+                <div class="modal-header bg-gradient"
+                    style="background: linear-gradient(135deg, #dc3545 0%, #a71d2a 100%);">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-clipboard2-check-fill fs-3 me-3 text-white"></i>
+                        <h5 class="modal-title text-white mb-0 fs-5 fw-bold">GESTÃO DE CHECKLIST</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <!-- Corpo com layout dividido -->
+                <div class="modal-body p-0 d-flex flex-column" style="overflow: hidden;">
+                    <!-- Filtros em painel lateral -->
+                    <div class="d-flex flex-row flex-grow-1" style="overflow: hidden;">
+                        <div class="border-end p-4" style="width: 320px; background-color: #f8f9fa;">
+                            <h6 class="fw-bold mb-3 text-uppercase text-muted fs-6 d-flex align-items-center">
+                                <i class="bi bi-funnel me-2"></i>FILTROS AVANÇADOS
+                            </h6>
+
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold text-muted mb-2">STATUS</label>
+                                <select class="form-select form-select-sm shadow-none rounded-2 mb-3">
+                                    <option selected disabled>Selecione status</option>
+                                    <option value="ok" class="text-success">✓ Concluído</option>
+                                    <option value="pendente" class="text-warning">⏳ Pendente</option>
+                                </select>
+
+                                <label class="form-label small fw-bold text-muted mb-2">PERÍODO</label>
+                                <div class="d-flex gap-2 mb-3">
+                                    <select class="form-select form-select-sm shadow-none rounded-2">
+                                        <option selected>Data início</option>
+                                        <option>Data conclusão</option>
+                                    </select>
+                                </div>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col">
+                                        <input type="date" class="form-control form-control-sm rounded-2"
+                                            placeholder="De">
+                                    </div>
+                                    <div class="col">
+                                        <input type="date" class="form-control form-control-sm rounded-2"
+                                            placeholder="Até">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold text-muted mb-2">PROCESSO</label>
+                                <div class="input-group input-group-sm mb-3">
+                                    <span class="input-group-text bg-white border-end-0"><i
+                                            class="bi bi-search text-muted"></i></span>
+                                    <input type="text" class="form-control shadow-none rounded-end-2"
+                                        placeholder="Pesquisar...">
+                                </div>
+
+                                <label class="form-label small fw-bold text-muted mb-2">UNIDADE</label>
+                                <select class="form-select form-select-sm shadow-none rounded-2 mb-3">
+                                    <option selected disabled>Todas unidades</option>
+                                    <option>CD-ARUANA EXPEDIÇÃO</option>
+                                    <option>WATTS RECEBIMENTO</option>
+                                </select>
+
+                                <label class="form-label small fw-bold text-muted mb-2">CHECKLIST</label>
+                                <select class="form-select form-select-sm shadow-none rounded-2 mb-3">
+                                    <option selected disabled>Todos checklists</option>
+                                    <option>Checklist Devolução</option>
+                                    <option>Checklist Inbound</option>
+                                </select>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button
+                                    class="btn btn-sm btn-outline-danger rounded-2 d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-eraser me-2"></i>Limpar Filtros
+                                </button>
+                                <button
+                                    class="btn btn-sm btn-danger rounded-2 d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-funnel me-2"></i>Aplicar Filtros
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Área de resultados -->
+                        <div class="flex-grow-1 d-flex flex-column" style="overflow: hidden;">
+                            <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge bg-light text-dark fw-normal">
+                                        <i class="bi bi-info-circle me-1"></i>Total: 128 resultados
+                                    </span>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button
+                                        class="btn btn-sm btn-outline-secondary rounded-2 d-flex align-items-center">
+                                        <i class="bi bi-download me-1"></i>Exportar
+                                    </button>
+                                    <button class="btn btn-sm btn-primary rounded-2 d-flex align-items-center">
+                                        <i class="bi bi-plus-circle me-1"></i>Novo Item
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1" style="overflow: auto;">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="sticky-top" style="background-color: #f8f9fa;">
+                                        <tr>
+                                            <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Status</th>
+                                            <th class="py-3 text-uppercase small fw-bold text-muted">Processo</th>
+                                            <th class="py-3 text-uppercase small fw-bold text-muted">Checklist</th>
+                                            <th class="py-3 text-uppercase small fw-bold text-muted">Item</th>
+                                            <th class="py-3 text-uppercase small fw-bold text-muted">Responsável</th>
+                                            <th class="py-3 text-uppercase small fw-bold text-muted">Data</th>
+                                            <th class="pe-4 py-3 text-uppercase small fw-bold text-muted text-end">Ações
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-bottom">
+                                            <td class="ps-4">
+                                                <span
+                                                    class="badge bg-opacity-10 bg-success text-success rounded-1 px-2 py-1 d-inline-flex align-items-center">
+                                                    <i class="bi bi-check-circle-fill me-1 fs-6"></i>Concluído
+                                                </span>
+                                            </td>
+                                            <td class="fw-medium">Recebimento</td>
+                                            <td>Checklist Inbound</td>
+                                            <td>
+                                                <span class="d-inline-block text-truncate"
+                                                    style="max-width: 150px;">Verificação de embalagem primária</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-xs me-2">
+                                                        <span
+                                                            class="avatar-text bg-primary text-white rounded-circle">J</span>
+                                                    </div>
+                                                    João S.
+                                                </div>
+                                            </td>
+                                            <td>28/04/2025</td>
+                                            <td class="pe-4 text-end">
+                                                <div class="d-flex gap-2 justify-content-end">
+                                                    <button class="btn btn-sm btn-outline-primary rounded-1 px-2 py-1">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success rounded-1 px-2 py-1">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger rounded-1 px-2 py-1">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-bottom">
+                                            <td class="ps-4">
+                                                <span
+                                                    class="badge bg-opacity-10 bg-warning text-warning rounded-1 px-2 py-1 d-inline-flex align-items-center">
+                                                    <i class="bi bi-exclamation-triangle-fill me-1 fs-6"></i>Pendente
+                                                </span>
+                                            </td>
+                                            <td class="fw-medium">Expedição</td>
+                                            <td>Checklist Outbound</td>
+                                            <td>
+                                                <span class="d-inline-block text-truncate"
+                                                    style="max-width: 150px;">Conferência de documentação fiscal</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-xs me-2">
+                                                        <span
+                                                            class="avatar-text bg-info text-white rounded-circle">M</span>
+                                                    </div>
+                                                    Maria L.
+                                                </div>
+                                            </td>
+                                            <td>29/04/2025</td>
+                                            <td class="pe-4 text-end">
+                                                <div class="d-flex gap-2 justify-content-end">
+                                                    <button class="btn btn-sm btn-outline-primary rounded-1 px-2 py-1">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success rounded-1 px-2 py-1">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger rounded-1 px-2 py-1">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!-- Mais linhas... -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Rodapé com paginação -->
+                            <div class="p-3 border-top d-flex justify-content-between align-items-center bg-light">
+                                <div class="text-muted small">
+                                    Mostrando <span class="fw-semibold">1</span> a <span class="fw-semibold">10</span>
+                                    de <span class="fw-semibold">128</span> resultados
+                                </div>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link rounded-1" href="#" tabindex="-1">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link rounded-1" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link rounded-1" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link rounded-1" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link rounded-1" href="#">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Relatórios / Dashboards - Premium UX -->
+    <div class="modal fade" id="modalRelatorios" tabindex="-1" aria-labelledby="modalRelatoriosLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xxl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 overflow-hidden">
+
+                <!-- Header Moderno com Gradiente e Sombreamento -->
+                <div class="modal-header bg-gradient-primary text-white py-4 position-relative">
+                    <div class="position-absolute w-100 h-100 top-0 start-0 bg-pattern opacity-10"></div>
+                    <div class="d-flex align-items-center position-relative z-index-1">
+                        <i class="bi bi-graph-up-arrow fs-2 me-3"></i>
+                        <div>
+                            <h5 class="modal-title fs-3 fw-bold mb-1" id="modalRelatoriosLabel">Relatórios & Dashboards
+                            </h5>
+                            <p class="small mb-0 opacity-75">Acesso rápido a todos os seus dados analíticos</p>
+                        </div>
+                    </div>
+                    <button type="button"
+                        class="btn-close btn-close-white btn-sm shadow-none position-relative z-index-1"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Body com Filtros Avançados e Cards -->
+                <div class="modal-body p-0">
+                    <!-- Barra de Filtros Sticky com sombra -->
+                    <div class="sticky-top bg-white py-3 px-4 border-bottom"
+                        style="z-index: 1020; top: -1px; box-shadow: 0 2px 15px rgba(0,0,0,0.05)">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                            <!-- Search com ícone animado -->
+                            <div class="search-box flex-grow-1" style="max-width: 400px;">
+                                <i class="bi bi-search position-absolute ms-3 mt-2 transition-all"></i>
+                                <input type="text" class="form-control ps-5 rounded-pill border-0 bg-light"
+                                    placeholder="Pesquisar relatórios..." id="searchReports">
+                                <button class="btn btn-sm btn-link position-absolute end-0 top-0 me-2 mt-1 d-none"
+                                    id="clearSearch">
+                                    <i class="bi bi-x-lg text-muted"></i>
+                                </button>
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2">
+                                <!-- Filtro de Categoria com badges -->
+                                <div class="dropdown">
+                                    <button class="btn btn-sm dropdown-toggle d-flex align-items-center" type="button"
+                                        id="filterCategory" data-bs-toggle="dropdown" aria-expanded="false"
+                                        style="background-color: #f8f9fa">
+                                        <i class="bi bi-tag-fill me-2" style="font-size: 0.8rem"></i>
+                                        <span>Categoria</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm py-0"
+                                        aria-labelledby="filterCategory">
+                                        <li><a class="dropdown-item small py-2 active" href="#"
+                                                data-category="all">Todas categorias</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider my-1">
+                                        </li>
+                                        <li><a class="dropdown-item small py-2 d-flex align-items-center" href="#"
+                                                data-category="financeiro">
+                                                <span class="badge bg-primary bg-opacity-10 text-primary me-2">Fi</span>
+                                                Financeiro
+                                            </a></li>
+                                        <li><a class="dropdown-item small py-2 d-flex align-items-center" href="#"
+                                                data-category="vendas">
+                                                <span class="badge bg-success bg-opacity-10 text-success me-2">Ve</span>
+                                                Vendas
+                                            </a></li>
+                                        <li><a class="dropdown-item small py-2 d-flex align-items-center" href="#"
+                                                data-category="operacional">
+                                                <span class="badge bg-warning bg-opacity-10 text-warning me-2">Op</span>
+                                                Operacional
+                                            </a></li>
+                                        <li><a class="dropdown-item small py-2 d-flex align-items-center" href="#"
+                                                data-category="logistica">
+                                                <span class="badge bg-info bg-opacity-10 text-info me-2">Lo</span>
+                                                Logística
+                                            </a></li>
+                                    </ul>
+                                </div>
+
+                                <!-- Ordenação com ícone dinâmico -->
+                                <div class="dropdown">
+                                    <button class="btn btn-sm dropdown-toggle d-flex align-items-center" type="button"
+                                        id="sortReports" data-bs-toggle="dropdown" aria-expanded="false"
+                                        style="background-color: #f8f9fa">
+                                        <i class="bi bi-arrow-down-up me-2" style="font-size: 0.8rem"></i>
+                                        <span>Ordenar</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm py-0"
+                                        aria-labelledby="sortReports">
+                                        <li><a class="dropdown-item small py-2" href="#" data-sort="recent">
+                                                <i class="bi bi-clock-history me-2"></i> Mais recentes
+                                            </a></li>
+                                        <li><a class="dropdown-item small py-2" href="#" data-sort="popular">
+                                                <i class="bi bi-star-fill me-2 text-warning"></i> Mais acessados
+                                            </a></li>
+                                        <li><a class="dropdown-item small py-2" href="#" data-sort="az">
+                                                <i class="bi bi-sort-alpha-down me-2"></i> A-Z
+                                            </a></li>
+                                    </ul>
+                                </div>
+
+                                <!-- Botão de visualização (grid/list) -->
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-secondary active view-mode"
+                                        data-view="grid">
+                                        <i class="bi bi-grid-fill"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary view-mode" data-view="list">
+                                        <i class="bi bi-list-ul"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Container dos Cards -->
+                    <div class="container-fluid p-4">
+                        <!-- Mensagem quando nenhum resultado é encontrado -->
+                        <div id="noResults" class="text-center py-5 d-none">
+                            <div class="mb-3">
+                                <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="text-muted mb-2">Nenhum relatório encontrado</h5>
+                            <p class="text-muted small">Tente ajustar seus filtros ou termos de busca</p>
+                            <button class="btn btn-sm btn-outline-primary mt-2" id="resetFilters">
+                                <i class="bi bi-arrow-counterclockwise me-1"></i> Limpar filtros
+                            </button>
+                        </div>
+
+                        <!-- Visualização em Grid (padrão) -->
+                        <div class="row g-4" id="reportsGrid">
+                            <!-- Card 1 - Financeiro -->
+                            <div class="col-md-6 col-xl-4" data-category="financeiro" data-popularity="92"
+                                data-date="2023-11-15" data-views="145">
+                                <div
+                                    class="report-card card h-100 border-0 shadow-sm overflow-hidden transition-all hover-scale">
+                                    <div class="card-img-top position-relative overflow-hidden"
+                                        style="height: 120px; background-color: #e3f2fd;">
+                                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                            class="w-100 h-100 object-fit-cover" alt="Financeiro">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-primary bg-opacity-90 text-white">Financeiro</span>
+                                        </div>
+                                        <div
+                                            class="position-absolute bottom-0 start-0 w-100 px-3 pb-2 pt-4 bg-gradient-dark-top">
+                                            <h5 class="text-white mb-0">Fluxo de Caixa</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body position-relative">
+                                        <div
+                                            class="dropdown position-absolute top-0 end-0 translate-middle-y mt-1 me-2">
+                                            <button class="btn btn-sm btn-light rounded-circle shadow-sm" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="width: 28px; height: 28px;">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li><a class="dropdown-item small" href="/reports/finance/1"
+                                                        target="_blank"><i class="bi bi-eye me-2"></i>Visualizar</a>
+                                                </li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Editar</a></li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-link-45deg me-2"></i>Copiar link</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item small text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Excluir</a></li>
+                                            </ul>
+                                        </div>
+                                        <p class="card-text text-muted small mb-3">Análise detalhada das entradas e
+                                            saídas financeiras com comparação mensal e projeções.</p>
+                                        <div
+                                            class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-bar-chart-line fs-5 text-primary me-2"></i>
+                                                <div>
+                                                    <small class="d-block text-muted">Tipo</small>
+                                                    <small class="fw-semibold">Gráfico de Barras</small>
+                                                </div>
+                                            </div>
+                                            <a href="/reports/finance/1"
+                                                class="btn btn-sm btn-primary rounded-pill px-3 stretched-link-view">
+                                                <i class="bi bi-arrow-up-right-circle me-1"></i> Abrir
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 small">
+                                        <div class="d-flex justify-content-between text-muted">
+                                            <span><i class="bi bi-calendar3 me-1"></i> Atualizado hoje</span>
+                                            <span><i class="bi bi-person me-1"></i> Financeiro</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 2 - Vendas -->
+                            <div class="col-md-6 col-xl-4" data-category="vendas" data-popularity="87"
+                                data-date="2023-11-12" data-views="112">
+                                <div
+                                    class="report-card card h-100 border-0 shadow-sm overflow-hidden transition-all hover-scale">
+                                    <div class="card-img-top position-relative overflow-hidden"
+                                        style="height: 120px; background-color: #e8f5e9;">
+                                        <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                            class="w-100 h-100 object-fit-cover" alt="Vendas">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-success bg-opacity-90 text-white">Vendas</span>
+                                        </div>
+                                        <div
+                                            class="position-absolute bottom-0 start-0 w-100 px-3 pb-2 pt-4 bg-gradient-dark-top">
+                                            <h5 class="text-white mb-0">Performance Comercial</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body position-relative">
+                                        <div
+                                            class="dropdown position-absolute top-0 end-0 translate-middle-y mt-1 me-2">
+                                            <button class="btn btn-sm btn-light rounded-circle shadow-sm" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="width: 28px; height: 28px;">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li><a class="dropdown-item small" href="/reports/sales/1"
+                                                        target="_blank"><i class="bi bi-eye me-2"></i>Visualizar</a>
+                                                </li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Editar</a></li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-link-45deg me-2"></i>Copiar link</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item small text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Excluir</a></li>
+                                            </ul>
+                                        </div>
+                                        <p class="card-text text-muted small mb-3">Desempenho da equipe de vendas com
+                                            metas, conversões e ticket médio por região.</p>
+                                        <div
+                                            class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-pie-chart fs-5 text-success me-2"></i>
+                                                <div>
+                                                    <small class="d-block text-muted">Tipo</small>
+                                                    <small class="fw-semibold">Gráfico de Pizza</small>
+                                                </div>
+                                            </div>
+                                            <a href="/reports/sales/1"
+                                                class="btn btn-sm btn-success rounded-pill px-3 stretched-link-view">
+                                                <i class="bi bi-arrow-up-right-circle me-1"></i> Abrir
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 small">
+                                        <div class="d-flex justify-content-between text-muted">
+                                            <span><i class="bi bi-calendar3 me-1"></i> Atualizado há 3 dias</span>
+                                            <span><i class="bi bi-person me-1"></i> Comercial</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3 - Operacional -->
+                            <div class="col-md-6 col-xl-4" data-category="operacional" data-popularity="76"
+                                data-date="2023-11-10" data-views="89">
+                                <div
+                                    class="report-card card h-100 border-0 shadow-sm overflow-hidden transition-all hover-scale">
+                                    <div class="card-img-top position-relative overflow-hidden"
+                                        style="height: 120px; background-color: #fff8e1;">
+                                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                            class="w-100 h-100 object-fit-cover" alt="Operacional">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-warning bg-opacity-90 text-dark">Operacional</span>
+                                        </div>
+                                        <div
+                                            class="position-absolute bottom-0 start-0 w-100 px-3 pb-2 pt-4 bg-gradient-dark-top">
+                                            <h5 class="text-white mb-0">Produtividade</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body position-relative">
+                                        <div
+                                            class="dropdown position-absolute top-0 end-0 translate-middle-y mt-1 me-2">
+                                            <button class="btn btn-sm btn-light rounded-circle shadow-sm" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="width: 28px; height: 28px;">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li><a class="dropdown-item small" href="/reports/ops/1"
+                                                        target="_blank"><i class="bi bi-eye me-2"></i>Visualizar</a>
+                                                </li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Editar</a></li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-link-45deg me-2"></i>Copiar link</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item small text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Excluir</a></li>
+                                            </ul>
+                                        </div>
+                                        <p class="card-text text-muted small mb-3">Métricas de eficiência operacional
+                                            por equipe e indicadores de desempenho.</p>
+                                        <div
+                                            class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-speedometer2 fs-5 text-warning me-2"></i>
+                                                <div>
+                                                    <small class="d-block text-muted">Tipo</small>
+                                                    <small class="fw-semibold">Gauge Charts</small>
+                                                </div>
+                                            </div>
+                                            <a href="/reports/ops/1"
+                                                class="btn btn-sm btn-warning rounded-pill px-3 stretched-link-view text-dark">
+                                                <i class="bi bi-arrow-up-right-circle me-1"></i> Abrir
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 small">
+                                        <div class="d-flex justify-content-between text-muted">
+                                            <span><i class="bi bi-calendar3 me-1"></i> Atualizado há 5 dias</span>
+                                            <span><i class="bi bi-person me-1"></i> Operações</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 4 - Logística -->
+                            <div class="col-md-6 col-xl-4" data-category="logistica" data-popularity="68"
+                                data-date="2023-11-08" data-views="74">
+                                <div
+                                    class="report-card card h-100 border-0 shadow-sm overflow-hidden transition-all hover-scale">
+                                    <div class="card-img-top position-relative overflow-hidden"
+                                        style="height: 120px; background-color: #e0f7fa;">
+                                        <img src="https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                            class="w-100 h-100 object-fit-cover" alt="Logística">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-info bg-opacity-90 text-white">Logística</span>
+                                        </div>
+                                        <div
+                                            class="position-absolute bottom-0 start-0 w-100 px-3 pb-2 pt-4 bg-gradient-dark-top">
+                                            <h5 class="text-white mb-0">Rastreamento</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body position-relative">
+                                        <div
+                                            class="dropdown position-absolute top-0 end-0 translate-middle-y mt-1 me-2">
+                                            <button class="btn btn-sm btn-light rounded-circle shadow-sm" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="width: 28px; height: 28px;">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li><a class="dropdown-item small" href="/reports/logistics/1"
+                                                        target="_blank"><i class="bi bi-eye me-2"></i>Visualizar</a>
+                                                </li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Editar</a></li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-link-45deg me-2"></i>Copiar link</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item small text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Excluir</a></li>
+                                            </ul>
+                                        </div>
+                                        <p class="card-text text-muted small mb-3">Monitoramento em tempo real de
+                                            entregas com indicadores de desempenho logístico.</p>
+                                        <div
+                                            class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-map fs-5 text-info me-2"></i>
+                                                <div>
+                                                    <small class="d-block text-muted">Tipo</small>
+                                                    <small class="fw-semibold">Mapa de Calor</small>
+                                                </div>
+                                            </div>
+                                            <a href="/reports/logistics/1"
+                                                class="btn btn-sm btn-info rounded-pill px-3 stretched-link-view text-white">
+                                                <i class="bi bi-arrow-up-right-circle me-1"></i> Abrir
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 small">
+                                        <div class="d-flex justify-content-between text-muted">
+                                            <span><i class="bi bi-calendar3 me-1"></i> Atualizado há 1 semana</span>
+                                            <span><i class="bi bi-person me-1"></i> Logística</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 5 - Financeiro -->
+                            <div class="col-md-6 col-xl-4" data-category="financeiro" data-popularity="81"
+                                data-date="2023-11-05" data-views="93">
+                                <div
+                                    class="report-card card h-100 border-0 shadow-sm overflow-hidden transition-all hover-scale">
+                                    <div class="card-img-top position-relative overflow-hidden"
+                                        style="height: 120px; background-color: #f3e5f5;">
+                                        <img src="https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                            class="w-100 h-100 object-fit-cover" alt="Financeiro">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-primary bg-opacity-90 text-white">Financeiro</span>
+                                        </div>
+                                        <div
+                                            class="position-absolute bottom-0 start-0 w-100 px-3 pb-2 pt-4 bg-gradient-dark-top">
+                                            <h5 class="text-white mb-0">DRE Consolidado</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body position-relative">
+                                        <div
+                                            class="dropdown position-absolute top-0 end-0 translate-middle-y mt-1 me-2">
+                                            <button class="btn btn-sm btn-light rounded-circle shadow-sm" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="width: 28px; height: 28px;">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li><a class="dropdown-item small" href="/reports/finance/2"
+                                                        target="_blank"><i class="bi bi-eye me-2"></i>Visualizar</a>
+                                                </li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Editar</a></li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-link-45deg me-2"></i>Copiar link</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item small text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Excluir</a></li>
+                                            </ul>
+                                        </div>
+                                        <p class="card-text text-muted small mb-3">Demonstrativo de Resultados completo
+                                            com comparação mensal e anual.</p>
+                                        <div
+                                            class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-table fs-5 text-primary me-2"></i>
+                                                <div>
+                                                    <small class="d-block text-muted">Tipo</small>
+                                                    <small class="fw-semibold">Tabela Dinâmica</small>
+                                                </div>
+                                            </div>
+                                            <a href="/reports/finance/2"
+                                                class="btn btn-sm btn-primary rounded-pill px-3 stretched-link-view">
+                                                <i class="bi bi-arrow-up-right-circle me-1"></i> Abrir
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 small">
+                                        <div class="d-flex justify-content-between text-muted">
+                                            <span><i class="bi bi-calendar3 me-1"></i> Atualizado há 10 dias</span>
+                                            <span><i class="bi bi-person me-1"></i> Contabilidade</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 6 - Vendas -->
+                            <div class="col-md-6 col-xl-4" data-category="vendas" data-popularity="95"
+                                data-date="2023-11-14" data-views="128">
+                                <div
+                                    class="report-card card h-100 border-0 shadow-sm overflow-hidden transition-all hover-scale">
+                                    <div class="card-img-top position-relative overflow-hidden"
+                                        style="height: 120px; background-color: #e8f5e9;">
+                                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                                            class="w-100 h-100 object-fit-cover" alt="Vendas">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span class="badge bg-success bg-opacity-90 text-white">Vendas</span>
+                                        </div>
+                                        <div
+                                            class="position-absolute bottom-0 start-0 w-100 px-3 pb-2 pt-4 bg-gradient-dark-top">
+                                            <h5 class="text-white mb-0">Pipeline Comercial</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body position-relative">
+                                        <div
+                                            class="dropdown position-absolute top-0 end-0 translate-middle-y mt-1 me-2">
+                                            <button class="btn btn-sm btn-light rounded-circle shadow-sm" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="width: 28px; height: 28px;">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li><a class="dropdown-item small" href="/reports/sales/2"
+                                                        target="_blank"><i class="bi bi-eye me-2"></i>Visualizar</a>
+                                                </li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Editar</a></li>
+                                                <li><a class="dropdown-item small" href="#"><i
+                                                            class="bi bi-link-45deg me-2"></i>Copiar link</a></li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item small text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Excluir</a></li>
+                                            </ul>
+                                        </div>
+                                        <p class="card-text text-muted small mb-3">Funnel de vendas com conversão por
+                                            etapa e previsão de fechamento.</p>
+                                        <div
+                                            class="d-flex align-items-center justify-content-between mt-auto pt-2 border-top">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-funnel fs-5 text-success me-2"></i>
+                                                <div>
+                                                    <small class="d-block text-muted">Tipo</small>
+                                                    <small class="fw-semibold">Funnel Chart</small>
+                                                </div>
+                                            </div>
+                                            <a href="/reports/sales/2"
+                                                class="btn btn-sm btn-success rounded-pill px-3 stretched-link-view">
+                                                <i class="bi bi-arrow-up-right-circle me-1"></i> Abrir
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 small">
+                                        <div class="d-flex justify-content-between text-muted">
+                                            <span><i class="bi bi-calendar3 me-1"></i> Atualizado ontem</span>
+                                            <span><i class="bi bi-person me-1"></i> Comercial</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Load More Button -->
+                        <div class="text-center mt-5">
+                            <button class="btn btn-outline-primary px-4 rounded-pill" id="loadMoreReports">
+                                <i class="bi bi-plus-circle me-2"></i>Carregar Mais Relatórios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer com Resumo e Ações -->
+                <div class="modal-footer bg-light justify-content-between border-top-0">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <i class="bi bi-info-circle text-primary"></i>
+                        </div>
+                        <div>
+                            <small class="d-block text-muted">Total de relatórios</small>
+                            <small class="fw-semibold" id="totalReports">6 relatórios disponíveis</small>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill me-2"
+                            data-bs-dismiss="modal">
+                            <i class="bi bi-x-lg me-1"></i> Fechar
+                        </button>
+                        <button type="button" class="btn btn-primary rounded-pill" id="createNewReport">
+                            <i class="bi bi-plus-circle me-1"></i> Criar Novo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Suporte -->
+    <div class="modal fade" id="modalSuporte" tabindex="-1" aria-labelledby="modalSuporteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+
+                <!-- Header -->
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="modalSuporteLabel">📞 Suporte & Feedback</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <form id="formSuporte" class="needs-validation" novalidate>
+                        <!-- Tipo de solicitação -->
+                        <div class="mb-3">
+                            <label for="tipoSolicitacao" class="form-label fw-semibold">Tipo de Solicitação</label>
+                            <select class="form-select" id="tipoSolicitacao" required>
+                                <option value="" disabled selected>Selecione uma opção</option>
+                                <option value="erro">Erro no sistema</option>
+                                <option value="duvida">Dúvida de uso</option>
+                                <option value="sugestao">Sugestão de melhoria</option>
+                                <option value="elogio">Elogio</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                            <div class="invalid-feedback">Por favor, selecione uma opção.</div>
+                        </div>
+
+                        <!-- Assunto -->
+                        <div class="mb-3">
+                            <label for="assunto" class="form-label fw-semibold">Assunto</label>
+                            <input type="text" class="form-control" id="assunto"
+                                placeholder="Ex: Problema ao agendar importação" required>
+                            <div class="invalid-feedback">Descreva o assunto.</div>
+                        </div>
+
+                        <!-- Descrição detalhada -->
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label fw-semibold">Descrição Detalhada</label>
+                            <textarea class="form-control" id="descricao" rows="4"
+                                placeholder="Descreva detalhadamente o ocorrido ou sua sugestão..." required></textarea>
+                            <div class="invalid-feedback">Preencha com mais detalhes.</div>
+                        </div>
+
+                        <!-- Urgência -->
+                        <div class="mb-3">
+                            <label for="urgencia" class="form-label fw-semibold">Nível de Urgência</label>
+                            <select class="form-select" id="urgencia" required>
+                                <option value="" disabled selected>Selecione</option>
+                                <option value="baixa">Baixa (Pode esperar)</option>
+                                <option value="media">Média (Importante)</option>
+                                <option value="alta">Alta (Crítico ou impede operação)</option>
+                            </select>
+                            <div class="invalid-feedback">Informe a urgência.</div>
+                        </div>
+
+                        <!-- Feedback de usabilidade -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Como você avalia a usabilidade da plataforma?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="usabilidade" value="excelente"
+                                    required>
+                                <label class="form-check-label">Excelente</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="usabilidade" value="boa">
+                                <label class="form-check-label">Boa</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="usabilidade" value="regular">
+                                <label class="form-check-label">Regular</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="usabilidade" value="ruim">
+                                <label class="form-check-label">Ruim</label>
+                            </div>
+                            <div class="invalid-feedback">Selecione uma opção.</div>
+                        </div>
+
+                        <!-- Deseja ser contatado -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Deseja receber retorno?</label>
+                            <select class="form-select" id="retorno" required>
+                                <option value="" disabled selected>Escolha uma opção</option>
+                                <option value="email">Sim, por e-mail</option>
+                                <option value="telefone">Sim, por telefone</option>
+                                <option value="nao">Não é necessário</option>
+                            </select>
+                        </div>
+
+                        <!-- E-mail -->
+                        <div class="mb-3" id="emailContainer" style="display: none;">
+                            <label for="email" class="form-label fw-semibold">Seu E-mail</label>
+                            <input type="email" class="form-control" id="email" placeholder="exemplo@empresa.com">
+                        </div>
+
+                        <!-- Telefone -->
+                        <div class="mb-3" id="telContainer" style="display: none;">
+                            <label for="tel" class="form-label fw-semibold">Seu Telefone</label>
+                            <input type="tel" class="form-control" id="tel" placeholder="(00) 0 0000-0000">
+                        </div>
+
+                        <!-- Botão -->
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i> Enviar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agendar Importação -->
+    <div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="modalImportLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content rounded-4 shadow-lg border-0 overflow-hidden">
+                <!-- Cabeçalho -->
+                <div class="modal-header text-white rounded-top-4 px-4 py-3"
+                    style="background: linear-gradient(135deg, #006b6b, #008888);">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-white text-primary fs-5 me-3 p-2 shadow-sm">
+                            <i class="bi bi-box-seam"></i>
+                        </span>
+                        <h5 class="modal-title mb-0 fw-semibold">Agendamento de Importação</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+
+                <!-- Corpo -->
+                <div class="modal-body p-4">
+                    <!-- Título -->
+                    <div class="text-center mb-4">
+                        <h4 class="fw-semibold mb-2" style="color: #006b6b;">
+                            <i class="bi bi-calendar2-check me-2"></i>Controle de Agendamentos
+                        </h4>
+                        <p class="text-muted small mb-0">Adicione processos e acompanhe a distribuição por horário</p>
+                    </div>
+
+                    <!-- Grade de Horários -->
+                    <section class="mb-4">
+                        <h6 class="fw-semibold mb-3 d-flex align-items-center" style="color: #006b6b;">
+                            <i class="bi bi-clock-history me-2"></i>Horários Disponíveis
+                        </h6>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="py-3">08:00<br><span class="badge bg-primary"
+                                                id="contador-08">0</span></th>
+                                        <th class="py-3">11:00<br><span class="badge bg-primary"
+                                                id="contador-11">0</span></th>
+                                        <th class="py-3">14:00<br><span class="badge bg-primary"
+                                                id="contador-14">0</span></th>
+                                        <th class="py-3">18:00<br><span class="badge bg-primary"
+                                                id="contador-18">0</span></th>
+                                        <th class="py-3">22:00<br><span class="badge bg-primary"
+                                                id="contador-22">0</span></th>
+                                        <th class="py-3">23:00<br><span class="badge bg-primary"
+                                                id="contador-23">0</span></th>
+                                        <th class="py-3 bg-light">Total<br><span class="badge bg-secondary"
+                                                id="contador-total">0</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><small class="text-muted">Manhã</small></td>
+                                        <td><small class="text-muted">Manhã</small></td>
+                                        <td><small class="text-muted">Tarde</small></td>
+                                        <td><small class="text-muted">Tarde</small></td>
+                                        <td><small class="text-muted">Noite</small></td>
+                                        <td><small class="text-muted">Noite</small></td>
+                                        <td class="bg-light"><small class="text-muted">Todos</small></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Formulário de Inserção -->
+                    <form id="formInserir" class="mb-4 p-3 rounded-3" style="background-color: #f8f9fa;">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label for="horario" class="form-label fw-semibold small text-secondary">Horário</label>
+                                <select class="form-select shadow-sm" id="horario" name="horario" required>
+                                    <option value="" selected disabled hidden>Selecione...</option>
+                                    <option value="08:00">08:00 - Manhã</option>
+                                    <option value="11:00">11:00 - Manhã</option>
+                                    <option value="14:00">14:00 - Tarde</option>
+                                    <option value="18:00">18:00 - Tarde</option>
+                                    <option value="22:00">22:00 - Noite</option>
+                                    <option value="23:00">23:00 - Noite</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="processo"
+                                    class="form-label fw-semibold small text-secondary">Processo</label>
+                                <textarea class="form-control shadow-sm" id="processo" name="processo" rows="1"
+                                    placeholder="Descreva o processo..." required></textarea>
+                            </div>
+
+                            <div class="col-md-3 d-grid">
+                                <button type="button" class="btn btn-primary shadow-sm" id="btnInserir">
+                                    <i class="bi bi-plus-circle me-2"></i> Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Tabela de Processos -->
+                    <section class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-semibold mb-0 d-flex align-items-center" style="color: #006b6b;">
+                                <i class="bi bi-list-check me-2"></i>Processos Agendados
+                            </h6>
+                            <span class="badge bg-primary rounded-pill" id="contadorProcessos">0 itens</span>
+                        </div>
+
+                        <div class="table-responsive rounded-3 border" style="max-height: 250px; overflow-y: auto;">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="sticky-top" style="background-color: #f8f9fa;">
+                                    <tr>
+                                        <th class="py-3 ps-4 text-start">Horário</th>
+                                        <th class="py-3 text-start">Processo</th>
+                                        <th class="py-3 text-center">Complexidade</th>
+                                        <th class="py-3 pe-4 text-end">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaProcessos" class="bg-white">
+                                    <!-- Conteúdo dinâmico via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Botões de ação -->
+                    <div class="d-flex flex-column flex-md-row gap-3 mt-4">
+                        <button type="button" class="btn btn-outline-danger flex-grow-1 shadow-sm" id="btnExcluirTudo">
+                            <i class="bi bi-trash me-2"></i> Limpar Tudo
+                        </button>
+                        <button type="button" class="btn btn-success flex-grow-1 shadow-sm" id="btnEnviar">
+                            <i class="bi bi-file-earmark-excel me-2"></i> Exportar
+                        </button>
+                    </div>
+
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+                    <script src="/public/Modais/script.js"></script>
+                    <script src="/public/js/sidebar.js"></script>
+
+</body>
+
+</html>

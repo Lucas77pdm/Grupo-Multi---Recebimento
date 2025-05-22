@@ -6,10 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AGENDAMENTO / MULTI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/public/css/style.css">
+
+    <link rel="stylesheet" href="/Home/Agendamento/style.css">
 
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
@@ -25,6 +30,7 @@
 <body>
 
     <div id="sidebar"></div>
+    <div id="modais-container"></div>
 
     <div class="content">
         <div class="row g-4 mt-1 p-4">
@@ -51,34 +57,79 @@
         </div>
     </div>
 
-    <!-- Offcanvas sobrepondo -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDia" aria-labelledby="modalDiaLabel">
-        <div class="offcanvas-header bg-primary text-white">
-            <h5 class="offcanvas-title" id="modalDiaLabel">📋 Processos do Dia</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    <!-- Offcanvas aprimorado -->
+    <div class="offcanvas offcanvas-end shadow-lg" tabindex="-1" id="offcanvasDia" aria-labelledby="modalDiaLabel">
+        <div class="offcanvas-header" style="background: linear-gradient(135deg, #006b6b, #008888);">
+            <div class="d-flex align-items-center">
+                <span class="badge bg-white text-primary fs-5 me-2">📋</span>
+                <h5 class="offcanvas-title text-white mb-0" id="modalDiaLabel">Agenda do Dia</h5>
+            </div>
+            <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas"
+                aria-label="Fechar"></button>
         </div>
-        <div class="offcanvas-body">
-            <div class="table-responsive">
-                <table class="table table-bordered text-center align-middle">
-                    <thead class="table custom-header">
-                        <tr>
-                            <th>Horário</th>
-                            <th>Processo</th>
-                            <th>Complexidade</th>
-                        </tr>
-                    </thead>
-                    <tbody id="processosDia">
-                        <!-- preenchido via JS -->
-                    </tbody>
-                </table>
+
+        <div class="offcanvas-body p-3 d-flex flex-column">
+            <div class="alert alert-info bg-blue border-0 mb-3">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                <span class="small">Veja abaixo todos os processos agendados para hoje com horários, tipo e nível de
+                    complexidade.</span>
+            </div>
+
+            <div class="card border-0 shadow-sm flex-grow-1 d-flex flex-column">
+                <div class="table-responsive rounded-3 overflow-hidden flex-grow-1" style="max-height: 400px;">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-dark sticky-top" style="z-index: 1;">
+                            <tr>
+                                <th scope="col" class="py-3 ps-4 text-start">
+                                    <span class="d-inline-flex align-items-center">
+                                        <i class="bi bi-clock me-2"></i>Horário
+                                    </span>
+                                </th>
+                                <th scope="col" class="py-3 text-start">
+                                    <span class="d-inline-flex align-items-center">
+                                        <i class="bi bi-box-seam me-2"></i>Processo
+                                    </span>
+                                </th>
+                                <th scope="col" class="py-3 pe-4 text-end">
+                                    <span class="d-inline-flex align-items-center">
+                                        <i class="bi bi-speedometer2 me-2"></i>Complexidade
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="processosDia" class="bg-white">
+                            <!-- Linhas dinâmicas via JS -->
+                            <tr class="placeholder-wave">
+                                <td colspan="3" class="p-4 text-center text-muted">
+                                    <div class="spinner-border text-primary spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Carregando...</span>
+                                    </div>
+                                    <span class="ms-2">Carregando agenda...</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+                <small class="text-muted">Atualizado em: <span id="dataAtualizacao">--/--/---- --:--</span></small>
+                <button class="btn btn-sm btn-outline-primary" id="btnAtualizar">
+                    <i class="bi bi-arrow-clockwise"></i> Atualizar
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/js/script.js"></script>
+    <script src="/public/Modais/script.js"></script>
     <script src="/public/js/sidebar.js"></script>
+    <script src="/Home/Agendamento/script.js"></script>
 </body>
 
 </html>
