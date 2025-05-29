@@ -1,179 +1,184 @@
+// JavaScript para interatividade
 document.addEventListener('DOMContentLoaded', function() {
-    // Elementos do DOM
-    const modal = document.getElementById('modalRelatorios');
-    const searchInput = document.getElementById('searchReports');
-    const clearSearchBtn = document.getElementById('clearSearch');
-    const categoryFilters = document.querySelectorAll('[data-category]');
-    const sortOptions = document.querySelectorAll('[data-sort]');
-    const viewModeBtns = document.querySelectorAll('.view-mode');
-    const resetFiltersBtn = document.getElementById('resetFilters');
-    const loadMoreBtn = document.getElementById('loadMoreReports');
-    const createReportBtn = document.getElementById('createNewReport');
-    const reportsGrid = document.getElementById('reportsGrid');
-    const noResults = document.getElementById('noResults');
-    const totalReports = document.getElementById('totalReports');
-
-    // Inicialização quando o modal é aberto
-    if (modal) {
-        modal.addEventListener('shown.bs.modal', function() {
-            updateReportCount();
-            initViewMode();
+    // Variáveis
+    const processos = [];
+    const btnInserir = document.getElementById('btnInserir');
+    const btnExcluirTudo = document.getElementById('btnExcluirTudo');
+    const btnEnviar = document.getElementById('btnEnviar');
+    const formInserir = document.getElementById('formInserir');
+    const tabelaProcessos = document.getElementById('tabelaProcessos');
+    
+    // Função para atualizar contadores
+    function atualizarContadores() {
+        const contadores = {
+            '08:00': 0,
+            '11:00': 0,
+            '14:00': 0,
+            '18:00': 0,
+            '22:00': 0,
+            '23:00': 0,
+            'total': 0
+        };
+        
+        processos.forEach(processo => {
+            contadores[processo.horario]++;
+            contadores.total++;
+        });
+        
+        // Atualiza os contadores na UI
+        document.getElementById('contador-08').textContent = contadores['08:00'];
+        document.getElementById('contador-11').textContent = contadores['11:00'];
+        document.getElementById('contador-14').textContent = contadores['14:00'];
+        document.getElementById('contador-18').textContent = contadores['18:00'];
+        document.getElementById('contador-22').textContent = contadores['22:00'];
+        document.getElementById('contador-23').textContent = contadores['23:00'];
+        document.getElementById('contador-total').textContent = contadores.total;
+        document.getElementById('contadorProcessos').textContent = `${contadores.total} ${contadores.total === 1 ? 'item' : 'itens'}`;
+        
+        // Atualiza estilos dos slots de tempo
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            const time = slot.getAttribute('data-time');
+            if (contadores[time] > 0) {
+                slot.style.borderColor = 'var(--primary-color)';
+                slot.style.boxShadow = 'var(--shadow-sm)';
+            } else {
+                slot.style.borderColor = 'var(--border-color)';
+                slot.style.boxShadow = 'none';
+            }
         });
     }
-
-    // Função para atualizar contagem de relatórios visíveis
-    function updateReportCount() {
-        const visibleCards = document.querySelectorAll('#reportsGrid .report-card:not([style*="display: none"])').length;
-        const totalCards = document.querySelectorAll('#reportsGrid .report-card').length;
+    
+    // Função para renderizar a tabela
+    function renderizarTabela() {
+        tabelaProcessos.innerHTML = '';
         
-        if (totalReports) {
-            totalReports.textContent = `${visibleCards} de ${totalCards} relatórios`;
-            noResults.classList.toggle('d-none', visibleCards > 0);
-            reportsGrid.classList.toggle('d-none', visibleCards === 0);
+        if (processos.length === 0) {
+            tabelaProcessos.innerHTML = `
+                <tr class="empty-row">
+                    <td colspan="4" class="text-center py-4 text-muted">
+                        Nenhum processo agendado
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        processos.forEach((processo, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${processo.horario}</td>
+                <td>${processo.processo}</td>
+                <td class="complexidade ${processo.complexidade}">
+                    ${processo.complexidade === 'baixa' ? 'Baixa' : 
+                      processo.complexidade === 'media' ? 'Média' : 'Alta'}
+                </td>
+                <td class="actions">
+                    <button class="action-btn edit-btn" data-index="${index}">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="action-btn delete-btn" data-index="${index}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tabelaProcessos.appendChild(row);
+        });
+        
+        // Adiciona eventos aos botões de ação
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                editarProcesso(index);
+            });
+        });
+        
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                excluirProcesso(index);
+            });
+        });
+    }
+    
+    // Função para adicionar processo
+    function adicionarProcesso() {
+        const horario = document.getElementById('horario').value;
+        const processo = document.getElementById('processo').value;
+        const complexidade = document.getElementById('complexidade').value;
+        
+        if (!horario || !processo) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+        
+        processos.push({
+            horario,
+            processo,
+            complexidade
+        });
+        
+        // Limpa o formulário
+        formInserir.reset();
+        
+        // Atualiza a UI
+        atualizarContadores();
+        renderizarTabela();
+    }
+    
+    // Função para editar processo
+    function editarProcesso(index) {
+        const processo = processos[index];
+        
+        // Preenche o formulário com os dados do processo
+        document.getElementById('horario').value = processo.horario;
+        document.getElementById('processo').value = processo.processo;
+        document.getElementById('complexidade').value = processo.complexidade;
+        
+        // Remove o processo da lista
+        processos.splice(index, 1);
+        
+        // Atualiza a UI
+        atualizarContadores();
+        renderizarTabela();
+    }
+    
+    // Função para excluir processo
+    function excluirProcesso(index) {
+        if (confirm('Tem certeza que deseja excluir este processo?')) {
+            processos.splice(index, 1);
+            atualizarContadores();
+            renderizarTabela();
         }
     }
-
-    // Filtro de busca
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase().trim();
-            const cards = document.querySelectorAll('.report-card');
-            
-            clearSearchBtn.classList.toggle('d-none', searchTerm === '');
-            
-            cards.forEach(card => {
-                const cardText = card.textContent.toLowerCase();
-                card.parentElement.style.display = cardText.includes(searchTerm) ? 'block' : 'none';
-            });
-            
-            updateReportCount();
-        });
+    
+    // Função para limpar tudo
+    function limparTudo() {
+        if (processos.length === 0) return;
+        
+        if (confirm('Tem certeza que deseja limpar todos os processos agendados?')) {
+            processos.length = 0;
+            atualizarContadores();
+            renderizarTabela();
+        }
     }
-
-    // Botão para limpar busca
-    if (clearSearchBtn) {
-        clearSearchBtn.addEventListener('click', function() {
-            searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input'));
-            this.classList.add('d-none');
-        });
+    
+    // Função para exportar
+    function exportarProcessos() {
+        if (processos.length === 0) {
+            alert('Nenhum processo para exportar.');
+            return;
+        }
+        
+        // Simulação de exportação
+        alert(`${processos.length} processos serão exportados.`);
+        console.log('Processos para exportar:', processos);
     }
-
-    // Filtro por categoria
-    categoryFilters.forEach(filter => {
-        filter.addEventListener('click', function(e) {
-            e.preventDefault();
-            const category = this.dataset.category;
-            
-            // Atualizar estado ativo
-            document.querySelectorAll('[data-category].active').forEach(el => el.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Aplicar filtro
-            const cards = document.querySelectorAll('[data-category]');
-            cards.forEach(card => {
-                if (category === 'all' || card.dataset.category === category) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-            
-            updateReportCount();
-        });
-    });
-
-    // Ordenação
-    sortOptions.forEach(option => {
-        option.addEventListener('click', function(e) {
-            e.preventDefault();
-            const sortBy = this.dataset.sort;
-            const container = reportsGrid;
-            const cards = Array.from(container.children);
-            
-            cards.sort((a, b) => {
-                switch(sortBy) {
-                    case 'recent':
-                        return new Date(b.dataset.date) - new Date(a.dataset.date);
-                    case 'popular':
-                        return parseInt(b.dataset.popularity) - parseInt(a.dataset.popularity);
-                    case 'az':
-                        return a.querySelector('.card-title').textContent.localeCompare(
-                            b.querySelector('.card-title').textContent
-                        );
-                    default:
-                        return 0;
-                }
-            });
-            
-            // Reordenar no DOM
-            cards.forEach(card => container.appendChild(card));
-        });
-    });
-
-    // Alternar entre visualização em grid e lista
-    function initViewMode() {
-        viewModeBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                viewModeBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                if (this.dataset.view === 'list') {
-                    reportsGrid.classList.add('list-view');
-                } else {
-                    reportsGrid.classList.remove('list-view');
-                }
-            });
-        });
-    }
-
-    // Resetar filtros
-    if (resetFiltersBtn) {
-        resetFiltersBtn.addEventListener('click', function() {
-            // Resetar busca
-            searchInput.value = '';
-            clearSearchBtn.classList.add('d-none');
-            
-            // Resetar categoria
-            document.querySelector('[data-category="all"]').click();
-            
-            // Resetar ordenação (opcional)
-            
-            // Atualizar contagem
-            updateReportCount();
-        });
-    }
-
-    // Carregar mais relatórios
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
-            this.innerHTML = '<i class="bi bi-arrow-repeat me-2"></i>Carregando...';
-            this.disabled = true;
-            
-            // Simular carregamento assíncrono
-            setTimeout(() => {
-                // Aqui você faria uma chamada AJAX para carregar mais itens
-                alert('Funcionalidade de carregar mais relatórios seria implementada aqui com uma chamada AJAX');
-                
-                this.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Carregar Mais Relatórios';
-                this.disabled = false;
-            }, 1000);
-        });
-    }
-
-    // Criar novo relatório
-    if (createReportBtn) {
-        createReportBtn.addEventListener('click', function() {
-            // Aqui você pode abrir um modal de criação ou redirecionar
-            alert('Funcionalidade de criação de novo relatório seria implementada aqui');
-        });
-    }
-
-    // Tooltips para elementos interativos
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl, {
-            trigger: 'hover'
-        });
-    });
+    
+    // Event listeners
+    btnInserir.addEventListener('click', adicionarProcesso);
+    btnExcluirTudo.addEventListener('click', limparTudo);
+    btnEnviar.addEventListener('click', exportarProcessos);
+    
+    // Inicializa a tabela
+    renderizarTabela();
 });

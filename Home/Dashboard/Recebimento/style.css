@@ -1,0 +1,379 @@
+/* Cards e Titulo do DASHBOARD */
+
+:root {
+    --primary-color: #4e73df;
+    --success-color: #1cc88a;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --dark-color: #5a5c69;
+}
+
+.gradient-border {
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.gradient-border::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 8px;
+    width: 100%;
+    border-radius: 4px;
+    background: linear-gradient(to right, #ff4e50, #ff0000, #ff6b6b);
+    /* VERMELHO - tema claro */
+}
+
+/* Tema escuro baseado no atributo do HTML */
+html[data-bs-theme="dark"] .gradient-border::after {
+    background: linear-gradient(to right, #2193b0, #6dd5ed, #1e3c72);
+    /* AZUL - tema escuro */
+}
+
+.top-bar {
+    margin-bottom: 3rem;
+    border-radius: 0.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Tema claro */
+html[data-bs-theme="light"] .section-title {
+    color: #e74a3b;
+    /* Vermelho */
+}
+
+/* Tema escuro */
+html[data-bs-theme="dark"] .section-title {
+    color: #4e73df;
+    /* Azul */
+}
+
+.section-title {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.card {
+    border: none;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.card-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #224abe 100%);
+}
+
+.card-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, #17a673 100%);
+}
+
+.card-warning {
+    background: linear-gradient(135deg, var(--warning-color) 0%, #dda20a 100%);
+}
+
+.card-danger {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #be2617 100%);
+}
+
+.card-body {
+    padding: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.card-title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: 0.75rem;
+}
+
+.card-text {
+    font-weight: 700;
+    font-size: 2rem !important;
+    margin-bottom: 0;
+}
+
+.card-icon {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    opacity: 0.2;
+    font-size: 4rem;
+    transform: rotate(15deg);
+    transition: all 0.3s ease;
+}
+
+.card:hover .card-icon {
+    opacity: 0.3;
+    transform: rotate(0deg) scale(1.1);
+}
+
+.small.d-flex {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    line-height: 1.2;
+}
+
+.small.d-flex span:first-child {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    margin-right: 0.25rem;
+}
+
+.small.d-flex span:last-child {
+    white-space: nowrap;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1.5rem;
+    }
+}
+
+
+/* ================================ FIM CSS - CARDS E TITULO =================================== */
+
+/* ================================ TABELAS PEDIDOS E DEVOLUÇÃO =================================== */
+
+/* Estilos para as tabelas */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 1.25rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    border-top: none;
+    padding: 0.75rem 1rem;
+}
+
+.table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #f1f3f5;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-responsive {
+    overflow: auto;
+}
+
+/* Barras de progresso nas células */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 3px;
+}
+
+/* Badges modernos */
+.badge {
+    padding: 0.35em 0.65em;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Avatares */
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Botões de ação */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* Paginação */
+.pagination {
+    margin-bottom: 0;
+}
+
+.pagination .btn {
+    min-width: 32px;
+    margin: 0 2px;
+}
+
+/* Cabeçalho fixo para tabela rolável */
+.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+}
+
+/* Efeito de ordenação */
+.sortable {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.sortable:hover {
+    color: #495057;
+}
+
+.sortable i {
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.sortable:hover i {
+    opacity: 1;
+}
+
+/* Rodapé da tabela */
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.75rem 1.25rem;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+
+    .card,
+    .card-header,
+    .card-footer {
+        background-color: #2d3035;
+        border-color: #373b3e;
+    }
+
+    .table {
+        color: #e9ecef;
+    }
+
+    .table th {
+        color: #adb5bd;
+    }
+
+    .table td {
+        border-top-color: #373b3e;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .progress {
+        background-color: #495057;
+    }
+
+    .card-title {
+        color: #e9ecef;
+    }
+
+    .text-muted {
+        color: #868e96 !important;
+    }
+}
+
+/* ================================ FIM CSS - TABELAS PEDIDOS E DEVOLUÇÃO =================================== */
+
+/* ================================ CARDS ABAIXO DA TABELA DE PEDIDOS =================================== */
+
+.text-gradient {
+    background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card-stat {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.bg-hover-light-success:hover {
+    background-color: rgba(40, 167, 69, 0.05) !important;
+}
+
+.bg-hover-light-primary:hover {
+    background-color: rgba(13, 110, 253, 0.05) !important;
+}
+
+.bg-hover-light-warning:hover {
+    background-color: rgba(255, 193, 7, 0.05) !important;
+}
+
+.bg-hover-light-info:hover {
+    background-color: rgba(13, 202, 240, 0.05) !important;
+}
+
+.icon-wrapper {
+    transition: all 0.3s ease;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-stat:hover .icon-wrapper {
+    transform: scale(1.1);
+}
