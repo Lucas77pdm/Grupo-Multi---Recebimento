@@ -1,0 +1,104 @@
+/* Gradiente e título do topo */
+.gradient-border {
+    position: relative;
+    padding-bottom: 16px;
+}
+.gradient-border::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 8px;
+    width: 100%;
+    border-radius: 4px;
+    background: linear-gradient(to right, #ff4e50, #ff0000, #ff6b6b);
+}
+html[data-bs-theme="dark"] .gradient-border::after {
+    background: linear-gradient(to right, #2193b0, #6dd5ed, #1e3c72);
+}
+.section-title {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.75rem;
+}
+html[data-bs-theme="light"] .section-title { color: #e74a3b; }
+html[data-bs-theme="dark"] .section-title { color: #4e73df; }
+
+/* Cards principais */
+.card {
+    border: none;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem 0 rgba(58, 59, 69, 0.2);
+}
+.card-primary { background: linear-gradient(135deg, #4e73df 0%, #224abe 100%); }
+.card-success { background: linear-gradient(135deg, #1cc88a 0%, #17a673 100%); }
+.card-warning { background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%); }
+.card-danger { background: linear-gradient(135deg, #e74a3b 0%, #be2617 100%); }
+.card-title { font-size: 1rem; text-transform: uppercase; font-weight: 600; opacity: 0.8; margin-bottom: 0.75rem; }
+.card-text { font-weight: 700; font-size: 2rem !important; margin-bottom: 0; }
+.card-icon {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    opacity: 0.2;
+    font-size: 4rem;
+    transform: rotate(15deg);
+    transition: all 0.3s ease;
+}
+.card:hover .card-icon { opacity: 0.3; transform: rotate(0deg) scale(1.1); }
+
+/* Gráficos */
+.chart-card { margin-bottom: 1.5rem; }
+.chart-card .card-body { padding: 1.5rem; }
+
+/* Tabelas */
+.table th { font-weight: 600; text-transform: uppercase; font-size: 0.75rem; color: #6c757d; border-top: none; }
+.table td { padding: 1rem; vertical-align: middle; border-top: 1px solid #f1f3f5; }
+.table-hover tbody tr:hover { background-color: rgba(0, 0, 0, 0.02); }
+.table-responsive { overflow: auto; }
+.sticky-top { position: sticky; top: 0; z-index: 10; background-color: white; }
+.badge { padding: 0.35em 0.65em; font-weight: 500; letter-spacing: 0.5px; }
+
+/* Avatares */
+.avatar-sm {
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.875rem; font-weight: 500;
+}
+
+/* Botões e paginação */
+.btn-sm { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+.pagination .btn { min-width: 32px; margin: 0 2px; }
+
+/* Cards resumo de operações */
+.text-gradient {
+    background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.card-stat { transition: all 0.3s ease; border: 1px solid rgba(0, 0, 0, 0.05); }
+.card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+.bg-hover-light-success:hover { background-color: rgba(40, 167, 69, 0.05) !important; }
+.bg-hover-light-primary:hover { background-color: rgba(13, 110, 253, 0.05) !important; }
+.bg-hover-light-warning:hover { background-color: rgba(255, 193, 7, 0.05) !important; }
+.bg-hover-light-info:hover { background-color: rgba(13, 202, 240, 0.05) !important; }
+.icon-wrapper {
+    transition: all 0.3s ease;
+    width: 60px; height: 60px;
+    display: flex; align-items: center; justify-content: center;
+}
+.card-stat:hover .icon-wrapper { transform: scale(1.1); }
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .card { margin-bottom: 1.5rem; }
+}
+

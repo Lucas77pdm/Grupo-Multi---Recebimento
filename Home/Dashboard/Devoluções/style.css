@@ -1,0 +1,220 @@
+.gradient-border {
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.gradient-border::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 8px;
+    width: 100%;
+    border-radius: 4px;
+    background: linear-gradient(to right, #ff4e50, #ff0000, #ff6b6b);
+    /* VERMELHO - tema claro */
+}
+
+/* Tema escuro baseado no atributo do HTML */
+html[data-bs-theme="dark"] .gradient-border::after {
+    background: linear-gradient(to right, #2193b0, #6dd5ed, #1e3c72);
+    /* AZUL - tema escuro */
+}
+
+.top-bar {
+    margin-bottom: 3rem;
+    border-radius: 0.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Tema claro */
+html[data-bs-theme="light"] .section-title {
+    color: #e74a3b;
+    /* Vermelho */
+}
+
+/* Tema escuro */
+html[data-bs-theme="dark"] .section-title {
+    color: #4e73df;
+    /* Azul */
+}
+
+.section-title {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+
+:root {
+    --bs-primary: #4e73df;
+    --bs-secondary: #858796;
+    --bs-success: #1cc88a;
+    --bs-info: #36b9cc;
+    --bs-warning: #f6c23e;
+    --bs-danger: #e74a3b;
+    --bs-light: #f8f9fc;
+    --bs-dark: #5a5c69;
+    --bs-card-bg: #fff;
+    --bs-body-bg: #f8f9fc;
+}
+
+/* Cards de gráficos */
+.chart-card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    border: none;
+    height: 100%;
+    max-height: 420px; /* Limite de altura para evitar overflow */
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card .card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.chart-card canvas {
+    max-height: 300px;
+    height: 300px !important;
+    width: 100% !important;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Responsividade para gráficos */
+@media (max-width: 992px) {
+    .chart-card {
+        max-height: 350px;
+    }
+    .chart-card canvas {
+        max-height: 220px;
+        height: 220px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-card {
+        max-height: 300px;
+    }
+    .chart-card canvas {
+        max-height: 180px;
+        height: 180px !important;
+    }
+}
+
+/* Tabela */
+.table-responsive {
+    scrollbar-width: thin;
+    scrollbar-color: #4e73df #f8f9fc;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f8f9fc;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #4e73df;
+    border-radius: 10px;
+}
+
+.table thead th {
+    background-color: #4e73df;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+}
+
+/* Badges */
+.badge {
+    padding: 0.4em 0.65em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Offcanvas de alertas */
+.offcanvas {
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.offcanvas-header {
+    background-color: #4e73df;
+    color: white;
+}
+
+.offcanvas-title {
+    font-weight: 600;
+}
+
+/* Input group */
+.input-group-sm .form-control,
+.input-group-sm .form-select {
+    font-size: 0.75rem;
+}
+
+/* Formulário */
+.form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    body {
+        padding-right: 0;
+    }
+
+    .offcanvas {
+        position: static;
+        width: 100% !important;
+        border: none;
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 0.75rem;
+    }
+
+    .display-6 {
+        font-size: 1.5rem;
+    }
+}

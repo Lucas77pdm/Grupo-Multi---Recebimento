@@ -201,30 +201,39 @@ function initializePositionChart() {
     const isDarkTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark';
     const palette = isDarkTheme ? bluePalette : redPalette;
 
-    // Dados simulados das posições livres por galpão
+    // NOVOS DADOS: cada galpão tem total, ocupadas, disponível
     const dataPositions = {
-        G10: { CP: 10, SA: 15, PA: 5 },
-        BLUE: { CP: 8, SA: 12, PA: 7 },
-        JOSEPHA: { CP: 5, SA: 10, PA: 3 }
+        G10: { total: 40, ocupadas: 28 },
+        BLUE: { total: 35, ocupadas: 22 },
+        JOSEPHA: { total: 30, ocupadas: 18 },
+        VERMELHO: { total: 25, ocupadas: 10 }
     };
+    // Calcula disponíveis
+    Object.keys(dataPositions).forEach(k => {
+        dataPositions[k].disponivel = dataPositions[k].total - dataPositions[k].ocupadas;
+    });
 
     // Atualiza os valores nos cards
-    document.getElementById("g10_cp").innerText = dataPositions.G10.CP;
-    document.getElementById("g10_sa").innerText = dataPositions.G10.SA;
-    document.getElementById("g10_pa").innerText = dataPositions.G10.PA;
+    document.getElementById("g10_total").innerText = dataPositions.G10.total;
+    document.getElementById("g10_ocupadas").innerText = dataPositions.G10.ocupadas;
+    document.getElementById("g10_disponivel").innerText = dataPositions.G10.disponivel;
 
-    document.getElementById("blue_cp").innerText = dataPositions.BLUE.CP;
-    document.getElementById("blue_sa").innerText = dataPositions.BLUE.SA;
-    document.getElementById("blue_pa").innerText = dataPositions.BLUE.PA;
+    document.getElementById("blue_total").innerText = dataPositions.BLUE.total;
+    document.getElementById("blue_ocupadas").innerText = dataPositions.BLUE.ocupadas;
+    document.getElementById("blue_disponivel").innerText = dataPositions.BLUE.disponivel;
 
-    document.getElementById("josepha_cp").innerText = dataPositions.JOSEPHA.CP;
-    document.getElementById("josepha_sa").innerText = dataPositions.JOSEPHA.SA;
-    document.getElementById("josepha_pa").innerText = dataPositions.JOSEPHA.PA;
+    document.getElementById("josepha_total").innerText = dataPositions.JOSEPHA.total;
+    document.getElementById("josepha_ocupadas").innerText = dataPositions.JOSEPHA.ocupadas;
+    document.getElementById("josepha_disponivel").innerText = dataPositions.JOSEPHA.disponivel;
+
+    document.getElementById("vermelho_total").innerText = dataPositions.VERMELHO.total;
+    document.getElementById("vermelho_ocupadas").innerText = dataPositions.VERMELHO.ocupadas;
+    document.getElementById("vermelho_disponivel").innerText = dataPositions.VERMELHO.disponivel;
 
     // Soma total de cada tipo
-    const totalCP = dataPositions.G10.CP + dataPositions.BLUE.CP + dataPositions.JOSEPHA.CP;
-    const totalSA = dataPositions.G10.SA + dataPositions.BLUE.SA + dataPositions.JOSEPHA.SA;
-    const totalPA = dataPositions.G10.PA + dataPositions.BLUE.PA + dataPositions.JOSEPHA.PA;
+    const totalVagas = Object.values(dataPositions).reduce((sum, g) => sum + g.total, 0);
+    const totalOcupadas = Object.values(dataPositions).reduce((sum, g) => sum + g.ocupadas, 0);
+    const totalDisponivel = Object.values(dataPositions).reduce((sum, g) => sum + g.disponivel, 0);
 
     // Destrói o gráfico existente se houver
     const positionChartCanvas = document.getElementById("positionChart");
@@ -237,10 +246,10 @@ function initializePositionChart() {
     window.positionChartInstance = new Chart(ctx, {
         type: "doughnut",
         data: {
-            labels: ["CP", "SA", "PA"],
+            labels: ["Total de Vagas", "Ocupadas", "Disponível"],
             datasets: [{
-                data: [totalCP, totalSA, totalPA],
-                backgroundColor: palette,
+                data: [totalVagas, totalOcupadas, totalDisponivel],
+                backgroundColor: [palette[0], palette[2], palette[1]],
                 hoverOffset: 8
             }]
         },
@@ -253,7 +262,7 @@ function initializePositionChart() {
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {
-                            return `${tooltipItem.label}: ${tooltipItem.raw} posições livres`;
+                            return `${tooltipItem.label}: ${tooltipItem.raw} vagas`;
                         }
                     }
                 }
@@ -441,102 +450,102 @@ function getComplexidadeIcon(complexidade) {
 
 // TABELAS PEDIDOS E DEVOLUÇÃO
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Ordenação de tabelas
-  document.querySelectorAll('.sortable').forEach(header => {
-    header.addEventListener('click', () => {
-      const table = header.closest('table');
-      const columnIndex = Array.from(header.parentElement.children).indexOf(header);
-      const sortKey = header.dataset.sort;
-      const isAscending = !header.classList.contains('asc');
-      
-      // Reset all headers
-      table.querySelectorAll('.sortable').forEach(h => {
-        h.classList.remove('asc', 'desc');
-        const icon = h.querySelector('i');
-        if (icon) icon.className = 'bi bi-arrow-down-up';
-      });
-      
-      // Set current header state
-      header.classList.add(isAscending ? 'asc' : 'desc');
-      const icon = header.querySelector('i');
-      if (icon) icon.className = isAscending ? 'bi bi-arrow-up' : 'bi bi-arrow-down';
-      
-      // Sort rows
-      const tbody = table.querySelector('tbody');
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      
-      rows.sort((a, b) => {
-        const aValue = a.children[columnIndex].textContent.trim();
-        const bValue = b.children[columnIndex].textContent.trim();
-        
-        // Special sorting for dates
-        if (sortKey === 'date') {
-          return isAscending 
-            ? new Date(aValue.split('/').reverse().join('-')) - new Date(bValue.split('/').reverse().join('-'))
-            : new Date(bValue.split('/').reverse().join('-')) - new Date(aValue.split('/').reverse().join('-'));
-        }
-        
-        // Numeric sorting
-        if (!isNaN(aValue) && !isNaN(bValue)) {
-          return isAscending ? aValue - bValue : bValue - aValue;
-        }
-        
-        // Default string sorting
-        return isAscending 
-          ? aValue.localeCompare(bValue) 
-          : bValue.localeCompare(aValue);
-      });
-      
-      // Reappend sorted rows
-      rows.forEach(row => tbody.appendChild(row));
+document.addEventListener('DOMContentLoaded', function () {
+    // Ordenação de tabelas
+    document.querySelectorAll('.sortable').forEach(header => {
+        header.addEventListener('click', () => {
+            const table = header.closest('table');
+            const columnIndex = Array.from(header.parentElement.children).indexOf(header);
+            const sortKey = header.dataset.sort;
+            const isAscending = !header.classList.contains('asc');
+
+            // Reset all headers
+            table.querySelectorAll('.sortable').forEach(h => {
+                h.classList.remove('asc', 'desc');
+                const icon = h.querySelector('i');
+                if (icon) icon.className = 'bi bi-arrow-down-up';
+            });
+
+            // Set current header state
+            header.classList.add(isAscending ? 'asc' : 'desc');
+            const icon = header.querySelector('i');
+            if (icon) icon.className = isAscending ? 'bi bi-arrow-up' : 'bi bi-arrow-down';
+
+            // Sort rows
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort((a, b) => {
+                const aValue = a.children[columnIndex].textContent.trim();
+                const bValue = b.children[columnIndex].textContent.trim();
+
+                // Special sorting for dates
+                if (sortKey === 'date') {
+                    return isAscending
+                        ? new Date(aValue.split('/').reverse().join('-')) - new Date(bValue.split('/').reverse().join('-'))
+                        : new Date(bValue.split('/').reverse().join('-')) - new Date(aValue.split('/').reverse().join('-'));
+                }
+
+                // Numeric sorting
+                if (!isNaN(aValue) && !isNaN(bValue)) {
+                    return isAscending ? aValue - bValue : bValue - aValue;
+                }
+
+                // Default string sorting
+                return isAscending
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            });
+
+            // Reappend sorted rows
+            rows.forEach(row => tbody.appendChild(row));
+        });
     });
-  });
-  
-  // Botão de atualizar
-  document.querySelectorAll('.refresh-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const card = this.closest('.card');
-      const spinner = document.createElement('i');
-      spinner.className = 'bi bi-arrow-clockwise spin';
-      
-      this.innerHTML = '';
-      this.appendChild(spinner);
-      this.disabled = true;
-      
-      // Simular carregamento
-      setTimeout(() => {
-        this.innerHTML = '<i class="bi bi-arrow-clockwise"></i>';
-        this.disabled = false;
-        
-        // Adicionar efeito visual
-        card.style.transition = 'none';
-        card.style.boxShadow = '0 0 0 2px rgba(13, 110, 253, 0.25)';
-        setTimeout(() => {
-          card.style.transition = 'all 0.3s ease';
-          card.style.boxShadow = '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)';
-        }, 500);
-      }, 1000);
+
+    // Botão de atualizar
+    document.querySelectorAll('.refresh-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const card = this.closest('.card');
+            const spinner = document.createElement('i');
+            spinner.className = 'bi bi-arrow-clockwise spin';
+
+            this.innerHTML = '';
+            this.appendChild(spinner);
+            this.disabled = true;
+
+            // Simular carregamento
+            setTimeout(() => {
+                this.innerHTML = '<i class="bi bi-arrow-clockwise"></i>';
+                this.disabled = false;
+
+                // Adicionar efeito visual
+                card.style.transition = 'none';
+                card.style.boxShadow = '0 0 0 2px rgba(13, 110, 253, 0.25)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.boxShadow = '0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)';
+                }, 500);
+            }, 1000);
+        });
     });
-  });
-  
-  // Pesquisa na tabela de devoluções
-  const searchInput = document.querySelector('.search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      const searchTerm = this.value.toLowerCase();
-      const rows = document.querySelectorAll('.returns-table tbody tr');
-      
-      rows.forEach(row => {
-        const clientName = row.querySelector('td:first-child').textContent.toLowerCase();
-        row.style.display = clientName.includes(searchTerm) ? '' : 'none';
-      });
-    });
-  }
-  
-  // Efeito de rotação no ícone de atualização
-  const style = document.createElement('style');
-  style.textContent = `
+
+    // Pesquisa na tabela de devoluções
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.returns-table tbody tr');
+
+            rows.forEach(row => {
+                const clientName = row.querySelector('td:first-child').textContent.toLowerCase();
+                row.style.display = clientName.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    }
+
+    // Efeito de rotação no ícone de atualização
+    const style = document.createElement('style');
+    style.textContent = `
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
@@ -545,30 +554,30 @@ document.addEventListener('DOMContentLoaded', function() {
       animation: spin 1s linear infinite;
     }
   `;
-  document.head.appendChild(style);
+    document.head.appendChild(style);
 });
 
 // Cards abaixo das tabelas
 
- document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const cards = document.querySelectorAll('.card-stat');
-    
+
     cards.forEach(card => {
-      // Efeito de foco ao passar o mouse
-      card.addEventListener('mouseenter', function() {
-        this.style.zIndex = '10';
-      });
-      
-      card.addEventListener('mouseleave', function() {
-        this.style.zIndex = '1';
-      });
-      
-      // Feedback ao clicar
-      card.addEventListener('click', function() {
-        this.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-          this.style.transform = 'translateY(-5px)';
-        }, 150);
-      });
+        // Efeito de foco ao passar o mouse
+        card.addEventListener('mouseenter', function () {
+            this.style.zIndex = '10';
+        });
+
+        card.addEventListener('mouseleave', function () {
+            this.style.zIndex = '1';
+        });
+
+        // Feedback ao clicar
+        card.addEventListener('click', function () {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-5px)';
+            }, 150);
+        });
     });
-  });
+});

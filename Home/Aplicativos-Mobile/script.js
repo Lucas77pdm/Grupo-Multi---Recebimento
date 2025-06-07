@@ -1,651 +1,143 @@
-// ========== GERAR ITENS DO CHECKLIST DINAMICAMENTE ==========
-const checklist = document.getElementById('checklist');
-
-const items = [
-{ id: '#12754821', date: '26/04/2025', status: 'red' },
-{ id: '#12754822', date: '26/04/2025', status: 'green' },
-{ id: '#12754823', date: '26/04/2025', status: 'green' },
-{ id: '#12754824', date: '26/04/2025', status: 'red' },
-{ id: '#12754825', date: '26/04/2025', status: 'green' },
-{ id: '#12754826', date: '26/04/2025', status: 'red' },
-{ id: '#12754827', date: '26/04/2025', status: 'green' },
-{ id: '#12754828', date: '26/04/2025', status: 'red' },
-{ id: '#12754829', date: '26/04/2025', status: 'red' },
-{ id: '#12754830', date: '26/04/2025', status: 'red' },
-{ id: '#12754831', date: '26/04/2025', status: 'red' },
-{ id: '#12754832', date: '26/04/2025', status: 'red' },
-{ id: '#12754833', date: '26/04/2025', status: 'red' },
-{ id: '#12754834', date: '26/04/2025', status: 'red' },
-];
-
-items.forEach(item => {
-const div = document.createElement('div');
-div.className = 'checklist-item d-flex align-items-center';
-
-const status = document.createElement('div');
-status.className = 'status-indicator';
-status.style.backgroundColor = item.status === 'red' ? '#e63946' : '#2a9d8f';
-
-const info = document.createElement('div');
-info.className = 'item-info d-flex flex-column';
-info.innerHTML = `
-<span class="item-number">${item.id}</span>
-<span class="item-date">${item.date}</span>
-`;
-
-const arrow = document.createElement('div');
-arrow.className = 'arrow-icon';
-arrow.innerHTML = '<i class="bi bi-chevron-right"></i>';
-
-div.appendChild(status);
-div.appendChild(info);
-div.appendChild(arrow);
-
-checklist.appendChild(div);
-
-div.addEventListener('click', () => {
-document.getElementById('modal-id').textContent = item.id;
-document.getElementById('modal-date').textContent = item.date;
-
-const statusSpan = document.getElementById('modal-status');
-statusSpan.textContent = item.status === 'green' ? 'Aprovado' : 'Reprovado';
-
-statusSpan.classList.remove('bg-success', 'bg-danger');
-statusSpan.classList.add('badge', 'rounded-pill');
-statusSpan.classList.add(item.status === 'green' ? 'bg-success' : 'bg-danger');
-
-const modal = new bootstrap.Modal(document.getElementById('checklistModal'));
-modal.show();
-});
-});
-
-
-
-
-function mostrarChecklist() {
-const tipo = document.getElementById("tipoChecklist").value;
-const container = document.getElementById("formChecklistContainer");
-
-let html = "";
-
-switch (tipo) {
-case "importacao":
-html = `
-<h5>Checklist de Importação</h5>
-
-<!-- Nome do Motorista -->
-<div class="mb-3">
-  <label class="form-label">Motorista:</label>
-  <select id="selectMotorista" class="form-select" onchange="preencherCamposImportacao()">
-    <option value="">Selecione o motorista</option>
-    <option value="12345|Carlos da Silva|ABC-1234">Carlos da Silva</option>
-    <option value="67890|Maria Souza|XYZ-5678">Maria Souza</option>
-  </select>
-</div>
-
-<!-- Transportadora -->
-<div class="mb-3">
-  <label class="form-label">Transportadora:</label>
-  <input type="text" id="transportadora" class="form-control" disabled>
-</div>
-
-<!-- Número do Processo -->
-<div class="mb-3">
-  <label class="form-label">Número do processo:</label>
-  <input type="text" id="numeroProcesso" class="form-control" disabled>
-</div>
-
-<!-- Anexar Fotos (etapas) -->
-<div class="mb-3">
-  <label class="form-label">Anexar fotos - início do carregamento:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Anexar fotos - 50% do carregamento:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Anexar fotos - término do carregamento:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Anexar fotos - descarregado no BUFFER:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<!-- Houve Avaria? -->
-<div class="mb-3">
-  <label class="form-label">Houve alguma avaria?</label>
-  <select id="houveAvaria" class="form-select" onchange="mostrarCamposAvaria()">
-    <option value="">Selecione</option>
-    <option value="sim">Sim</option>
-    <option value="nao">Não</option>
-  </select>
-</div>
-
-<!-- Seção de Avarias (inicialmente oculta) -->
-<div id="secaoAvarias" style="display: none;">
-  <div class="mb-3">
-    <label class="form-label">Qual foi a avaria?</label><br>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="molhadas" id="avariaMolhadas">
-      <label class="form-check-label" for="avariaMolhadas">Molhadas</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="rasgadas" id="avariaRasgadas">
-      <label class="form-check-label" for="avariaRasgadas">Rasgadas</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="amassadas" id="avariaAmassadas">
-      <label class="form-check-label" for="avariaAmassadas">Amassadas</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="outras" id="avariaOutras">
-      <label class="form-check-label" for="avariaOutras">Outras</label>
-    </div>
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Anexar fotos das avarias:</label>
-    <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Códigos e quantidades dos materiais avariados:</label>
-    <textarea class="form-control" rows="3" placeholder="Ex: Código XYZ123 - 5 unidades danificadas"></textarea>
-  </div>
-</div>
-
-<!-- Assinatura -->
-<div class="mb-3">
-  <label class="form-label">Assinatura:</label>
-  <canvas id="assinaturaImportacao" class="border" width="320" height="150"></canvas>
-</div>
-`;
-break;
-
-case "transferencia":
-html = `
-<h5>Checklist de Transferência</h5>
-
-<!-- Motorista -->
-<div class="mb-3">
-  <label class="form-label">Motorista:</label>
-  <select id="selectMotorista" class="form-select" onchange="preencherCamposTransferencia()">
-    <option value="">Selecione o motorista</option>
-    <option value="12345|Carlos da Silva|ABC-1234|DEF-5678">Carlos da Silva</option>
-    <option value="67890|Maria Souza|XYZ-5678|GHI-9012">Maria Souza</option>
-    <!-- Mais opções podem ser adicionadas -->
-  </select>
-</div>
-
-<!-- Transportadora -->
-<div class="mb-3">
-  <label class="form-label">Transportadora:</label>
-  <input type="text" id="transportadora" class="form-control" disabled>
-</div>
-
-<!-- Placa da Carreta -->
-<div class="mb-3">
-  <label class="form-label">Placa da carreta:</label>
-  <input type="text" id="placaCarreta" class="form-control" disabled>
-</div>
-
-<!-- Placa do Cavalo -->
-<div class="mb-3">
-  <label class="form-label">Placa do cavalo:</label>
-  <input type="text" id="placaCavalo" class="form-control" disabled>
-</div>
-
-<!-- Ordem de Coleta -->
-<div class="mb-3">
-  <label class="form-label">Ordem de Coleta:</label>
-  <input type="text" class="form-control">
-</div>
-
-<!-- Modelo / Polegada -->
-<div class="mb-3">
-  <label class="form-label">Modelo (Polegada) carregado:</label>
-  <input type="text" class="form-control" placeholder="Ex: 32”, 43”, 50” etc.">
-</div>
-
-<!-- Código e Quantidade -->
-<div class="mb-3">
-  <label class="form-label">Código das telas carregadas:</label>
-  <textarea class="form-control" placeholder="Ex: MOD12345"></textarea>
-</div>
-
-<!-- Quantidade total -->
-<div class="mb-3">
-  <label class="form-label">Quantidade de telas carregadas:</label>
-  <input type="number" class="form-control">
-</div>
-
-<!-- Conferência de Integridade -->
-<div class="mb-3">
-  <label class="form-label">Conferência de integridade:</label>
-  <textarea class="form-control"></textarea>
-</div>
-
-<!-- Fotos do Container -->
-<div class="mb-3">
-  <label class="form-label">Foto do container fechado (antes do carregamento):</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Foto do início do carregamento:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Foto com 50% do carregamento:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Foto do término do carregamento:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Foto do container lacrado após carregamento:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Foto do lacre:</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Foto da Nota Fiscal (NF):</label>
-  <input type="file" accept="image/*" capture="environment" class="form-control" multiple>
-</div>
-
-<!-- Assinatura -->
-<div class="mb-3">
-  <label class="form-label">Assinatura:</label>
-  <canvas id="assinaturaTransferencia" class="border" width="320" height="150"></canvas>
-</div>
-`;
-break;
-
-case "devolucao":
-html = `
-<h5>Checklist de Devolução</h5>
-
-<!-- Seleção do motorista -->
-<div class="mb-3">
-  <label class="form-label">Motorista:</label>
-  <select id="selectMotorista" class="form-select" onchange="preencherCamposDevolucao()">
-    <option value="">Selecione o motorista</option>
-    <option value="12345|Transportadora Rápida|ABC-1234|DEF-5678">Carlos da Silva</option>
-    <option value="67890|Transportes União|XYZ-5678|GHI-9012">Maria Souza</option>
-    <!-- Mais opções podem ser adicionadas -->
-  </select>
-</div <!-- Dados preenchidos automaticamente -->
-<div class="mb-3">
-  <label class="form-label">Transportadora:</label>
-  <input type="text" id="transportadora" class="form-control" disabled>
-</div>
-<div class="mb-3">
-  <label class="form-label">Placa da carreta:</label>
-  <input type="text" id="placaCarreta" class="form-control" disabled>
-</div>
-<div class="mb-3">
-  <label class="form-label">Placa do cavalo:</label>
-  <input type="text" id="placaCavalo" class="form-control" disabled>
-</div>
-
-<!-- Dados específicos da devolução -->
-<div class="mb-3"> <label class="form-label">Nome do conferente:</label>
-  <select class="form-select"">
-    <option value="">Selecione o Conferente responsável</option>
-    <option>Carlos da Silva</option>
-    <option>Maria Souza</option>
-  </select>
-  </div>
-<div class="mb-3"><label class="form-label">Motivo da devolução:</label><textarea class="form-control"></textarea></div>
-<div class="mb-3"><label class="form-label">Condições do produto:</label><textarea class="form-control"></textarea>
-</div>
-
-<!-- Fotos obrigatórias -->
-<div class="mb-3"><label class="form-label">Foto da doca onde está sendo feita a devolução:</label><input type="file"
-    accept="image/*" class="form-control"></div>
-<div class="mb-3"><label class="form-label">Imagens da abertura do veículo:</label><input type="file" accept="image/*"
-    class="form-control" multiple></div>
-<div class="mb-3"><label class="form-label">Imagens após a devolução da mercadoria:</label><input type="file"
-    accept="image/*" class="form-control" multiple></div>
-<div class="mb-3"><label class="form-label">Imagens da mercadoria no buffer:</label><input type="file" accept="image/*"
-    class="form-control" multiple></div>
-
-<!-- Paletização -->
-<div class="mb-3">
-  <label class="form-label">A carga é paletizada?</label><br>
-  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="paletizada"
-      value="sim"><label class="form-check-label">Sim</label></div>
-  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="paletizada"
-      value="nao"><label class="form-check-label">Não</label></div>
-</div>
-
-<!-- Paletes tombados -->
-<div class="mb-3">
-  <label class="form-label">Possui paletes tombados?</label><br>
-  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="tombados"
-      value="sim"><label class="form-check-label">Sim</label></div>
-  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="tombados"
-      value="nao"><label class="form-check-label">Não</label></div>
-</div>
-
-<!-- Divergência de quantidade -->
-<div class="mb-3">
-  <label class="form-label">Houve falta ou sobra?</label><br>
-  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="faltaSobra" value="sim"
-      onclick="document.getElementById('divergenciaInfo').style.display='block'"><label
-      class="form-check-label">Sim</label></div>
-  <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="faltaSobra" value="nao"
-      onclick="document.getElementById('divergenciaInfo').style.display='none'"><label
-      class="form-check-label">Não</label></div>
-</div>
-<div id="divergenciaInfo" style="display:none">
-  <div class="mb-3"><label class="form-label">Descreva a divergência (códigos, quantidades etc):</label><textarea
-      class="form-control"></textarea></div>
-  <div class="mb-3"><label class="form-label">Fotos da divergência:</label><input type="file" accept="image/*"
-      class="form-control" multiple></div>
-</div>
-
-<!-- Avaliação da transportadora -->
-<h6 class="mt-4">Avaliação da Transportadora</h6>
-<div class="mb-3"><label class="form-label">Pontualidade:</label><input type="range" class="form-range" min="1" max="5">
-</div>
-<div class="mb-3"><label class="form-label">Paletização:</label><input type="range" class="form-range" min="1" max="5">
-</div>
-<div class="mb-3"><label class="form-label">Organização dos documentos:</label><input type="range" class="form-range"
-    min="1" max="5"></div>
-<div class="mb-3"><label class="form-label">Identificação dos volumes:</label><input type="range" class="form-range"
-    min="1" max="5"></div>
-<div class="mb-3"><label class="form-label">Acompanhamento do conferente:</label><input type="range" class="form-range"
-    min="1" max="5"></div>
-<div class="mb-3"><label class="form-label">Devolução recebida em sua totalidade?</label><input type="range"
-    class="form-range" min="1" max="5"></div>
-
-<!-- Assinatura -->
-<div class="mb-3"><label class="form-label">Assinatura do responsável:</label><canvas id="assinaturaDevolucao"
-    class="border" width="320" height="150"></canvas></div>
-`;
-break;
-
-case "compras":
-html = `
-<h5>Checklist de Compras</h5>
-
-<!-- Motorista -->
-
-<!-- Conferente e Transportadora -->
-<div class="mb-3"><label class="form-label">Conferente responsável:</label><input type="text" class="form-control"></div>
-<div class="mb-3"><label class="form-label">Transportadora:</label><input type="text" class="form-control"></div>
-
-<!-- Imagens -->
-<div class="mb-3"><label class="form-label">Imagem da doca onde está descarregando:</label><input type="file" accept="image/*" class="form-control"></div>
-<div class="mb-3"><label class="form-label">Imagem da abertura do veículo:</label><input type="file" accept="image/*" class="form-control"></div>
-<div class="mb-3"><label class="form-label">Imagem do início da carga após a abertura:</label><input type="file" accept="image/*" class="form-control"></div>
-
-<div class="mb-3">
- <label class="form-label">A carga é paletizada?</label>
-    <select class="form-select">
-    <option value="">Selecione</option>
-    <option>Sim</option>
-    <option>Não</option>
-  </select>
-</div>
-
-<div class="mb-3">
- <label class="form-label">Possui pallets tombados?</label>
-   <select class="form-select">
-    <option value="">Selecione</option>
-    <option>Sim</option>
-    <option>Não</option>
-  </select>
-</div>
-
-<!-- Notas tipo devolução -->
-<div class="mb-3">
-  <label class="form-label">As caixas estão em boas condições?</label>
-  <select class="form-select">
-    <option value="">Selecione</option>
-    <option>Sim</option>
-    <option>Não</option>
-  </select>
-</div>
-<div class="mb-3">
-  <label class="form-label">As caixas estão devidamente identificadas?</label>
-  <select class="form-select">
-    <option value="">Selecione</option>
-    <option>Sim</option>
-    <option>Não</option>
-  </select>
-</div>
-<div class="mb-3">
-  <label class="form-label">Produto tem aderência à cinta?</label>
-  <select class="form-select">
-    <option value="">Selecione</option>
-    <option>Sim</option>
-    <option>Não</option>
-  </select>
-</div>
-
-<!-- Pallets no buffer -->
-<div class="mb-3"><label class="form-label">Imagens dos pallets descarregados no buffer:</label><input type="file" accept="image/*" multiple class="form-control"></div>
-
-<!-- Divergência -->
-<div class="mb-3">
-  <label class="form-label">Possui falta ou sobra?</label>
-  <select class="form-select" id="possuiDivergencia" onchange="mostrarCamposDivergencia(this.value)">
-    <option value="">Selecione</option>
-    <option value="Sim">Sim</option>
-    <option value="Não">Não</option>
-  </select>
-</div>
-<div id="divergenciaCampos" style="display: none;">
-  <div class="mb-3"><label class="form-label">Código do item:</label><input type="text" class="form-control"></div>
-  <div class="mb-3"><label class="form-label">Quantidade divergente:</label><input type="number" class="form-control"></div>
-</div>
-
-<!-- Documentação -->
-<div class="mb-3"><label class="form-label">Imagens da documentação assinada:</label><input type="file" accept="image/*" multiple class="form-control"></div>
-
-<!-- Assinatura -->
-<div class="mb-3"><label class="form-label">Assinatura do conferente:</label><canvas id="assinaturaCompras" class="border" width="320" height="150"></canvas></div>
-`;
-break;
-
-default:
-html = "";
-}
-
-container.innerHTML = html;
-}
-
-// ========== MOSTRAR CAMPO DE AVARIAS DO CHECKLIST DE IMPORTAÇÃO ==========
-
-function mostrarCamposAvaria() {
-const select = document.getElementById("houveAvaria");
-const secao = document.getElementById("secaoAvarias");
-secao.style.display = (select.value === "sim") ? "block" : "none";
-}
-
-function mostrarCamposDivergencia(valor) {
-  const campos = document.getElementById("divergenciaCampos");
-  campos.style.display = (valor === "Sim") ? "block" : "none";
-}
-
-// ========== TEMA ==========
-function toggleTheme() {
-document.body.classList.toggle('dark-mode');
-}
-
-// ========== PREENCHIMENTO DE CAMPOS ==========
-function preencherCamposImportacao() {
-const valor = document.getElementById("selectMotorista").value;
-const [id, nome, placa] = valor.split("|");
-
-// Preenchendo os campos automaticamente
-document.getElementById("transportadora").value = "Transportadora XYZ"; // Exemplo de transportadora
-document.getElementById("numeroProcesso").value = id; // O número do processo pode ser preenchido com o ID ou outro
-valor
-}
-
-function preencherCamposTransferencia() {
-const select = document.getElementById("selectMotorista");
-const value = select.value;
-const [id, nome, carreta, cavalo] = value.split("|");
-
-document.getElementById("transportadora").value = nome;
-document.getElementById("placaCarreta").value = carreta;
-document.getElementById("placaCavalo").value = cavalo;
-}
-
-function preencherCamposDevolucao() {
-const select = document.getElementById("selectMotorista");
-const value = select.value;
-
-if (value) {
-const [id, transportadora, carreta, cavalo] = value.split("|");
-
-document.getElementById("transportadora").value = transportadora;
-document.getElementById("placaCarreta").value = carreta;
-document.getElementById("placaCavalo").value = cavalo;
-} else {
-document.getElementById("transportadora").value = "";
-document.getElementById("placaCarreta").value = "";
-document.getElementById("placaCavalo").value = "";
-}
-}
-
-
-// ========== AVARIAS ==========
-function toggleAvariaDetails(value) {
-const detalhes = document.getElementById("avaria-details");
-const foto = document.getElementById("fotoAvaria");
-const descricao = document.getElementById("descricaoAvaria");
-
-if (value === "sim") {
-detalhes.style.display = "block";
-foto.required = true;
-descricao.required = true;
-} else {
-detalhes.style.display = "none";
-foto.required = false;
-descricao.required = false;
-foto.value = "";
-descricao.value = "";
-}
-}
-
-// ========== ASSINATURA ==========
-function isCanvasBlank(canvas) {
-const blank = document.createElement('canvas');
-blank.width = canvas.width;
-blank.height = canvas.height;
-return canvas.toDataURL() === blank.toDataURL();
-}
-
-function setupCanvas(canvasId, hiddenInputId) {
-const canvas = document.getElementById(canvasId);
-if (!canvas) {
-console.error(`Canvas com id ${canvasId} não encontrado.`);
-return;
-}
-const hiddenInput = document.getElementById(hiddenInputId);
-const ctx = canvas.getContext('2d');
-let drawing = false;
-
-const getPos = (e) => {
-const rect = canvas.getBoundingClientRect();
-return e.touches ? {
-x: e.touches[0].clientX - rect.left,
-y: e.touches[0].clientY - rect.top
-} : {
-x: e.offsetX,
-y: e.offsetY
-};
-};
-
-const startDraw = (e) => {
-drawing = true;
-const pos = getPos(e);
-ctx.beginPath();
-ctx.moveTo(pos.x, pos.y);
-};
-
-const draw = (e) => {
-if (!drawing) return;
-const pos = getPos(e);
-ctx.lineTo(pos.x, pos.y);
-ctx.stroke();
-hiddenInput.value = canvas.toDataURL();
-};
-
-const stopDraw = () => drawing = false;
-
-canvas.addEventListener("mousedown", startDraw);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", stopDraw);
-canvas.addEventListener("mouseout", stopDraw);
-
-canvas.addEventListener("touchstart", (e) => {
-e.preventDefault();
-startDraw(e);
-});
-canvas.addEventListener("touchmove", (e) => {
-e.preventDefault();
-draw(e);
-});
-canvas.addEventListener("touchend", (e) => {
-e.preventDefault();
-stopDraw(e);
-});
-}
-
-function limparCanvas(canvasId, hiddenInputId) {
-const canvas = document.getElementById(canvasId);
-const ctx = canvas.getContext("2d");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-document.getElementById(hiddenInputId).value = "";
-}
-
-function enviarCanvas(canvasId, hiddenInputId, offcanvasId) {
-const canvas = document.getElementById(canvasId);
-
-if (isCanvasBlank(canvas)) {
-Swal.fire({
-icon: 'warning',
-title: 'Assinatura ausente',
-text: 'Por favor, assine antes de enviar.',
-});
-return;
-}
-
-Swal.fire({
-icon: 'success',
-title: 'Assinatura enviada!',
-showConfirmButton: false,
-timer: 1500
-});
-
-const offcanvasEl = document.getElementById(offcanvasId);
-const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
-if (bsOffcanvas) bsOffcanvas.hide();
-
-limparCanvas(canvasId, hiddenInputId);
-}
-
-// ========== INICIALIZAÇÃO ==========
-document.addEventListener("DOMContentLoaded", () => {
-setupCanvas("assinaturaGestor", "assinaturaDataGestor");
-setupCanvas("assinaturaConferente", "assinaturaDataConferente");
+document.addEventListener('DOMContentLoaded', () => {
+
+    const app = {
+        charts: {},
+        state: {
+            currentScreen: 'dashboard',
+            currentChecklistType: null,
+            user: { name: 'Stanislav Kashchishen', email: 'stanislav.k@logix.com', avatar: 'https://i.pravatar.cc/150?u=stanislav', setor: 'Logística', cargo: 'Supervisor de Operações', lastLogin: new Date().toISOString() },
+            kpis: { confirmed: { title: 'Confirmados', value: 128, icon: 'bi-check2-circle', color: 'success' }, pending: { title: 'Pendentes', value: 18, icon: 'bi-clock-history', color: 'warning' }, syncError: { title: 'Não Sinc.', value: 3, icon: 'bi-cloud-slash', color: 'danger' }, get total() { return this.confirmed.value + this.pending.value + this.syncError.value; } },
+            checklists: [
+                { id: 'TR-2024-112', type: 'transferencia', status: 'ongoing', responsavel: 'Carlos Lima', dataCriacao: '2025-06-06T09:15:00', dataConclusao: null, tempoConclusaoHoras: null },
+                { id: 'NF-99820', type: 'compras', status: 'completed', responsavel: 'Ana Souza', dataCriacao: '2025-06-05T10:00:00', dataConclusao: '2025-06-05T14:30:00', tempoConclusaoHoras: 4.5 },
+                { id: 'DV-2024-011', type: 'devolucao', status: 'syncError', responsavel: 'João da Silva', dataCriacao: '2025-06-04T11:00:00', dataConclusao: null, tempoConclusaoHoras: null },
+            ],
+            reportsState: { filters: { startDate: '2025-01-01', endDate: new Date().toISOString().split('T')[0], type: 'todos' }, filteredData: [], kpis: { total: 0, avgCompletionTime: 0, complianceRate: 98.5 } },
+            checklistTypes: {
+                compras: { title: 'Checklist de Compras', icon: 'bi-cart-check-fill', color: 'primary', items: [{ type: 'header', label: 'Dados da Nota Fiscal' }, { type: 'text', label: 'Número da NF-e', id: 'nf_number', placeholder: '44 dígitos da chave de acesso', required: true }, { type: 'text', label: 'Fornecedor', id: 'supplier', placeholder: 'Nome do fornecedor', required: true }, { type: 'header', label: 'Conferência Física' }, { type: 'choice', label: 'Embalagem externa intacta?', id: 'pkg_outer' }, { type: 'photo', label: 'Foto da mercadoria', id: 'photo_receipt' }, { type: 'signature', label: 'Assinatura do Conferente', id: 'signature_checker' }] },
+                devolucao: { title: 'Checklist de Devolução', icon: 'bi-box-arrow-left', color: 'warning', items: [{ type: 'header', label: 'Identificação do Produto' }, { type: 'text', label: 'NF de Origem', id: 'orig_nf', required: true }, { type: 'photo', label: 'Foto do produto', id: 'photo_return' }, { type: 'signature', label: 'Assinatura do Responsável', id: 'signature_responsible' }] },
+                importacao: { title: 'Checklist de Importação', icon: 'bi-globe-americas', color: 'info', items: [{ type: 'header', label: 'Documentação' }, { type: 'text', label: 'Número do Processo (DI/DUIMP)', id: 'di_number', required: true }, { type: 'photo', label: 'Foto do Lacre', id: 'photo_seal' }, { type: 'signature', label: 'Assinatura do Vistoriador', id: 'signature_inspector' }] },
+                transferencia: { title: 'Transferência para Manaus', icon: 'bi-truck', color: 'success', items: [{ type: 'header', label: 'Informações do Veículo' }, { type: 'text', label: 'Placa do Veículo', id: 'vehicle_plate', required: true }, { type: 'photo', label: 'Foto do lacre aplicado', id: 'photo_seal_applied' }, { type: 'signature', label: 'Assinatura do Expedidor', id: 'signature_sender' }] }
+            }
+        },
+
+        helpers: {
+            getStatusDetails(status) { const statuses = { ongoing: { text: 'Pendente', icon: 'bi-hourglass-split', color: 'warning' }, completed: { text: 'Concluído', icon: 'bi-check-circle-fill', color: 'success' }, syncError: { text: 'Erro Sinc.', icon: 'bi-exclamation-circle-fill', color: 'danger' } }; return statuses[status] || { text: status, icon: 'bi-question-circle', color: 'secondary' }; },
+            getChecklistTypeDetails(type) { const types = { compras: { name: 'Compras', icon: 'bi-cart-check-fill', color: 'primary' }, transferencia: { name: 'Transferência', icon: 'bi-truck', color: 'info' }, devolucao: { name: 'Devolução', icon: 'bi-box-arrow-left', color: 'warning' }, importacao: { name: 'Importação', icon: 'bi-globe-americas', color: 'info' }, default: { name: 'Padrão', icon: 'bi-box-seam', color: 'secondary' } }; return types[type] || types.default; },
+            formatDate(isoString) { if (!isoString) return 'N/A'; const date = new Date(isoString); const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }; return date.toLocaleDateString('pt-BR', options).replace(' ', ', '); }
+        },
+
+        init() {
+            this.cacheDOM();
+            this.cameraUtils.init(this);
+            this.signatureUtils.init(this);
+            this.bindEvents();
+            this.populateChecklistModal();
+            this.render();
+        },
+
+        cacheDOM() {
+            this.root = document.getElementById('app-root');
+            this.navLinks = document.querySelectorAll('[data-screen-link]');
+            this.newChecklistOptionsContainer = document.getElementById('new-checklist-options');
+            this.newChecklistModal = new bootstrap.Modal(document.getElementById('newChecklistModal'));
+            this.cameraModal = new bootstrap.Modal(document.getElementById('cameraModal'));
+            this.signatureModal = new bootstrap.Modal(document.getElementById('signatureModal'));
+        },
+
+        bindEvents() {
+            this.navLinks.forEach(link => { link.addEventListener('click', e => { e.preventDefault(); this.setState({ currentScreen: e.currentTarget.dataset.screenLink }); }); });
+            document.body.addEventListener('change', e => { if (e.target.matches('[id^="theme-switcher-"]')) { const newTheme = e.target.checked ? 'dark' : 'light'; document.documentElement.setAttribute('data-bs-theme', newTheme); this.render(); } });
+            document.getElementById('newChecklistModal').addEventListener('click', e => { const button = e.target.closest('[data-checklist-type]'); if (button) { this.newChecklistModal.hide(); this.setState({ currentScreen: 'checklist', currentChecklistType: button.dataset.checklistType }); } });
+
+            const cameraModalEl = document.getElementById('cameraModal');
+            if (cameraModalEl) {
+                cameraModalEl.addEventListener('hidden.bs.modal', () => this.cameraUtils.stop());
+                const captureBtn = cameraModalEl.querySelector('#capture-photo-btn');
+                const savePhotoBtn = cameraModalEl.querySelector('#save-photo-btn');
+                if (captureBtn) captureBtn.addEventListener('click', () => this.cameraUtils.capture());
+                if (savePhotoBtn) savePhotoBtn.addEventListener('click', () => this.cameraUtils.save());
+            }
+
+            const signatureModalEl = document.getElementById('signatureModal');
+            if (signatureModalEl) {
+                const clearSignatureBtn = signatureModalEl.querySelector('#clear-signature');
+                const saveSignatureBtn = signatureModalEl.querySelector('#save-signature');
+                if (clearSignatureBtn) clearSignatureBtn.addEventListener('click', () => this.signatureUtils.clear());
+                if (saveSignatureBtn) saveSignatureBtn.addEventListener('click', () => this.signatureUtils.save());
+                signatureModalEl.addEventListener('shown.bs.modal', e => this.signatureUtils.onModalShow(e));
+            }
+        },
+
+        populateChecklistModal() { if (!this.newChecklistOptionsContainer) return; const types = this.state.checklistTypes; let optionsHTML = ''; for (const typeKey in types) { const typeData = types[typeKey]; optionsHTML += `<a href="#" class="list-group-item list-group-item-action d-flex align-items-center" data-checklist-type="${typeKey}"><i class="bi ${typeData.icon} fs-4 me-3 text-${typeData.color}"></i><div><h6 class="mb-0 fw-bold">${typeData.title}</h6></div></a>`; } this.newChecklistOptionsContainer.innerHTML = optionsHTML; },
+        applyReportFilters() { const { checklists, reportsState } = this.state; const { startDate, endDate, type } = reportsState.filters; const filtered = checklists.filter(item => { const itemDate = new Date(item.dataCriacao); const start = new Date(startDate); const end = new Date(endDate); end.setHours(23, 59, 59, 999); const isDateInRange = itemDate >= start && itemDate <= end; const isTypeMatch = type === 'todos' || item.type === type; return isDateInRange && isTypeMatch; }); const completed = filtered.filter(c => c.status === 'completed' && c.tempoConclusaoHoras !== null); const totalCompletionTime = completed.reduce((sum, item) => sum + item.tempoConclusaoHoras, 0); const avgCompletionTime = completed.length > 0 ? (totalCompletionTime / completed.length).toFixed(1) : 0; this.state.reportsState.filteredData = filtered; this.state.reportsState.kpis = { total: filtered.length, avgCompletionTime: avgCompletionTime, complianceRate: 98.5 }; },
+        setState(newState) { Object.assign(this.state, newState); this.render(); },
+        render() { const { currentScreen } = this.state; if (currentScreen === 'reports') { this.applyReportFilters(); } this.navLinks.forEach(link => { link.classList.toggle('active', link.dataset.screenLink === currentScreen); }); const currentTheme = document.documentElement.dataset.bsTheme || 'dark'; document.querySelectorAll('[id^="theme-switcher-"]').forEach(switcher => { switcher.checked = currentTheme === 'dark'; }); const screenTemplate = this.templates[currentScreen] ? this.templates[currentScreen](this.state) : this.templates.notFound(); this.root.innerHTML = screenTemplate; if (this.postRenderScripts[currentScreen]) { this.postRenderScripts[currentScreen](this); } },
+
+        postRenderScripts: {
+            dashboard(app) {
+                const activityList = app.root.querySelector('.activity-list');
+                if (activityList) { activityList.addEventListener('click', (e) => { const button = e.target.closest('[data-action]'); if (!button) return; const action = button.dataset.action; const checklistId = button.dataset.id; switch (action) { case 'edit': app.notifications.info('Ação de Editar', `Simulando edição do checklist: ${checklistId}`); break; case 'sync': app.notifications.success('Sincronizando', `Simulando sincronização: ${checklistId}`); break; case 'download-pdf': app.notifications.info('Download PDF', `Simulando download para: ${checklistId}`); break; } }); }
+                const viewAllBtn = app.root.querySelector('[data-action="view-all-checklists"]');
+                if (viewAllBtn) { viewAllBtn.addEventListener('click', () => { app.setState({ currentScreen: 'checklists' }); }); }
+            },
+            reports(app) {
+                const filtersForm = app.root.querySelector('#reports-filters'); if (filtersForm) { filtersForm.startDate.value = app.state.reportsState.filters.startDate; filtersForm.endDate.value = app.state.reportsState.filters.endDate; filtersForm.type.value = app.state.reportsState.filters.type; filtersForm.addEventListener('submit', e => { e.preventDefault(); app.state.reportsState.filters.startDate = filtersForm.startDate.value; app.state.reportsState.filters.endDate = filtersForm.endDate.value; app.state.reportsState.filters.type = filtersForm.type.value; app.render(); }); }
+                const exportBtn = app.root.querySelector('#export-excel-btn'); if (exportBtn) { exportBtn.addEventListener('click', () => { const data = app.state.reportsState.filteredData.map(item => ({ ID: item.id, Tipo: app.helpers.getChecklistTypeDetails(item.type).name, Status: app.helpers.getStatusDetails(item.status).text, Responsável: item.responsavel, 'Data de Criação': app.helpers.formatDate(item.dataCriacao), 'Data de Conclusão': app.helpers.formatDate(item.dataConclusao), 'Tempo (Horas)': item.tempoConclusaoHoras || 'N/A' })); const worksheet = XLSX.utils.json_to_sheet(data); const workbook = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(workbook, worksheet, "Relatório"); XLSX.writeFile(workbook, `Logix_Relatorio_${new Date().toISOString().split('T')[0]}.xlsx`); app.notifications.success('Exportado!', 'O arquivo Excel foi baixado.'); }); }
+                const theme = document.documentElement.dataset.bsTheme; const gridColor = 'rgba(128, 128, 128, 0.2)'; const textColor = theme === 'dark' ? '#e4e6eb' : '#1c1e21'; const primaryColor = theme === 'dark' ? '#9f5afd' : '#0d6efd';
+                if (app.charts.completionChart) app.charts.completionChart.destroy(); const completionCtx = document.getElementById('completionChart'); if (completionCtx) { const completedByDay = app.state.reportsState.filteredData.filter(c => c.status === 'completed' && c.dataConclusao).reduce((acc, item) => { const day = new Date(item.dataConclusao).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }); acc[day] = (acc[day] || 0) + 1; return acc; }, {}); app.charts.completionChart = new Chart(completionCtx, { type: 'line', data: { labels: Object.keys(completedByDay), datasets: [{ label: 'Checklists Concluídos', data: Object.values(completedByDay), borderColor: primaryColor, backgroundColor: `rgba(${theme === 'dark' ? '159, 90, 253' : '13, 110, 253'}, 0.1)`, fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: textColor } }, x: { grid: { color: gridColor }, ticks: { color: textColor } } } } }); }
+                if (app.charts.byTypeChart) app.charts.byTypeChart.destroy(); const byTypeCtx = document.getElementById('byTypeChart'); if (byTypeCtx) { const byTypeData = app.state.reportsState.filteredData.reduce((acc, item) => { const typeName = app.helpers.getChecklistTypeDetails(item.type).name; acc[typeName] = (acc[typeName] || 0) + 1; return acc; }, {}); app.charts.byTypeChart = new Chart(byTypeCtx, { type: 'doughnut', data: { labels: Object.keys(byTypeData), datasets: [{ data: Object.values(byTypeData), backgroundColor: ['#0d6efd', '#0dcaf0', '#ffc107', '#fd7e14'], }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor } } } } }); }
+            },
+            checklist(app) {
+                const form = app.root.querySelector('#checklist-form'); if (!form) return;
+                const closeBtn = app.root.querySelector('[data-action="close-checklist"]');
+                if (closeBtn) { closeBtn.addEventListener('click', () => { app.setState({ currentScreen: 'dashboard', currentChecklistType: null }); }); }
+                form.addEventListener('click', e => { const photoBtn = e.target.closest('[data-photo-capture]'); if (photoBtn) { app.cameraUtils.start(photoBtn.dataset.photoCapture); } });
+                form.addEventListener('submit', e => { e.preventDefault(); app.notifications.confirm('Finalizar Checklist?', 'Os dados serão salvos.', () => { app.notifications.success('Checklist Finalizado!', 'Registrado com sucesso.'); app.setState({ currentScreen: 'dashboard', currentChecklistType: null }); }); });
+            },
+            account(app) { /* ... Lógica da tela de conta mantida ... */ }
+        },
+
+        notifications: { success: (title, text) => Swal.fire({ title, text, icon: 'success', timer: 2000, showConfirmButton: false, toast: true, position: 'top-end' }), info: (title, text) => Swal.fire({ title, text, icon: 'info' }), confirm: (title, text, onConfirm) => Swal.fire({ title, text, icon: 'warning', showCancelButton: true, confirmButtonColor: '#0d6efd', cancelButtonColor: '#6c757d', confirmButtonText: 'Sim, finalizar!', cancelButtonText: 'Cancelar' }).then(result => { if (result.isConfirmed) onConfirm(); }), },
+        cameraUtils: {
+            stream: null,
+            init(appInstance) { this.app = appInstance; this.videoEl = document.getElementById('camera-stream'); this.canvasEl = document.getElementById('camera-canvas'); },
+            async start(targetInputId) { try { this.targetInputId = targetInputId; this.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); this.videoEl.srcObject = this.stream; this.videoEl.classList.remove('d-none'); document.getElementById('camera-canvas').classList.add('d-none'); document.getElementById('capture-photo-btn').classList.remove('d-none'); document.getElementById('save-photo-btn').classList.add('d-none'); this.app.cameraModal.show(); } catch (err) { this.app.notifications.error('Erro de Câmera', 'Não foi possível acessar a câmera. Verifique as permissões.'); console.error(err); } },
+            capture() { this.canvasEl.width = this.videoEl.videoWidth; this.canvasEl.height = this.videoEl.videoHeight; this.canvasEl.getContext('2d').drawImage(this.videoEl, 0, 0); this.videoEl.classList.add('d-none'); this.canvasEl.classList.remove('d-none'); document.getElementById('capture-photo-btn').classList.add('d-none'); document.getElementById('save-photo-btn').classList.remove('d-none'); this.stop(); },
+            save() { const imageDataUrl = this.canvasEl.toDataURL('image/jpeg'); const preview = document.getElementById(`${this.targetInputId}_preview`); if (preview) { preview.src = imageDataUrl; preview.style.display = 'block'; } this.app.cameraModal.hide(); },
+            stop() { if (this.stream) { this.stream.getTracks().forEach(track => track.stop()); } }
+        },
+        signatureUtils: {
+            isDrawing: false, ctx: null,
+            init(appInstance) { this.app = appInstance; this.canvasEl = document.getElementById('signature-canvas'); this.modalEl = document.getElementById('signatureModal'); if (this.canvasEl) { this.ctx = this.canvasEl.getContext('2d'); window.addEventListener('resize', () => this.resizeCanvas()); } },
+            onModalShow(event) { if (!event.relatedTarget) return; this.targetInputId = event.relatedTarget.dataset.signatureTarget; this.resizeCanvas(); this.canvasEl.addEventListener('mousedown', this.startDrawing.bind(this)); this.canvasEl.addEventListener('mousemove', this.draw.bind(this)); document.addEventListener('mouseup', this.stopDrawing.bind(this)); this.canvasEl.addEventListener('touchstart', this.startDrawing.bind(this), { passive: false }); this.canvasEl.addEventListener('touchmove', this.draw.bind(this), { passive: false }); document.addEventListener('touchend', this.stopDrawing.bind(this)); },
+            resizeCanvas() { if (!this.canvasEl) return; const rect = this.canvasEl.getBoundingClientRect(); this.canvasEl.width = rect.width; this.canvasEl.height = 250; this.clear(); },
+            getPos(event) { const rect = this.canvasEl.getBoundingClientRect(); if (event.touches) { return { x: event.touches[0].clientX - rect.left, y: event.touches[0].clientY - rect.top }; } return { x: event.clientX - rect.left, y: event.clientY - rect.top }; },
+            startDrawing(e) { e.preventDefault(); this.isDrawing = true; this.ctx.beginPath(); this.ctx.moveTo(this.getPos(e).x, this.getPos(e).y); },
+            draw(e) { if (!this.isDrawing) return; e.preventDefault(); this.ctx.lineTo(this.getPos(e).x, this.getPos(e).y); this.ctx.strokeStyle = document.documentElement.dataset.bsTheme === 'dark' ? '#FFFFFF' : '#000000'; this.ctx.lineWidth = 3; this.ctx.stroke(); },
+            stopDrawing() { if (this.isDrawing) { this.ctx.closePath(); this.isDrawing = false; } },
+            clear() { this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height); },
+            save() { const imageDataUrl = this.canvasEl.toDataURL('image/png'); const preview = document.getElementById(`${this.targetInputId}_preview`); if (preview) { preview.src = imageDataUrl; preview.style.display = 'block'; } this.app.signatureModal.hide(); }
+        },
+
+        templates: {
+            dashboard(state) {
+                const kpiData = state.kpis; const kpisHTML = `<div class="row"><div class="col-6 col-md-3 mb-4"><a href="#" class="kpi-card h-100"><div><div class="kpi-icon bg-success-subtle text-success"><i class="${kpiData.confirmed.icon}"></i></div><span class="kpi-title">${kpiData.confirmed.title}</span></div><span class="kpi-value">${kpiData.confirmed.value}</span></a></div><div class="col-6 col-md-3 mb-4"><a href="#" class="kpi-card h-100"><div><div class="kpi-icon bg-warning-subtle text-warning"><i class="${kpiData.pending.icon}"></i></div><span class="kpi-title">${kpiData.pending.title}</span></div><span class="kpi-value">${kpiData.pending.value}</span></a></div><div class="col-6 col-md-3 mb-4"><a href="#" class="kpi-card h-100"><div><div class="kpi-icon bg-danger-subtle text-danger"><i class="${kpiData.syncError.icon}"></i></div><span class="kpi-title">${kpiData.syncError.title}</span></div><span class="kpi-value">${kpiData.syncError.value}</span></a></div><div class="col-6 col-md-3 mb-4"><a href="#" class="kpi-card h-100"><div><div class="kpi-icon bg-primary-subtle text-primary"><i class="bi bi-bar-chart-line-fill"></i></div><span class="kpi-title">Total</span></div><span class="kpi-value">${kpiData.total}</span></a></div></div>`; const checklistsHTML = state.checklists.slice(0, 4).map(item => { const statusDetails = app.helpers.getStatusDetails(item.status); const typeDetails = app.helpers.getChecklistTypeDetails(item.type); const formattedDate = app.helpers.formatDate(item.dataCriacao); let actionButtonHTML = ''; switch (item.status) { case 'ongoing': actionButtonHTML = `<button class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${item.id}">Editar</button>`; break; case 'syncError': actionButtonHTML = `<button class="btn btn-sm btn-outline-info" data-action="sync" data-id="${item.id}"><i class="bi bi-arrow-repeat"></i> Sincronizar</button>`; break; case 'completed': actionButtonHTML = `<button class="btn btn-sm btn-secondary" data-action="download-pdf" data-id="${item.id}"><i class="bi bi-file-earmark-pdf"></i> PDF</button>`; break; } return `<div class="list-group-item"><div class="row align-items-center"><div class="col-auto"><i class="bi ${statusDetails.icon} fs-2 text-${statusDetails.color}"></i></div><div class="col"><h6 class="mb-0 fw-bold">${item.id}</h6><p class="mb-1 text-muted small">${typeDetails.name}</p><small class="text-muted fw-light">${formattedDate}</small></div><div class="col-auto text-end">${actionButtonHTML}</div></div></div>`; }).join(''); return `<div class="screen">${kpisHTML}<h5 class="fw-bold my-4">Atividade Recente</h5><div class="list-group activity-list activity-list-scrollable">${checklistsHTML}</div><div class="text-center mt-3"><button class="btn btn-outline-secondary w-100" data-action="view-all-checklists">Visualizar Todos</button></div></div>`;
+            },
+            checklists(state) {
+                const featuredChecklist = state.checklists.find(c => c.status === 'ongoing'); const historyHTML = state.checklists.filter(c => c.id !== featuredChecklist?.id).map(item => { const typeDetails = app.helpers.getChecklistTypeDetails(item.type); const statusDetails = app.helpers.getStatusDetails(item.status); return `<div class="list-group-item"><div class="d-flex align-items-center"><i class="bi ${typeDetails.icon} fs-3 text-${typeDetails.color} me-3"></i><div class="flex-grow-1"><h6 class="mb-0 fw-bold">${item.id} - ${typeDetails.name}</h6><small class="text-muted">${app.helpers.formatDate(item.dataCriacao)}</small></div><span class="badge rounded-pill fs-tiny text-uppercase fw-semibold bg-${statusDetails.color}-subtle text-${statusDetails.color}-emphasis">${statusDetails.text}</span></div></div>`; }).join(''); return `<div class="screen"><h3 class="fw-bold mb-3">Minha Atividade</h3>${featuredChecklist ? `<div class="card mb-4" style="border-radius: var(--border-radius-lg);"><div class="card-body p-4"><small class="text-primary fw-bold text-uppercase">EM ANDAMENTO</small><h4 class="fw-bold my-2">${featuredChecklist.id} - ${app.helpers.getChecklistTypeDetails(featuredChecklist.type).name}</h4><p class="text-muted">Iniciado por ${featuredChecklist.responsavel}</p><button class="btn btn-primary">Continuar</button></div></div>` : ''}<h5 class="fw-bold my-4">Histórico</h5><div class="list-group activity-list">${historyHTML}</div></div>`;
+            },
+            reports(state) {
+                const { kpis, filteredData } = state.reportsState; const typeOptions = Object.keys(state.checklistTypes).map(type => `<option value="${type}">${app.helpers.getChecklistTypeDetails(type).name}</option>`).join(''); const tableRows = filteredData.length > 0 ? filteredData.map(item => { const statusDetails = app.helpers.getStatusDetails(item.status); return `<tr><td><strong>${item.id}</strong></td><td>${app.helpers.getChecklistTypeDetails(item.type).name}</td><td><span class="badge bg-${statusDetails.color}-subtle text-${statusDetails.color}-emphasis">${statusDetails.text}</span></td><td>${item.responsavel}</td><td>${app.helpers.formatDate(item.dataCriacao)}</td><td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-search"></i></button></td></tr>`; }).join('') : `<tr><td colspan="6" class="text-center p-4 text-muted">Nenhum dado encontrado.</td></tr>`; return `<div class="screen"><h3 class="fw-bold mb-4">Análise de Relatórios</h3><div class="card mb-4"><div class="card-body"><form id="reports-filters" class="row g-3 align-items-end"><div class="col-md-4"><label for="startDate" class="form-label">De</label><input type="date" id="startDate" class="form-control"></div><div class="col-md-4"><label for="endDate" class="form-label">Até</label><input type="date" id="endDate" class="form-control"></div><div class="col-md-4"><label for="type" class="form-label">Tipo</label><select id="type" class="form-select"><option value="todos">Todos</option>${typeOptions}</select></div><div class="col-12"><button type="submit" class="btn btn-primary w-100">Aplicar Filtros</button></div></form></div></div><div class="row"><div class="col-md-4 mb-4"><div class="card h-100"><div class="card-body text-center"><p class="text-muted mb-1">Total no Período</p><h2 class="fw-bold">${kpis.total}</h2></div></div></div><div class="col-md-4 mb-4"><div class="card h-100"><div class="card-body text-center"><p class="text-muted mb-1">Tempo Médio Conclusão</p><h2 class="fw-bold">${kpis.avgCompletionTime} <small class="fs-6 text-muted">h</small></h2></div></div></div><div class="col-md-4 mb-4"><div class="card h-100"><div class="card-body text-center"><p class="text-muted mb-1">Conformidade</p><h2 class="fw-bold text-success">${kpis.complianceRate}%</h2></div></div></div></div><div class="row"><div class="col-lg-5 mb-4"><div class="card h-100"><div class="card-body"><h5 class="card-title fw-bold">Checklists por Tipo</h5><div style="height: 300px;"><canvas id="byTypeChart"></canvas></div></div></div></div><div class="col-lg-7 mb-4"><div class="card h-100"><div class="card-header d-flex justify-content-between align-items-center"><h5 class="card-title fw-bold mb-0">Dados Detalhados</h5><button id="export-excel-btn" class="btn btn-sm btn-outline-success"><i class="bi bi-file-earmark-excel me-1"></i> Exportar</button></div><div class="table-responsive"><table class="table table-hover table-striped mb-0"><thead><tr><th>ID</th><th>Tipo</th><th>Status</th><th>Responsável</th><th>Data</th><th>Ações</th></tr></thead><tbody>${tableRows}</tbody></table></div></div></div></div></div>`;
+            },
+            checklist(state) {
+                const type = state.currentChecklistType; if (!type || !state.checklistTypes[type]) return this.notFound(); const data = state.checklistTypes[type]; const formHTML = data.items.map(item => { switch (item.type) { case 'header': return `<h5 class="mt-4 mb-3 fw-bold border-bottom pb-2">${item.label}</h5>`; case 'text': case 'number': return `<div class="mb-3"><label for="${item.id}" class="form-label">${item.label}</label><input type="${item.type}" class="form-control" id="${item.id}" placeholder="${item.placeholder || ''}" ${item.required ? 'required' : ''}></div>`; case 'textarea': return `<div class="mb-3"><label for="${item.id}" class="form-label">${item.label}</label><textarea class="form-control" id="${item.id}" rows="4" placeholder="${item.placeholder || ''}"></textarea></div>`; case 'choice': return `<div class="mb-3"><p class="mb-2">${item.label}</p><div class="btn-group w-100" role="group"><input type="radio" class="btn-check" name="${item.id}" id="${item.id}_ok" required><label class="btn btn-outline-success" for="${item.id}_ok">Sim</label><input type="radio" class="btn-check" name="${item.id}" id="${item.id}_nok"><label class="btn btn-outline-danger" for="${item.id}_nok">Não</label><input type="radio" class="btn-check" name="${item.id}" id="${item.id}_na"><label class="btn btn-outline-secondary" for="${item.id}_na">N/A</label></div></div>`; case 'photo': return `<div class="mb-3"><label class="form-label">${item.label}</label><div class="border rounded p-2"><img id="${item.id}_preview" class="img-fluid rounded mb-2 w-100" style="display: none; max-height: 250px; object-fit: cover;"><button type="button" class="btn btn-outline-primary w-100" data-photo-capture="${item.id}"><i class="bi bi-camera-fill me-2"></i>Capturar Foto</button></div></div>`; case 'signature': return `<div class="mb-3"><label class="form-label">${item.label}</label><div class="border rounded p-2"><img id="${item.id}_preview" class="img-fluid rounded mb-2 w-100" style="display: none; max-height: 150px; object-fit: contain; background-color: var(--bs-tertiary-bg);"><button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#signatureModal" data-signature-target="${item.id}"><i class="bi bi-pencil-fill me-2"></i>Assinar Digitalmente</button></div></div>`; default: return ''; } }).join(''); return `<div class="screen"><form id="checklist-form"><div class="card" style="border-radius: var(--border-radius-lg);"><div class="card-header bg-transparent d-flex justify-content-between align-items-center py-3"><h4 class="mb-0 fw-bold"><i class="bi ${data.icon} me-2 text-${data.color}"></i>${data.title}</h4><button type="button" class="btn-close" aria-label="Close" data-action="close-checklist"></button></div><div class="card-body p-4">${formHTML}</div><div class="card-footer p-3"><button type="submit" class="btn btn-primary w-100 btn-lg">Finalizar e Salvar</button></div></div></form></div>`;
+            },
+            account(state) {
+                const { user } = state; const currentTheme = document.documentElement.dataset.bsTheme; return `<div class="screen"><div class="account-header"><img src="${user.avatar}" alt="Avatar" class="account-avatar"><div><h4 class="fw-bold mb-0">Olá, ${user.name.split(' ')[0]}</h4><p class="text-muted mb-0">${user.cargo}</p></div></div><div class="icon-grid"><a href="#" class="icon-grid-btn" data-bs-toggle="modal" data-bs-target="#profileModal"><div class="icon-wrapper text-primary"><i class="bi bi-person-fill"></i></div><span>Meu Perfil</span></a><a href="#" class="icon-grid-btn" data-bs-toggle="modal" data-bs-target="#activityModal"><div class="icon-wrapper text-warning"><i class="bi bi-clock-history"></i></div><span>Minha Atividade</span></a><a href="#" class="icon-grid-btn" data-bs-toggle="modal" data-bs-target="#supportModal"><div class="icon-wrapper text-info"><i class="bi bi-question-circle-fill"></i></div><span>Suporte</span></a><a href="#" class="icon-grid-btn"><div class="icon-wrapper text-success"><i class="bi bi-shield-check-fill"></i></div><span>Segurança</span></a></div><div class="list-group settings-list"><div class="list-group-item d-flex justify-content-between align-items-center"><span><i class="bi bi-palette-fill me-3"></i> Aparência</span><div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="theme-switcher-account" ${currentTheme === 'dark' ? 'checked' : ''}><label class="form-check-label" for="theme-switcher-account">${currentTheme === 'dark' ? 'Escuro' : 'Claro'}</label></div></div><a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"><span><i class="bi bi-translate me-3"></i> Idioma</span><i class="bi bi-chevron-right"></i></a><a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center text-danger"><span><i class="bi bi-box-arrow-left me-3"></i> Sair</span></a></div></div>`;
+            },
+            notFound() { return `<div class="screen text-center p-5"><h1>404</h1><p>Página não encontrada.</p></div>`; }
+        }
+    };
+    app.init();
 });

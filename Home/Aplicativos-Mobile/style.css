@@ -1,65 +1,290 @@
+:root {
+    --bs-body-font-family: 'Inter', sans-serif;
+    --border-radius-lg: 1.25rem;
+    --border-radius-md: 0.75rem;
+    --transition-speed: 0.3s;
+}
+
+[data-bs-theme="light"] {
+    --primary-rgb: 13, 110, 253;
+    --primary-color: #0d6efd;
+    --background-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-color: #1c1e21;
+    --text-muted-color: #65676b;
+    --border-color: #dee2e6;
+    --sidebar-bg: #ffffff;
+    --mobile-nav-bg: rgba(255, 255, 255, 0.85);
+}
+
+[data-bs-theme="dark"] {
+    --primary-rgb: 159, 90, 253;
+    --primary-color: #9f5afd;
+    --background-color: #18191a;
+    --card-bg: #242526;
+    --text-color: #e4e6eb;
+    --text-muted-color: #b0b3b8;
+    --border-color: #3a3b3c;
+    --sidebar-bg: #242526;
+    --mobile-nav-bg: rgba(36, 37, 38, 0.85);
+}
+
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bs-body-bg);
-  color: var(--bs-body-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color var(--transition-speed);
 }
 
-.checklist-item {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 20px;
-  margin-bottom: 16px;
-  transition: all 0.3s ease;
-  cursor: pointer;
+.app-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
 }
 
-.checklist-item:hover {
-  transform: scale(1.015);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+.main-content {
+    padding: 1.5rem;
+    overflow-y: auto;
 }
 
-.status-indicator {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  margin-right: 14px;
-  flex-shrink: 0;
-  transition: background-color 0.3s ease;
+@media (min-width: 992px) {
+    .sidebar {
+        grid-column: 1 / 2;
+    }
+
+    .main-content {
+        grid-column: 2 / 3;
+        padding: 2rem;
+    }
 }
 
-.item-info {
-  flex-grow: 1;
-  font-size: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+@media (max-width: 991.98px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .main-content {
+        padding-bottom: 120px;
+    }
 }
 
-.item-info .item-number {
-  font-weight: 600;
-  color: var(--bs-primary);
-  font-size: 15px;
-  transition: color 0.3s ease;
+.sidebar {
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
 }
 
-.item-info .item-date {
-  font-size: 13px;
-  color: var(--bs-secondary);
+.sidebar-nav .nav-link {
+    color: var(--text-muted-color);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-speed);
 }
 
-.arrow-icon {
-  font-size: 22px;
-  color: var(--bs-primary);
-  transition: transform 0.3s ease;
+.sidebar-nav .nav-link:hover,
+.sidebar-nav .nav-link.active {
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
 }
 
-.checklist-item:hover .arrow-icon {
-  transform: translateX(4px);
+.mobile-nav-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    padding: 1rem;
+    pointer-events: none;
+}
+
+.mobile-bottom-nav {
+    height: 65px;
+    background: var(--mobile-nav-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.mobile-nav-link {
+    color: var(--text-muted-color);
+    font-size: 1.5rem;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.mobile-nav-link.active {
+    color: var(--primary-color);
+}
+
+.fab-placeholder {
+    width: 56px;
+    flex-shrink: 0;
+}
+
+.fab {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65px;
+    height: 65px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.4);
+    z-index: 1031;
+    transition: all var(--transition-speed);
+}
+
+.fab:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
+.kpi-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: transform var(--transition-speed);
+    border: 1px solid var(--border-color);
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+}
+
+.kpi-card .kpi-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+}
+
+.kpi-card .kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.kpi-card .kpi-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted-color);
+}
+
+.activity-list .list-group-item {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    transition: border-color var(--transition-speed);
+}
+
+.activity-list .list-group-item:hover {
+    border-color: var(--primary-color);
+}
+
+.activity-list-scrollable {
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.account-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.icon-grid-btn {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: all var(--transition-speed);
+}
+
+.icon-grid-btn:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.icon-grid-btn .icon-wrapper {
+    background-color: var(--background-color);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+}
+
+.settings-list .list-group-item {
+    background: none;
+    border: none;
+    padding: 1rem 0;
+    color: var(--text-color);
+}
+
+.settings-list .list-group-item i {
+    color: var(--text-muted-color);
+}
+
+.screen {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

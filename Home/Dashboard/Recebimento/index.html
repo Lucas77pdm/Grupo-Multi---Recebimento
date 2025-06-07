@@ -2,42 +2,34 @@
 <html lang="pt-br" data-bs-theme="light">
 
 <head>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recebimento | Grupo Multi</title>
+  <!-- Bibliotecas principais -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <link rel="stylesheet" href="/Home/Dashboard/Recebimento/style.css">
-
-  <!-- FullCalendar CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
-
-  <!-- FullCalendar JS -->
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-
   <div id="sidebar"></div>
   <div id="modais-container"></div>
-
   <div class="content">
 
+    <!-- Topo do dashboard -->
     <div class="top-bar gradient-border">
       <h2 class="section-title"><i class="bi bi-speedometer2 me-2"></i>Dashboard Recebimento</h2>
     </div>
 
-    <!-- Cards -->
+    <!-- KPIs principais -->
     <div class="row">
       <div class="col-md-3">
-        <div class="card card-primary text-white mb-4">
+        <div class="card bg-dark text-white mb-4">
           <div class="card-body">
-            <i class="bi bi-cart-check card-icon"></i>
-            <h5 class="card-title text-light">Pedidos Hoje</h5>
+            <i class="bi bi-truck card-icon"></i>
+            <h5 class="card-title text-light">TOTAL DE VEÍCULOS DO DIA</h5>
             <p class="card-text text-light">45</p>
             <div class="small d-flex align-items-center">
               <span class="me-1"><i class="bi bi-arrow-up"></i> 12%</span>
@@ -49,12 +41,11 @@
       <div class="col-md-3">
         <div class="card card-success text-white mb-4">
           <div class="card-body">
-            <i class="bi bi-truck card-icon"></i>
+            <i class="bi bi-cart-check card-icon "></i>
             <h5 class="card-title text-light">Entregas Concluídas</h5>
             <p class="card-text text-light">50</p>
             <div class="small d-flex align-items-center">
               <span class="me-1"><i class="bi bi-arrow-up"></i> 24%</span>
-              <span>vs semana passada</span>
             </div>
           </div>
         </div>
@@ -63,7 +54,7 @@
         <div class="card card-warning text-white mb-4">
           <div class="card-body">
             <i class="bi bi-clock-history card-icon"></i>
-            <h5 class="card-title text-light">Atrasos</h5>
+            <h5 class="card-title text-light">NÃO CHEGOU</h5>
             <p class="card-text text-light">8</p>
             <div class="small d-flex align-items-center">
               <span class="me-1"><i class="bi bi-arrow-down"></i> 5%</span>
@@ -76,7 +67,7 @@
         <div class="card card-danger text-white mb-4">
           <div class="card-body">
             <i class="bi bi-exclamation-triangle card-icon"></i>
-            <h5 class="card-title text-light">Pendências</h5>
+            <h5 class="card-title text-light">BACKLOG</h5>
             <p class="card-text text-light">5</p>
             <div class="small d-flex align-items-center">
               <span class="me-1"><i class="bi bi-arrow-up"></i> 3%</span>
@@ -90,14 +81,12 @@
     <!-- Tabela de Pedidos -->
     <div class="card mt-4">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0 text-primary">Últimos Pedidos</h5>
-        <div class="table-actions">
-          <button class="btn btn-sm btn-outline-primary refresh-btn" title="Atualizar" style="height: 30px;">
-            <i class="bi bi-arrow-clockwise"></i>
-          </button>
-          <button class="btn btn-sm btn-outline-secondary export-btn" title="Exportar" style="height: 30px;">
-            <i class="bi bi-download "></i>
-          </button>
+        <h5 class="card-title mb-0 text-primary">PROCESSOS DO DIA</h5>
+        <div>
+          <button class="btn btn-sm btn-outline-primary refresh-btn" title="Atualizar"><i
+              class="bi bi-arrow-clockwise"></i></button>
+          <button class="btn btn-sm btn-outline-secondary export-btn" title="Exportar"><i
+              class="bi bi-download"></i></button>
         </div>
       </div>
       <div class="card-body p-0">
@@ -105,98 +94,33 @@
           <table class="table table-hover orders-table">
             <thead class="sticky-top">
               <tr>
-                <th class="sortable" data-sort="id">
-                  <span class="d-inline-flex align-items-center gap-1">
-                    Pedido <i class="bi bi-arrow-down-up"></i>
-                  </span>
-                </th>
-                <th class="sortable" data-sort="client">
-                  <span class="d-inline-flex align-items-center gap-1">
-                    Cliente <i class="bi bi-arrow-down-up"></i>
-                  </span>
-                </th>
-                <th>Status</th>
-                <th class="sortable" data-sort="date">
-                  <span class="d-inline-flex align-items-center gap-1">
-                    Data <i class="bi bi-arrow-down-up"></i>
-                  </span>
-                </th>
-                <th class="text-end">Ações</th>
+                <th class="sortable" data-sort="id">CARGA <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="client">REFERÊNCIA <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">AGENDAMENTO <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">CHEGADA <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">LOCAL <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">STATUS <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">DOCA <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">LEADTIME <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">COMPLEXIDADE <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="date">TURNO <i class="bi bi-arrow-down-up"></i></th>
               </tr>
             </thead>
             <tbody>
+              <!-- Exemplo de linhas, pode ser gerado dinamicamente -->
               <tr>
-                <td class="fw-bold">#1001</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-primary bg-opacity-10 ">MC</span>
-                    </div>
-                    <div>Mercado Central</div>
-                  </div>
-                </td>
-                <td><span class="badge bg-success bg-opacity-10">Entregue</span></td>
-                <td>14/04/2025</td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-primary" title="Detalhes" style="height: 30px;">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                </td>
+                <td class="fw-bold">IMPORTAÇÃO</td>
+                <td class="fw-bold">ZTE681</td>
+                <td class="fw-bold">04/06/2025 11:00</td>
+                <td class="fw-bold">04/06/2025 10:15</td>
+                <td class="fw-bold">INDUSTRIAL</td>
+                <td><span class="badge bg-success bg-opacity-10">CONCLUÍDO</span></td>
+                <td class="fw-bold">DOCA 04</td>
+                <td class="fw-bold">02:44</td>
+                <td class="fw-bold">COMPLEXO</td>
+                <td>T1</td>
               </tr>
-              <tr>
-                <td class="fw-bold">#1002</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-success bg-opacity-10 ">BP</span>
-                    </div>
-                    <div>Atacado Bom Preço</div>
-                  </div>
-                </td>
-                <td><span class="badge bg-warning bg-opacity-10 text-warning">Em Rota</span></td>
-                <td>14/04/2025</td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-primary" title="Detalhes" style="height: 30px;">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="fw-bold">#1003</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-danger bg-opacity-1 ">DS</span>
-                    </div>
-                    <div>Distribuidora Sol</div>
-                  </div>
-                </td>
-                <td><span class="badge bg-danger bg-opacity-1">Atrasado</span></td>
-                <td>13/04/2025</td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-primary" title="Detalhes" style="height: 30px;">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class="fw-bold">#1004</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-info bg-opacity-10 ">SM</span>
-                    </div>
-                    <div>Supermercado Mineiro</div>
-                  </div>
-                </td>
-                <td><span class="badge bg-primary bg-opacity-10">Processando</span></td>
-                <td>15/04/2025</td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-primary" title="Detalhes" style="height: 30px;">
-                    <i class="bi bi-eye "></i>
-                  </button>
-                </td>
-              </tr>
+              <!-- Outras linhas omitidas para exemplo -->
             </tbody>
           </table>
         </div>
@@ -205,170 +129,314 @@
             Mostrando <span class="fw-bold">1 - 4</span> de <span class="fw-bold">24</span> pedidos
           </div>
           <div class="pagination">
-            <button class="btn btn-sm btn-outline-secondary disabled" style="height: 30px;">
-              <i class="bi bi-chevron-left"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-primary active" style="height: 30px;">1</button>
-            <button class="btn btn-sm btn-outline-secondary" style="height: 30px;">2</button>
-            <button class="btn btn-sm btn-outline-secondary" style="height: 30px;">3</button>
-            <button class="btn btn-sm btn-outline-secondary" style="height: 30px;">
-              <i class="bi bi-chevron-right" style="height: 30px;"></i>
-            </button>
+            <button class="btn btn-sm btn-outline-secondary disabled"><i class="bi bi-chevron-left"></i></button>
+            <button class="btn btn-sm btn-outline-primary active">1</button>
+            <button class="btn btn-sm btn-outline-secondary">2</button>
+            <button class="btn btn-sm btn-outline-secondary">3</button>
+            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Gráficos de Pizza em Grid -->
+    <!-- Gráficos principais -->
     <div class="chart-grid mb-4">
-
       <div class="card chart-card">
         <div class="card-body">
-          <h5 class="card-title">Estoque - Distribuição</h5>
+          <h5 class="card-title">FAROL RECEBIMENTO</h5>
           <canvas id="graficoEstoque" height="300"></canvas>
         </div>
       </div>
-
       <div class="card chart-card">
         <div class="card-body">
-          <h5 class="card-title">Expedição - Status de Entregas</h5>
+          <h5 class="card-title">FAROL REMESSAS</h5>
           <canvas id="graficoExpedicao" height="300"></canvas>
         </div>
       </div>
-
       <div class="card chart-card">
         <div class="card-body">
-          <h5 class="card-title">Logística Reversa - Devoluções Semanais</h5>
+          <h5 class="card-title">DEVOLUÇÃO COMERCIAL</h5>
           <canvas id="graficoReversa" height="300"></canvas>
         </div>
       </div>
-
       <div class="card chart-card">
         <div class="card-body">
-          <h5 class="card-title">Cadastro - Evolução Mensal</h5>
+          <h5 class="card-title">TEMPO MÉDIO EM DOCA</h5>
           <canvas id="graficoCadastro" height="300"></canvas>
         </div>
       </div>
-
       <div class="card chart-card">
         <div class="card-body">
-          <h5 class="card-title">Componentes - Indicadores de Qualidade</h5>
+          <h5 class="card-title">PROCESSOS RECEBIDOS POR TIPO</h5>
           <canvas id="graficoComponentes" height="300"></canvas>
         </div>
       </div>
-
       <div class="card chart-card">
         <div class="card-body">
           <h5 class="card-title">Suprimentos - Consumo por Setor</h5>
           <canvas id="graficoSuprimentos" height="300"></canvas>
         </div>
       </div>
-
       <div class="card chart-card">
         <div class="card-body">
-          <h5 class="card-title">Transportes - Utilização de Veículos</h5>
+          <h5 class="card-title">FILA NEGATIVA</h5>
           <canvas id="graficoTransportes" height="300"></canvas>
         </div>
       </div>
-
       <div class="card chart-card">
         <div class="card-body">
-          <h5 class="card-title">Produção - Eficiência por Turno</h5>
+          <h5 class="card-title">CADASTRO - CUBOMETRO</h5>
           <canvas id="graficoProducao" height="300"></canvas>
         </div>
       </div>
-
     </div>
 
+    <!-- Cards de processos na doca e posições livres -->
     <div class="row mt-4 g-4">
-      <!-- Coluna 1: Processos na Doca -->
+      <!-- Processos na Doca -->
       <div class="col-md-6">
         <div class="card p-4 shadow-lg border rounded-4 h-100 d-flex flex-column">
-          <h4 class="text-center fw-bold mb-3 text-primary">🚛 Processos na Doca</h4>
-
-          <div class="flex-grow-1 overflow-auto" style="max-height: 500px; padding-right: 10px;">
+          <h4 class="text-center fw-bold mb-3 text-primary">🚛 Painel Docas</h4>
+          <div class="flex-grow-1 overflow-auto" style="max-height: 700px; padding-right: 10px;">
             <div id="docasContainer" class="d-flex flex-column gap-3"></div>
           </div>
-
           <button class="btn btn-primary w-100 mt-3 fw-bold py-2 shadow-sm" onclick="location.reload()">
             <i class="fas fa-sync-alt"></i> Atualizar Processos
           </button>
         </div>
       </div>
-
-      <!-- Coluna 2: Status de Posições Livres -->
+      <!-- Status de Posições Livres -->
       <div class="col-md-6">
         <div class="card p-4 shadow-lg border rounded-4 h-100 d-flex flex-column">
-          <h5 class="text-center fw-bold mb-3">📦 Status de Posições Livres no Galpão</h5>
-
+          <h5 class="text-center fw-bold mb-3">📦 OCUPAÇÃO - ESTOQUES</h5>
           <div class="row text-center g-3 flex-grow-1">
             <!-- Galpão G10 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="p-3 border rounded h-100">
-                <h6 class="fw-bold">🏢 Galpão G10</h6>
-                <div class="d-flex justify-content-around mt-2">
+                <h6 class="fw-bold">🏢 G10</h6>
+                <div class="d-flex flex-column align-items-center mt-2 gap-1">
                   <div>
-                    <h6><i class="bi bi-box text-primary"></i> CP</h6>
-                    <h3 id="g10_cp" class="fw-bold text-primary">0</h3>
+                    <h6><i class="bi bi-grid-3x3-gap text-primary"></i> Total de Vagas</h6>
+                    <h3 id="g10_total" class="fw-bold text-primary">0</h3>
                   </div>
                   <div>
-                    <h6><i class="bi bi-archive text-warning"></i> SA</h6>
-                    <h3 id="g10_sa" class="fw-bold text-warning">0</h3>
+                    <h6><i class="bi bi-box-seam text-warning"></i> Ocupadas</h6>
+                    <h3 id="g10_ocupadas" class="fw-bold text-warning">0</h3>
                   </div>
                   <div>
-                    <h6><i class="bi bi-inboxes text-success"></i> PA</h6>
-                    <h3 id="g10_pa" class="fw-bold text-success">0</h3>
+                    <h6><i class="bi bi-check-circle text-success"></i> Disponível</h6>
+                    <h3 id="g10_disponivel" class="fw-bold text-success">0</h3>
                   </div>
                 </div>
               </div>
             </div>
-
             <!-- Galpão BLUE -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="p-3 border rounded h-100">
-                <h6 class="fw-bold">🏢 Galpão BLUE</h6>
-                <div class="d-flex justify-content-around mt-2">
+                <h6 class="fw-bold">🏢 BLUE</h6>
+                <div class="d-flex flex-column align-items-center mt-2 gap-1">
                   <div>
-                    <h6><i class="bi bi-box text-primary"></i> CP</h6>
-                    <h3 id="blue_cp" class="fw-bold text-primary">0</h3>
+                    <h6><i class="bi bi-grid-3x3-gap text-primary"></i> Total de Vagas</h6>
+                    <h3 id="blue_total" class="fw-bold text-primary">0</h3>
                   </div>
                   <div>
-                    <h6><i class="bi bi-archive text-warning"></i> SA</h6>
-                    <h3 id="blue_sa" class="fw-bold text-warning">0</h3>
+                    <h6><i class="bi bi-box-seam text-warning"></i> Ocupadas</h6>
+                    <h3 id="blue_ocupadas" class="fw-bold text-warning">0</h3>
                   </div>
                   <div>
-                    <h6><i class="bi bi-inboxes text-success"></i> PA</h6>
-                    <h3 id="blue_pa" class="fw-bold text-success">0</h3>
+                    <h6><i class="bi bi-check-circle text-success"></i> Disponível</h6>
+                    <h3 id="blue_disponivel" class="fw-bold text-success">0</h3>
                   </div>
                 </div>
               </div>
             </div>
-
             <!-- Galpão JOSEPHA -->
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="p-3 border rounded h-100">
-                <h6 class="fw-bold">🏢 Galpão JOSEPHA</h6>
-                <div class="d-flex justify-content-around mt-2">
+                <h6 class="fw-bold">🏢 PA/SA</h6>
+                <div class="d-flex flex-column align-items-center mt-2 gap-1">
                   <div>
-                    <h6><i class="bi bi-box text-primary"></i> CP</h6>
-                    <h3 id="josepha_cp" class="fw-bold text-primary">0</h3>
+                    <h6><i class="bi bi-grid-3x3-gap text-primary"></i> Total de Vagas</h6>
+                    <h3 id="josepha_total" class="fw-bold text-primary">0</h3>
                   </div>
                   <div>
-                    <h6><i class="bi bi-archive text-warning"></i> SA</h6>
-                    <h3 id="josepha_sa" class="fw-bold text-warning">0</h3>
+                    <h6><i class="bi bi-box-seam text-warning"></i> Ocupadas</h6>
+                    <h3 id="josepha_ocupadas" class="fw-bold text-warning">0</h3>
                   </div>
                   <div>
-                    <h6><i class="bi bi-inboxes text-success"></i> PA</h6>
-                    <h3 id="josepha_pa" class="fw-bold text-success">0</h3>
+                    <h6><i class="bi bi-check-circle text-success"></i> Disponível</h6>
+                    <h3 id="josepha_disponivel" class="fw-bold text-success">0</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- NOVO Galpão: VERMELHO -->
+            <div class="col-md-3">
+              <div class="p-3 border rounded h-100">
+                <h6 class="fw-bold">🏢 CP</h6>
+                <div class="d-flex flex-column align-items-center mt-2 gap-1">
+                  <div>
+                    <h6><i class="bi bi-grid-3x3-gap text-primary"></i> Total de Vagas</h6>
+                    <h3 id="vermelho_total" class="fw-bold text-primary">0</h3>
+                  </div>
+                  <div>
+                    <h6><i class="bi bi-box-seam text-warning"></i> Ocupadas</h6>
+                    <h3 id="vermelho_ocupadas" class="fw-bold text-warning">0</h3>
+                  </div>
+                  <div>
+                    <h6><i class="bi bi-check-circle text-success"></i> Disponível</h6>
+                    <h3 id="vermelho_disponivel" class="fw-bold text-success">0</h3>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
           <hr>
-          <h6 class="text-center mt-3"><i class="bi bi-pie-chart-fill"></i> Distribuição de Posições Livres</h6>
+          <h6 class="text-center mt-3"><i class="bi bi-pie-chart-fill"></i>% OCUPAÇÃO GERAL</h6>
           <canvas id="positionChart" class="flex-grow-1"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumo Geral de Operações -->
+    <div class="card mb-4 border-0 shadow-lg mt-4">
+      <div class="card-body">
+        <h5 class="card-title fw-bold text-gradient">Resumo geral do Farol - RECEBIMENTO x DEVOLUÇÃO</h5>
+        <div class="row text-center g-3 justify-content-center">
+          <!-- Primeira linha: 5 cards - RECEBIMENTO-DOCA -->
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-danger rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-danger bg-opacity-05 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-exclamation-octagon-fill fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">+48 HORAS</h6>
+              <p class="display-6 fw-bold text-danger mb-0">8</p>
+              <p class="text-muted small">veículos</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 90%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-warning rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-warning bg-opacity-05 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-exclamation-triangle-fill fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">+36 HORAS</h6>
+              <p class="display-6 fw-bold text-warning mb-0">12</p>
+              <p class="text-muted small">veículos</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 70%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-warning rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-warning bg-opacity-05 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-exclamation-circle-fill fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">+24 HORAS</h6>
+              <p class="display-6 fw-bold text-warning mb-0">15</p>
+              <p class="text-muted small">veículos</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-success rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-success bg-opacity-5 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-shield-check fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">ATÉ 12 HORAS</h6>
+              <p class="display-6 fw-bold text-success mb-0">20</p>
+              <p class="text-muted small">veículos</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 30%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-primary rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-primary bg-opacity-5 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-shield-check fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">TOTAL RECEBIMENTO-DOCA</h6>
+              <p class="display-6 fw-bold text-primary mb-0">20</p>
+              <p class="text-muted small">veículos</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 30%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Linha dos cards de devolução -->
+        <div class="row text-center g-3 justify-content-center mt-2">
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-danger rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-danger bg-opacity-05 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-exclamation-octagon-fill fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">+48 HORAS</h6>
+              <p class="display-6 fw-bold text-danger mb-0">3</p>
+              <p class="text-muted small">volumes</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 90%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-warning rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-warning bg-opacity-05 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-exclamation-triangle-fill fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">+36 HORAS</h6>
+              <p class="display-6 fw-bold text-warning mb-0">6</p>
+              <p class="text-muted small">volumes</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 70%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-warning rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-warning bg-opacity-05 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-exclamation-circle-fill fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">+24 HORAS</h6>
+              <p class="display-6 fw-bold text-warning mb-0">8</p>
+              <p class="text-muted small">volumes</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-success rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-success bg-opacity-05 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-shield-check fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">ATÉ 12 HORAS</h6>
+              <p class="display-6 fw-bold text-success mb-0">14</p>
+              <p class="text-muted small">volumes</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2 flex-grow-1 d-flex">
+            <div class="card-stat card-hover bg-hover-light-primary rounded-4 p-3 w-100">
+              <div class="icon-wrapper bg-primary bg-opacity-5 rounded-3 p-3 mb-3 mx-auto">
+                <i class="bi bi-shield-check fs-1 text-dark mt-3"></i>
+              </div>
+              <h6 class="fw-semibold mb-1">TOTAL RECEBIMENTO-DEV.</h6>
+              <p class="display-6 fw-bold text-primary mb-0">20</p>
+              <p class="text-muted small">veículos</p>
+              <div class="progress mt-2" style="height: 4px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -377,13 +445,9 @@
     <div class="card mt-4 mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0 text-primary">Volume de Devoluções por Cliente</h5>
-        <div class="table-actions">
-          <div class="input-group input-group-sm" style="width: 200px;">
-            <input type="text" class="form-control search-input mt-2 mb-2" placeholder="Pesquisar cliente...">
-            <button class="btn btn-outline-secondary mt-2" type="button" style="height: 30px;">
-              <i class="bi bi-search"></i>
-            </button>
-          </div>
+        <div class="input-group input-group-sm" style="width: 200px;">
+          <input type="text" class="form-control search-input" placeholder="Pesquisar cliente...">
+          <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
         </div>
       </div>
       <div class="card-body p-0">
@@ -391,32 +455,20 @@
           <table class="table table-hover returns-table">
             <thead class="sticky-top">
               <tr>
-                <th class="sortable" data-sort="client">
-                  <span class="d-inline-flex align-items-center gap-1">
-                    Cliente <i class="bi bi-arrow-down-up"></i>
-                  </span>
-                </th>
-                <th class="sortable" data-sort="returns">
-                  <span class="d-inline-flex align-items-center gap-1">
-                    Devoluções <i class="bi bi-arrow-down-up"></i>
-                  </span>
-                </th>
+                <th class="sortable" data-sort="client">Cliente <i class="bi bi-arrow-down-up"></i></th>
+                <th class="sortable" data-sort="returns">Devoluções <i class="bi bi-arrow-down-up"></i></th>
                 <th>Motivo Mais Comum</th>
-                <th class="sortable" data-sort="date">
-                  <span class="d-inline-flex align-items-center gap-1">
-                    Última Devolução <i class="bi bi-arrow-down-up"></i>
-                  </span>
-                </th>
+                <th class="sortable" data-sort="date">Última Devolução <i class="bi bi-arrow-down-up"></i></th>
                 <th class="text-end">Índice</th>
               </tr>
             </thead>
             <tbody>
+              <!-- Exemplo de linhas, pode ser gerado dinamicamente -->
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-danger bg-opacity-10 text-danger">A</span>
-                    </div>
+                    <div class="avatar-sm me-2"><span
+                        class="avatar-title rounded bg-danger bg-opacity-10 text-danger">A</span></div>
                     <div>Cliente A</div>
                   </div>
                 </td>
@@ -430,102 +482,9 @@
                 </td>
                 <td>Produto Danificado</td>
                 <td>24/04/2025</td>
-                <td class="text-end">
-                  <span class="badge bg-danger bg-opacity-10 text-danger">Alto</span>
-                </td>
+                <td class="text-end"><span class="badge bg-danger bg-opacity-10 text-danger">Alto</span></td>
               </tr>
-              <tr>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-warning bg-opacity-10 text-warning">B</span>
-                    </div>
-                    <div>Cliente B</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="fw-bold me-2">9</span>
-                    <div class="progress flex-grow-1" style="height: 6px;">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 60%"></div>
-                    </div>
-                  </div>
-                </td>
-                <td>Erro no Pedido</td>
-                <td>23/04/2025</td>
-                <td class="text-end">
-                  <span class="badge bg-warning bg-opacity-10 text-warning">Médio</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-success bg-opacity-10 text-success">C</span>
-                    </div>
-                    <div>Cliente C</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="fw-bold me-2">6</span>
-                    <div class="progress flex-grow-1" style="height: 6px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 40%"></div>
-                    </div>
-                  </div>
-                </td>
-                <td>Vencimento Próximo</td>
-                <td>22/04/2025</td>
-                <td class="text-end">
-                  <span class="badge bg-success bg-opacity-10 text-success">Baixo</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-danger bg-opacity-10 text-danger">D</span>
-                    </div>
-                    <div>Cliente D</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="fw-bold me-2">12</span>
-                    <div class="progress flex-grow-1" style="height: 6px;">
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: 80%"></div>
-                    </div>
-                  </div>
-                </td>
-                <td>Produto Avariado no Transporte</td>
-                <td>25/04/2025</td>
-                <td class="text-end">
-                  <span class="badge bg-danger bg-opacity-10 text-danger">Alto</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar-sm me-2">
-                      <span class="avatar-title rounded bg-success bg-opacity-10 text-success">E</span>
-                    </div>
-                    <div>Cliente E</div>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="fw-bold me-2">4</span>
-                    <div class="progress flex-grow-1" style="height: 6px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 27%"></div>
-                    </div>
-                  </div>
-                </td>
-                <td>Produto Incorreto</td>
-                <td>20/04/2025</td>
-                <td class="text-end">
-                  <span class="badge bg-success bg-opacity-10 text-success">Baixo</span>
-                </td>
-              </tr>
+              <!-- Outras linhas omitidas para exemplo -->
             </tbody>
           </table>
         </div>
@@ -535,89 +494,11 @@
               Mostrando <span class="fw-bold">1-5</span> de <span class="fw-bold">12</span> clientes
             </div>
             <div class="pagination mb-0">
-              <button class="btn btn-sm btn-outline-secondary disabled" style="height: 30px;">
-                <i class="bi bi-chevron-left"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary active" style="height: 30px;">1</button>
-              <button class="btn btn-sm btn-outline-secondary" style="height: 30px;">2</button>
-              <button class="btn btn-sm btn-outline-secondary" style="height: 30px;">3</button>
-              <button class="btn btn-sm btn-outline-secondary" style="height: 30px;">
-                <i class="bi bi-chevron-right" style="height: 30px;"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-    <!-- 6. Resumo Geral de Veículos - Versão Modernizada -->
-    <div class="card mb-4 border-0 shadow-lg">
-      <div class="card-body">
-        <h5 class="card-title fw-bold text-gradient">Resumo Geral de Operações</h5>
-        <div class="row text-center g-4">
-          <!-- Card Programado -->
-          <div class="col-6 col-md-3">
-            <div class="card-stat card-hover bg-hover-light-success rounded-4 p-3 h-100">
-              <div class="icon-wrapper bg-success bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
-                <i class="bi bi-truck-front fs-1 text-light mt-3"></i>
-              </div>
-              <h6 class="fw-semibold mb-1">Programado</h6>
-              <p class="display-6 fw-bold text-success mb-0">30</p>
-              <p class="text-muted small">veículos</p>
-              <div class="progress mt-2" style="height: 4px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75"
-                  aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card Concluídos -->
-          <div class="col-6 col-md-3">
-            <div class="card-stat card-hover bg-hover-light-primary rounded-4 p-3 h-100">
-              <div class="icon-wrapper bg-primary bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
-                <i class="bi bi-truck-front fs-1 ttext-light mt-3"></i>
-              </div>
-              <h6 class="fw-semibold mb-1">Concluídos</h6>
-              <p class="display-6 fw-bold text-primary mb-0">20</p>
-              <p class="text-muted small">veículos</p>
-              <div class="progress mt-2" style="height: 4px;">
-                <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50"
-                  aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card Importação -->
-          <div class="col-6 col-md-3">
-            <div class="card-stat card-hover bg-hover-light-warning rounded-4 p-3 h-100">
-              <div class="icon-wrapper bg-warning bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
-                <i class="bi bi-globe-americas fs-1 text-light mt-3"></i>
-              </div>
-              <h6 class="fw-semibold mb-1">Importação</h6>
-              <p class="display-6 fw-bold text-warning mb-0">20</p>
-              <p class="text-muted small">veículos</p>
-              <div class="progress mt-2" style="height: 4px;">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50"
-                  aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card Transferência -->
-          <div class="col-6 col-md-3">
-            <div class="card-stat card-hover bg-hover-light-info rounded-4 p-3 h-100">
-              <div class="icon-wrapper bg-info bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
-                <i class="bi bi-arrow-left-right fs-1 text-light mt-3"></i>
-              </div>
-              <h6 class="fw-semibold mb-1">Transferência</h6>
-              <p class="display-6 fw-bold text-info mb-0">10</p>
-              <p class="text-muted small">veículos</p>
-              <div class="progress mt-2" style="height: 4px;">
-                <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25"
-                  aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
+              <button class="btn btn-sm btn-outline-secondary disabled"><i class="bi bi-chevron-left"></i></button>
+              <button class="btn btn-sm btn-outline-primary active">1</button>
+              <button class="btn btn-sm btn-outline-secondary">2</button>
+              <button class="btn btn-sm btn-outline-secondary">3</button>
+              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
             </div>
           </div>
         </div>
@@ -626,14 +507,82 @@
 
   </div>
 
-  <!-- Scripts -->
+  <div class="offcanvas offcanvas-end border-0 shadow" tabindex="-1" id="alertasPanel"
+    aria-labelledby="alertasPanelLabel" style="width: 500px;">
+    <div class="offcanvas-header bg-primary text-white">
+      <h5 class="offcanvas-title fw-bold" id="alertasPanelLabel">
+        <i class="bi bi-bell-fill me-2"></i>Alertas & Pendências
+      </h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <div class="list-group list-group-flush">
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <div class="me-3 text-warning">
+            <i class="bi bi-truck fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="fw-bold">5 veículos aguardando descarga</div>
+            <small class="text-muted">Fila na portaria há mais de 30 min</small>
+          </div>
+          <button class="btn btn-sm btn-outline-primary">Visualizar</button>
+        </div>
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <div class="me-3 text-danger">
+            <i class="bi bi-exclamation-triangle fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="fw-bold">2 cargas com divergência de nota</div>
+            <small class="text-muted">Verificar conferência urgente</small>
+          </div>
+          <button class="btn btn-sm btn-outline-danger">Conferir</button>
+        </div>
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <div class="me-3 text-info">
+            <i class="bi bi-clock-history fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="fw-bold">3 processos com atraso de agendamento</div>
+            <small class="text-muted">Atraso superior a 1h</small>
+          </div>
+          <button class="btn btn-sm btn-outline-info">Detalhes</button>
+        </div>
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <div class="me-3 text-success">
+            <i class="bi bi-check-circle fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="fw-bold">12 cargas recebidas hoje</div>
+            <small class="text-muted">Fluxo normal</small>
+          </div>
+          <button class="btn btn-sm btn-outline-success">Ver</button>
+        </div>
+        <div class="list-group-item list-group-item-action d-flex align-items-center">
+          <div class="me-3 text-secondary">
+            <i class="bi bi-box-seam fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="fw-bold">Estoque próximo do limite</div>
+            <small class="text-muted">Galpão G10: 92% ocupado</small>
+          </div>
+          <button class="btn btn-sm btn-outline-secondary">Estoque</button>
+        </div>
+      </div>
+    </div>
+    <div class="offcanvas-footer p-3 bg-light text-center">
+      <button class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-arrow-clockwise me-1"></i>Atualizar
+      </button>
+    </div>
+  </div>
 
+  <!-- Scripts principais -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/Home/Dashboard/Recebimento/script.js"></script>
   <script src="/public/Modais/script.js"></script>
   <script src="/public/js/sidebar.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
