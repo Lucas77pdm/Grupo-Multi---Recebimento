@@ -8,6 +8,11 @@
     --dark-color: #5a5c69;
 }
 
+[data-bs-theme="dark"] body {
+    background-color: #1a252f;
+    color: #ecf0f1;
+}
+
 .gradient-border {
     position: relative;
     padding-bottom: 16px;

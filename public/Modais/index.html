@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="/public/Modais/style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 </head>
 
 <body>
@@ -1346,16 +1349,608 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- MODAL PERFIL - USUARIOS -->
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div class="modal fade" id="profileSettingsModal" tabindex="-1" aria-labelledby="profileSettingsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-gradient-primary text-white">
+                    <h5 class="modal-title fs-4 fw-bold" id="profileSettingsModalLabel">Configurações do Perfil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form>
+                        <!-- Seção de Foto de Perfil -->
+                        <div class="row mb-4 align-items-center">
+                            <div class="col-auto">
+                                <div class="avatar-upload position-relative">
+                                    <div class="avatar-preview rounded-circle overflow-hidden"
+                                        style="width: 100px; height: 100px;">
+                                        <img id="profilePreview"
+                                            src="https://ui-avatars.com/api/?name=Usuário&background=random"
+                                            class="w-100 h-100 object-fit-cover" alt="Foto de perfil">
+                                    </div>
+                                    <label for="profileUpload"
+                                        class="avatar-edit-btn position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2 shadow-sm">
+                                        <i class="bi bi-camera-fill"></i>
+                                        <input type="file" id="profileUpload" accept="image/*" class="d-none">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h6 class="mb-1">Foto do Perfil</h6>
+                                <p class="text-muted small mb-2">Formatos suportados: JPG, PNG (Max. 2MB)</p>
+                                <button type="button" class="btn btn-outline-danger btn-sm">Remover Foto</button>
+                            </div>
+                        </div>
 
+                        <!-- Informações Pessoais -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3 text-primary">Informações Pessoais</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="fullName" class="form-label">Nome Completo</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                        <input type="text" class="form-control" id="fullName"
+                                            placeholder="Seu nome completo">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="username" class="form-label">Nome de Usuário</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-at"></i></span>
+                                        <input type="text" class="form-control" id="username" placeholder="seu.usuario">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contatos -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3 text-primary">Informações de Contato</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="primaryEmail" class="form-label">E-mail Principal</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control" id="primaryEmail"
+                                            placeholder="email@principal.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="secondaryEmail" class="form-label">E-mail Secundário</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control" id="secondaryEmail"
+                                            placeholder="email@alternativo.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Telefone/Celular</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-phone"></i></span>
+                                        <input type="tel" class="form-control" id="phone" placeholder="(00) 00000-0000">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="whatsapp" class="form-label">WhatsApp</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-whatsapp"></i></span>
+                                        <input type="tel" class="form-control" id="whatsapp"
+                                            placeholder="(00) 00000-0000">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top-0 bg-light">
+                    <button type="button" class="btn btn-lg btn-outline-secondary rounded-pill px-4"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-lg btn-primary rounded-pill px-4 shadow">Salvar
+                        Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal para Usuários Liberados - Versão Tematizada -->
+    <div class="modal fade" id="modalUsuariosLiberados" tabindex="-1" aria-labelledby="modalUsuariosLiberadosLabel"
+        aria-hidden="true">
+        <!-- Estrutura mantida igual -->
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-people-fill me-3 fs-4"></i>
+                        <h5 class="modal-title mb-0" id="modalUsuariosLiberadosLabel">Usuários Liberados - ${userSetor}
+                        </h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-0">
+                    <div class="p-3 border-bottom">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" id="pesquisaUsuarios"
+                                placeholder="Pesquisar usuários...">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-funnel"></i> Filtros
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" data-filter="all">Todos</a></li>
+                                <li><a class="dropdown-item" href="#" data-filter="total">Acesso Total</a></li>
+                                <li><a class="dropdown-item" href="#" data-filter="parcial">Acesso Parcial</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;"></th>
+                                    <th>Nome</th>
+                                    <th>Cargo</th>
+                                    <th>Contato</th>
+                                    <th class="text-center">Nível de Acesso</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaUsuariosLiberados">
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Carregando...</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-between align-items-center">
+                    <small id="contadorUsuarios">0 usuários encontrados</small>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="bi bi-check-lg me-1"></i> Entendido
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Troca de Senha - Versão Premium -->
+    <div class="modal fade" id="modalTrocarSenha" tabindex="-1" aria-labelledby="modalTrocarSenhaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-key me-2"></i>
+                        <h5 class="modal-title mb-0" id="modalTrocarSenhaLabel">Alterar Senha</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTrocarSenha">
+                        <div class="mb-4 position-relative">
+                            <label for="senhaAtual" class="form-label">Senha Atual</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control password-input" id="senhaAtual" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 position-relative">
+                            <label for="novaSenha" class="form-label">Nova Senha</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control password-input" id="novaSenha" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength mt-2">
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" id="passwordStrengthBar" role="progressbar"
+                                        style="width: 0%"></div>
+                                </div>
+                                <small id="passwordStrengthText" class="form-text">Força da senha: muito fraca</small>
+                            </div>
+                            <div class="password-requirements mt-2">
+                                <small class="form-text d-block"><i class="fas fa-circle"></i> Mínimo 8
+                                    caracteres</small>
+                                <small class="form-text d-block"><i class="fas fa-circle"></i> Pelo menos 1
+                                    número</small>
+                                <small class="form-text d-block"><i class="fas fa-circle"></i> Pelo menos 1
+                                    letra</small>
+                                <small class="form-text d-block"><i class="fas fa-circle"></i> Pelo menos 1 caractere
+                                    especial</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <label for="confirmarSenha" class="form-label">Confirmar Nova Senha</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control password-input" id="confirmarSenha" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-match mt-2">
+                                <small id="passwordMatchText" class="form-text"><i
+                                        class="fas fa-check-circle text-success d-none"></i> <i
+                                        class="fas fa-times-circle text-danger d-none"></i> <span class="message">As
+                                        senhas devem coincidir</span></small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary btn-glow" id="btnAlterarSenha" disabled>
+                        <i class="fas fa-save me-1"></i> Alterar Senha
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AGENDA COMPRAS NACIONAIS  -->
+
+    <div class="modal fade" id="modalAgendarNacional" tabindex="-1" aria-labelledby="modalAgendarNacionalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xxl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg agendar-nacional-modal-content">
+                <!-- Cabeçalho premium igual ao de relatórios/checklist -->
+                <div class="modal-header bg-gradient-primary text-white py-4 position-relative agendar-nacional-modal-header">
+                    <div class="position-absolute w-100 h-100 top-0 start-0 bg-pattern opacity-10"></div>
+                    <div class="d-flex align-items-center position-relative z-index-1">
+                        <i class="bi bi-globe-americas fs-2 me-3"></i>
+                        <div>
+                            <h5 class="modal-title fs-3 fw-bold mb-1" id="modalAgendarNacionalLabel">
+                                Agendamento Nacional
+                            </h5>
+                            <p class="small mb-0 opacity-75">Solicite seu agendamento CNF (Com Nota Fiscal) ou SNF (Sem Nota Fiscal)</p>
+                        </div>
+                    </div>
+                    <button type="button"
+                        class="btn-close btn-close-white btn-sm shadow-none position-relative z-index-1"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <!-- Corpo do modal permanece igual -->
+                <div class="modal-body p-0 agendar-nacional-modal-body">
+                    <div class="row g-0">
+                        <!-- Sidebar -->
+                        <div class="col-12 col-lg-4 agendar-nacional-sidebar border-end">
+                            <div class="p-4">
+                                <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2"></i>Tipo de Agendamento</h6>
+                                <div class="btn-group w-100 mb-4 shadow-sm" role="group">
+                                    <input type="radio" class="btn-check" name="tipoAgendamento" id="radioCNF"
+                                        autocomplete="off" checked>
+                                    <label class="btn btn-outline-primary d-flex align-items-center justify-content-center"
+                                        for="radioCNF">
+                                        <i class="bi bi-receipt me-2"></i>CNF <span class="small ms-1">(Com Nota Fiscal)</span>
+                                    </label>
+                                    <input type="radio" class="btn-check" name="tipoAgendamento" id="radioSNF"
+                                        autocomplete="off">
+                                    <label class="btn btn-outline-secondary d-flex align-items-center justify-content-center"
+                                        for="radioSNF">
+                                        <i class="bi bi-file-earmark me-2"></i>SNF <span class="small ms-1">(Sem Nota Fiscal)</span>
+                                    </label>
+                                </div>
+                                <div class="alert alert-info small mb-0 shadow-sm">
+                                    <div class="d-flex">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        <div>
+                                            <b>CNF:</b> Agendamento para cargas <b>com Nota Fiscal</b>.<br>
+                                            <b>SNF:</b> Agendamento para cargas <b>sem Nota Fiscal</b>.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Help Section -->
+                                <div class="mt-4 pt-3 border-top">
+                                    <h6 class="fw-bold mb-3"><i class="bi bi-question-circle me-2"></i>Ajuda Rápida</h6>
+                                    <div class="accordion" id="helpAccordionNacional">
+                                        <div class="accordion-item border-0 mb-2">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed bg-light shadow-sm"
+                                                    type="button" data-bs-toggle="collapse" data-bs-target="#help1Nacional">
+                                                    <i class="bi bi-file-earmark-pdf me-2"></i>Formatos de arquivo
+                                                </button>
+                                            </h2>
+                                            <div id="help1Nacional" class="accordion-collapse collapse"
+                                                data-bs-parent="#helpAccordionNacional">
+                                                <div class="accordion-body small">
+                                                    Para CNF: apenas arquivos PDF são aceitos.<br>
+                                                    Para SNF: PDF, DOC, DOCX ou imagens (JPG, PNG).
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item border-0">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed bg-light shadow-sm"
+                                                    type="button" data-bs-toggle="collapse" data-bs-target="#help2Nacional">
+                                                    <i class="bi bi-envelope me-2"></i>Múltiplos e-mails
+                                                </button>
+                                            </h2>
+                                            <div id="help2Nacional" class="accordion-collapse collapse"
+                                                data-bs-parent="#helpAccordionNacional">
+                                                <div class="accordion-body small">
+                                                    Você pode inserir vários e-mails separados por vírgula. Todos
+                                                    receberão notificações sobre o agendamento.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Form Section -->
+                        <div class="col-12 col-lg-8">
+                            <form id="formAgendarNacional" class="p-4" enctype="multipart/form-data">
+                                <!-- CNF FORM -->
+                                <div id="formCNF" class="form-section">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-person me-2"></i>Seu Nome
+                                                *</label>
+                                            <input type="text" class="form-control shadow-sm" name="nomeCNF" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-envelope me-2"></i>E-mails
+                                                *</label>
+                                            <input type="text" class="form-control shadow-sm" name="emailsCNF"
+                                                placeholder="email1@gmail.com, email2@gmail.com" required>
+                                            <small class="text-muted">Separe os e-mails por vírgula.</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i
+                                                    class="bi bi-whatsapp me-2"></i>Whatsapp</label>
+                                            <div class="input-group shadow-sm">
+                                                <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                                                <input type="text" class="form-control" name="whatsappCNF"
+                                                    placeholder="(00) 00000-0000">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-building me-2"></i>Fornecedor
+                                                *</label>
+                                            <input type="text" class="form-control text-uppercase shadow-sm"
+                                                name="fornecedorCNF" placeholder="NOME DO FORNECEDOR" required>
+                                            <small class="text-muted">Use letras MAIÚSCULAS e resuma se
+                                                possível.</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-cart-check me-2"></i>Pedido de
+                                                Compra *</label>
+                                            <input type="text" class="form-control shadow-sm" name="pedidoCNF" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-receipt me-2"></i>Nota Fiscal
+                                                *</label>
+                                            <input type="text" class="form-control shadow-sm" name="nfCNF" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="bi bi-box-seam me-2"></i>Volumetria
+                                                *</label>
+                                            <input type="number" class="form-control shadow-sm" name="volumetriaCNF"
+                                                min="1" value="1" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="bi bi-boxes me-2"></i>Espécie *</label>
+                                            <select class="form-select shadow-sm" name="especieCNF" required>
+                                                <option value="" disabled selected>Selecione</option>
+                                                <option>Caixas</option>
+                                                <option>Pallets</option>
+                                                <option>Outro</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="bi bi-box me-2"></i>Outro
+                                                (Espécie)</label>
+                                            <input type="text" class="form-control shadow-sm" name="outroEspecieCNF"
+                                                placeholder="Se outro, especifique">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label"><i class="bi bi-file-earmark-pdf me-2"></i>PDF
+                                                Nota Fiscal *</label>
+                                            <div class="input-group shadow-sm">
+                                                <input type="file" class="form-control" name="pdfCNF"
+                                                    accept="application/pdf" required>
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="Apenas arquivos PDF são aceitos">
+                                                    <i class="bi bi-info-circle"></i>
+                                                </button>
+                                            </div>
+                                            <small class="text-muted">Apenas PDF. Máx: 1GB.</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-building me-2"></i>CNPJ
+                                                Destinatário *</label>
+                                            <select class="form-select shadow-sm" name="cnpjCNF" required>
+                                                <option value="" disabled selected>Selecione</option>
+                                                <option>MULTI FABRICA - 59.717.553/0006-17</option>
+                                                <option>MULTI MATRIZ - 59.717.553/0001-02</option>
+                                                <option>COMPONENTES - 18.272.566/0001-38</option>
+                                                <option>EXPERT(BLUE) - 59.717.553/0012-65</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-person-badge me-2"></i>Comprador
+                                                *</label>
+                                            <select class="form-select shadow-sm" name="compradorCNF" required>
+                                                <option value="" disabled selected>Selecione</option>
+                                                <option>Flavia Nascimento</option>
+                                                <option>Thalia Cristina</option>
+                                                <option>Lucas Lapa</option>
+                                                <option>Francine Silva</option>
+                                                <option>Fernanda Weber</option>
+                                                <option>Tiago De Lima</option>
+                                                <option>Brenda Goncalves</option>
+                                                <option>Deborah Regina</option>
+                                                <option>Jacira Mendes</option>
+                                                <option>Fernando Donato</option>
+                                                <option>Aline Almeida</option>
+                                                <option>Amanda Tarasan</option>
+                                                <option>Giovana Camargo</option>
+                                                <option>Outro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SNF FORM -->
+                                <div id="formSNF" class="form-section" style="display:none;">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-person me-2"></i>Seu Nome
+                                                *</label>
+                                            <input type="text" class="form-control shadow-sm" name="nomeSNF" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-envelope me-2"></i>E-mails
+                                                *</label>
+                                            <input type="text" class="form-control shadow-sm" name="emailsSNF"
+                                                placeholder="email1@gmail.com, email2@gmail.com" required>
+                                            <small class="text-muted">Separe os e-mails por vírgula.</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i
+                                                    class="bi bi-whatsapp me-2"></i>Whatsapp</label>
+                                            <div class="input-group shadow-sm">
+                                                <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                                                <input type="text" class="form-control" name="whatsappSNF"
+                                                    placeholder="(00) 00000-0000">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-building me-2"></i>Fornecedor
+                                                *</label>
+                                            <input type="text" class="form-control text-uppercase shadow-sm"
+                                                name="fornecedorSNF" placeholder="NOME DO FORNECEDOR" required>
+                                            <small class="text-muted">Use letras MAIÚSCULAS e resuma se
+                                                possível.</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-cart-check me-2"></i>Pedido de
+                                                Compra *</label>
+                                            <input type="text" class="form-control shadow-sm" name="pedidoSNF" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-file-earmark me-2"></i>Nota Fiscal
+                                                *</label>
+                                            <input type="text" class="form-control shadow-sm" name="nfSNF" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="bi bi-box-seam me-2"></i>Volumetria
+                                                *</label>
+                                            <input type="number" class="form-control shadow-sm" name="volumetriaSNF"
+                                                min="1" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="bi bi-boxes me-2"></i>Espécie *</label>
+                                            <select class="form-select shadow-sm" name="especieSNF" required>
+                                                <option value="" disabled selected>Selecione</option>
+                                                <option>Caixas</option>
+                                                <option>Pallets</option>
+                                                <option>Outro</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="bi bi-box me-2"></i>Outro
+                                                (Espécie)</label>
+                                            <input type="text" class="form-control shadow-sm" name="outroEspecieSNF"
+                                                placeholder="Se outro, especifique">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label"><i
+                                                    class="bi bi-file-earmark-arrow-up me-2"></i>PDF Nota Fiscal
+                                                *</label>
+                                            <div class="input-group shadow-sm">
+                                                <input type="file" class="form-control" name="pdfSNF"
+                                                    accept=".pdf,.doc,.docx,image/*" required>
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="PDF, documento ou imagem são aceitos">
+                                                    <i class="bi bi-info-circle"></i>
+                                                </button>
+                                            </div>
+                                            <small class="text-muted">PDF, documento ou imagem. Máx: 10GB.</small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-building me-2"></i>CNPJ
+                                                Destinatário *</label>
+                                            <select class="form-select shadow-sm" name="cnpjSNF" required>
+                                                <option value="" disabled selected>Selecione</option>
+                                                <option>MULTI FABRICA - 59.717.553/0006-17</option>
+                                                <option>MULTI MATRIZ - 59.717.553/0001-02</option>
+                                                <option>COMPONENTES - 18.272.566/0001-38</option>
+                                                <option>EXPERT(BLUE) - 59.717.553/0012-65</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="bi bi-person-badge me-2"></i>Comprador
+                                                *</label>
+                                            <select class="form-select shadow-sm" name="compradorSNF" required>
+                                                <option value="" disabled selected>Selecione</option>
+                                                <option>Flavia Nascimento</option>
+                                                <option>Thalia Cristina</option>
+                                                <option>Lucas Lapa</option>
+                                                <option>Francine Silva</option>
+                                                <option>Fernanda Weber</option>
+                                                <option>Tiago De Lima</option>
+                                                <option>Brenda Goncalves</option>
+                                                <option>Deborah Regina</option>
+                                                <option>Jacira Mendes</option>
+                                                <option>Fernando Donato</option>
+                                                <option>Aline Almeida</option>
+                                                <option>Amanda Tarasan</option>
+                                                <option>Giovana Camargo</option>
+                                                <option>Outro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 text-end border-top pt-3">
+                                    <button type="button" class="btn btn-outline-secondary me-2"
+                                        data-bs-dismiss="modal">
+                                        <i class="bi bi-x-lg me-1"></i> Cancelar
+                                    </button>
+                                    <button type="submit" class="btn btn-primary shadow">
+                                        <i class="bi bi-plus-circle me-1"></i> Solicitar Agendamento
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="/public/js/script.js"></script>
+    <!-- No final do body, adicione o script externo -->
     <script src="/public/Modais/script.js"></script>
-    <script src="/public/js/sidebar.js"></script>
-
 </body>
 
 </html>

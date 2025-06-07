@@ -2,34 +2,387 @@
 <html lang="pt-br" data-bs-theme="light">
 
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expedição | Grupo Multi</title>
+    <!-- Bibliotecas principais -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link rel="stylesheet" href="/Home/Dashboard/Expedição/style.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-
     <div id="sidebar"></div>
     <div id="modais-container"></div>
-
     <div class="content">
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/Home/Dashboard/Expedição/script.js"></script>
-        <script src="/public/Modais/script.js"></script>
-        <script src="/public/js/sidebar.js"></script>
+        <!-- Topo do dashboard -->
+        <div class="top-bar gradient-border mb-4">
+            <h2 class="section-title"><i class="bi bi-truck me-2"></i>Dashboard Expedição</h2>
+        </div>
 
+        <!-- KPIs principais -->
+        <div class="row g-3 mb-4">
+            <!-- Cada card representa um KPI -->
+            <div class="col-md-2">
+                <div class="card card-primary text-white h-100">
+                    <div class="card-body">
+                        <i class="bi bi-box-arrow-up-right card-icon"></i>
+                        <h5 class="card-title text-light">Expedições Hoje</h5>
+                        <p class="card-text text-light">38</p>
+                        <div class="small d-flex align-items-center">
+                            <span class="me-1"><i class="bi bi-arrow-up"></i> 8%</span>
+                            <span>vs ontem</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card card-success text-white h-100">
+                    <div class="card-body">
+                        <i class="bi bi-truck-front card-icon"></i>
+                        <h5 class="card-title text-light">Entregues</h5>
+                        <p class="card-text text-light">29</p>
+                        <div class="small d-flex align-items-center">
+                            <span class="me-1"><i class="bi bi-arrow-up"></i> 12%</span>
+                            <span>vs semana passada</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card card-warning text-white h-100">
+                    <div class="card-body">
+                        <i class="bi bi-clock-history card-icon"></i>
+                        <h5 class="card-title text-light">Atrasos</h5>
+                        <p class="card-text text-light">5</p>
+                        <div class="small d-flex align-items-center">
+                            <span class="me-1"><i class="bi bi-arrow-down"></i> 3%</span>
+                            <span>vs mês passado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card card-danger text-white h-100">
+                    <div class="card-body">
+                        <i class="bi bi-exclamation-triangle card-icon"></i>
+                        <h5 class="card-title text-light">Pendências</h5>
+                        <p class="card-text text-light">7</p>
+                        <div class="small d-flex align-items-center">
+                            <span class="me-1"><i class="bi bi-arrow-up"></i> 5%</span>
+                            <span>vs ontem</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card text-white h-100" style="background-color: olivedrab;">
+                    <div class="card-body">
+                        <i class="bi bi-clipboard-check card-icon"></i>
+                        <h5 class="card-title text-light">Checklists OK</h5>
+                        <p class="card-text text-light">34</p>
+                        <div class="small d-flex align-items-center">
+                            <span class="me-1"><i class="bi bi-arrow-up"></i> 10%</span>
+                            <span>vs semana passada</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card text-white h-100" style="background-color: blueviolet;">
+                    <div class="card-body">
+                        <i class="bi bi-archive card-icon"></i>
+                        <h5 class="card-title text-light">Volumes Expedidos</h5>
+                        <p class="card-text text-light">1.120</p>
+                        <div class="small d-flex align-items-center">
+                            <span class="me-1"><i class="bi bi-arrow-up"></i> 6%</span>
+                            <span>vs mês passado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos principais -->
+        <div class="chart-grid mb-4">
+            <!-- Cada card contém um gráfico do dashboard -->
+            <div class="card chart-card">
+                <div class="card-body">
+                    <h5 class="card-title">Expedições por Status</h5>
+                    <canvas id="graficoStatusExpedicao" height="300"></canvas>
+                </div>
+            </div>
+            <div class="card chart-card">
+                <div class="card-body">
+                    <h5 class="card-title">Volumes por Tipo de Carga</h5>
+                    <canvas id="graficoTipoCarga" height="300"></canvas>
+                </div>
+            </div>
+            <div class="card chart-card">
+                <div class="card-body">
+                    <h5 class="card-title">Atrasos por Transportadora</h5>
+                    <canvas id="graficoAtrasosTransportadora" height="300"></canvas>
+                </div>
+            </div>
+            <div class="card chart-card">
+                <div class="card-body">
+                    <h5 class="card-title">Performance de Entrega</h5>
+                    <canvas id="graficoPerformanceEntrega" height="300"></canvas>
+                </div>
+            </div>
+            <div class="card chart-card">
+                <div class="card-body">
+                    <h5 class="card-title">Checklist de Expedição</h5>
+                    <canvas id="graficoChecklist" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Expedições Recentes -->
+        <div class="card mt-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 text-primary">Expedições Recentes</h5>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary refresh-btn" title="Atualizar"><i
+                            class="bi bi-arrow-clockwise"></i></button>
+                    <button class="btn btn-sm btn-outline-secondary export-btn" title="Exportar"><i
+                            class="bi bi-download"></i></button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover orders-table">
+                        <thead class="sticky-top">
+                            <tr>
+                                <th class="sortable" data-sort="id">Expedição <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" data-sort="client">Destino <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Status</th>
+                                <th class="sortable" data-sort="date">Data <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Transportadora</th>
+                                <th class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Conteúdo dinâmico via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <div class="text-muted small">
+                        Mostrando <span class="fw-bold">1 - 4</span> de <span class="fw-bold">32</span> expedições
+                    </div>
+                    <div class="pagination">
+                        <button class="btn btn-sm btn-outline-secondary disabled"><i
+                                class="bi bi-chevron-left"></i></button>
+                        <button class="btn btn-sm btn-outline-primary active">1</button>
+                        <button class="btn btn-sm btn-outline-secondary">2</button>
+                        <button class="btn btn-sm btn-outline-secondary">3</button>
+                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Pendências e Alertas -->
+        <div class="card mt-4 mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 text-danger">Pendências & Alertas</h5>
+                <button class="btn btn-sm btn-outline-danger refresh-btn" title="Atualizar"><i
+                        class="bi bi-arrow-clockwise"></i></button>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-hover">
+                        <thead class="sticky-top">
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge bg-danger bg-opacity-10 text-danger">Atraso</span></td>
+                                <td>Expedição #2003 atrasada</td>
+                                <td>13/04/2025</td>
+                                <td><span class="badge bg-danger">Pendente</span></td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary" title="Visualizar"><i
+                                            class="bi bi-eye"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-warning bg-opacity-10 text-warning">Checklist</span></td>
+                                <td>Checklist não realizado - #2005</td>
+                                <td>14/04/2025</td>
+                                <td><span class="badge bg-warning">Em aberto</span></td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary" title="Visualizar"><i
+                                            class="bi bi-eye"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-info bg-opacity-10 text-info">Info</span></td>
+                                <td>Volume extra solicitado - #2007</td>
+                                <td>15/04/2025</td>
+                                <td><span class="badge bg-info">Aguardando</span></td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary" title="Visualizar"><i
+                                            class="bi bi-eye"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards Resumo de Operações -->
+        <div class="card mb-4 border-0 shadow-lg">
+            <div class="card-body">
+                <h5 class="card-title fw-bold text-gradient">Resumo de Operações</h5>
+                <div class="row text-center g-4">
+                    <!-- Cada card mostra um resumo de operação -->
+                    <div class="col-6 col-md-3">
+                        <div class="card-stat card-hover bg-hover-light-success rounded-4 p-3 h-100">
+                            <div class="icon-wrapper bg-success bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
+                                <i class="bi bi-truck-front fs-1 text-light mt-3"></i>
+                            </div>
+                            <h6 class="fw-semibold mb-1">Programado</h6>
+                            <p class="display-6 fw-bold text-success mb-0">18</p>
+                            <p class="text-muted small">veículos</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card-stat card-hover bg-hover-light-primary rounded-4 p-3 h-100">
+                            <div class="icon-wrapper bg-primary bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
+                                <i class="bi bi-truck-front fs-1 text-light mt-3"></i>
+                            </div>
+                            <h6 class="fw-semibold mb-1">Concluídos</h6>
+                            <p class="display-6 fw-bold text-primary mb-0">15</p>
+                            <p class="text-muted small">veículos</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card-stat card-hover bg-hover-light-warning rounded-4 p-3 h-100">
+                            <div class="icon-wrapper bg-warning bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
+                                <i class="bi bi-globe-americas fs-1 text-light mt-3"></i>
+                            </div>
+                            <h6 class="fw-semibold mb-1">Importação</h6>
+                            <p class="display-6 fw-bold text-warning mb-0">8</p>
+                            <p class="text-muted small">veículos</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 30%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card-stat card-hover bg-hover-light-info rounded-4 p-3 h-100">
+                            <div class="icon-wrapper bg-info bg-opacity-10 rounded-3 p-3 mb-3 mx-auto">
+                                <i class="bi bi-arrow-left-right fs-1 text-light mt-3"></i>
+                            </div>
+                            <h6 class="fw-semibold mb-1">Transferência</h6>
+                            <p class="display-6 fw-bold text-info mb-0">5</p>
+                            <p class="text-muted small">veículos</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
+    <div class="offcanvas offcanvas-end border-0 shadow" tabindex="-1" id="alertasPanel"
+        aria-labelledby="alertasPanelLabel" style="width: 500px;">
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title fw-bold" id="alertasPanelLabel">
+                <i class="bi bi-bell-fill me-2"></i>Alertas & Pendências
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush">
+                <div class="list-group-item list-group-item-action d-flex align-items-center">
+                    <div class="me-3 text-warning">
+                        <i class="bi bi-truck fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">4 veículos aguardando expedição</div>
+                        <small class="text-muted">Fila na doca há 20 min</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary">Visualizar</button>
+                </div>
+                <div class="list-group-item list-group-item-action d-flex align-items-center">
+                    <div class="me-3 text-danger">
+                        <i class="bi bi-exclamation-triangle fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">2 entregas com atraso</div>
+                        <small class="text-muted">Transportadora: RápidoSul</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger">Acompanhar</button>
+                </div>
+                <div class="list-group-item list-group-item-action d-flex align-items-center">
+                    <div class="me-3 text-info">
+                        <i class="bi bi-clipboard-check fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">3 checklists pendentes</div>
+                        <small class="text-muted">Expedições #2010, #2012, #2015</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-info">Completar</button>
+                </div>
+                <div class="list-group-item list-group-item-action d-flex align-items-center">
+                    <div class="me-3 text-success">
+                        <i class="bi bi-box-seam fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">18 volumes expedidos hoje</div>
+                        <small class="text-muted">Fluxo normal</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-success">Detalhes</button>
+                </div>
+                <div class="list-group-item list-group-item-action d-flex align-items-center">
+                    <div class="me-3 text-secondary">
+                        <i class="bi bi-file-earmark-bar-graph fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">Relatório de performance disponível</div>
+                        <small class="text-muted">Consulte o desempenho das entregas</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary">Abrir</button>
+                </div>
+            </div>
+        </div>
+        <div class="offcanvas-footer p-3 bg-light text-center">
+            <button class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-arrow-clockwise me-1"></i>Atualizar
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts principais -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Home/Dashboard/Expedição/script.js"></script>
+    <script src="/public/Modais/script.js"></script>
+    <script src="/public/js/sidebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

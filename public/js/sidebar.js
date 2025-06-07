@@ -20,100 +20,59 @@ function loadSidebar() {
 
   // Conteúdo padrão da sidebar
   let sidebarContent = `
-        <div class="sidebar">
-            <!-- Área superior com scroll -->
-            <div class="sidebar-scrollable">
-                <div class="sidebar-header">
-                    <div class="logo-container">
-                        <i class="bi bi-box-seam logo-icon"></i>
-                        <h4>LOGÍSTICA INTELIGENTE</h4>
-                    </div>
-                    <div class="search-container">
-                        <i class="bi bi-search search-icon"></i>
-                        <input type="text" class="sidebar-search" placeholder="Buscar funcionalidade...">
-                    </div>
-                </div>
-
-                <nav class="sidebar-nav">
-                    <!-- Item ativo destacado - Dashboard personalizado -->
-                    <a href="${dashboardLink}" class="sidebar-link active">
-                        <div class="link-content">
-                            <i class="bi bi-speedometer2"></i>
-                            <span>Dashboard</span>
-                        </div>
-                        <div class="link-badge">Personalizado</div>
-                    </a>
-
-          <!-- Dropdown Setores com contador -->
-          <div class="sidebar-dropdown">
-            <button class="sidebar-dropdown-btn" type="button" data-bs-toggle="collapse" data-bs-target="#setoresCollapse">
-              <div class="link-content">
-                <i class="bi bi-diagram-3"></i>
-                <span>Setores</span>
-              </div>
-              <div class="dropdown-indicator">
-                <span class="notification-badge">3</span>
-                <i class="bi bi-chevron-down"></i>
-              </div>
-            </button>
-
-            <div class="collapse" id="setoresCollapse">
-              <div class="sidebar-dropdown-menu">
-                <a href="/public/Componentes/index.html" class="sidebar-link">
-                  <span>Componentes</span>
-                  ${userSetor === 'componentes' ? '<span class="menu-badge">Seu Setor</span>' : ''}
-                </a>
-                <a href="#recebimento" class="sidebar-link">
-                  <span>Recebimento</span>
-                  ${userSetor === 'recebimento' ? '<span class="menu-badge">Seu Setor</span>' : ''}
-                </a>
-                <a href="#expedicao" class="sidebar-link">
-                  <span>Expedição</span>
-                  ${userSetor === 'expedicao' ? '<span class="menu-badge">Seu Setor</span>' : ''}
-                </a>
-                <a href="#transporte" class="sidebar-link">
-                  <span>Transporte</span>
-                  ${userSetor === 'transporte' ? '<span class="menu-badge">Seu Setor</span>' : ''}
-                </a>
-                <a href="#devolucao" class="sidebar-link">
-                  <span>Devoluções</span>
-                  ${userSetor === 'devolucoes' ? '<span class="menu-badge">Seu Setor</span>' : ''}
-                </a>
-              </div>
-            </div>
+    <div class="sidebar">
+      <!-- Área superior com scroll -->
+      <div class="sidebar-scrollable">
+        <div class="sidebar-header">
+          <div class="logo-container">
+            <img src="https://media.licdn.com/dms/image/v2/C4D0BAQEYMg2iPxx0LA/company-logo_200_200/company-logo_200_200/0/1659028914663?e=2147483647&v=beta&t=JVDe7ZMKvOkT5cgAKQVkfdP2Dik53XUQNdqoDn1nxiY" alt="Logo" class="logo-img" style="height: 40px; width: 40px; border-radius: 8px; margin-right: 8px;">
+            <h4>LOGÍSTICA INTELIGENTE</h4>
           </div>
-    `;
+          <div class="search-container">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" class="sidebar-search" placeholder="Buscar funcionalidade...">
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <!-- Item ativo destacado - Dashboard personalizado -->
+          <a href="${dashboardLink}" class="sidebar-link active">
+            <div class="link-content">
+              <i class="bi bi-speedometer2"></i>
+              <span>Dashboard</span>
+            </div>
+            <div class="link-badge">Personalizado</div>
+          </a>
+  `;
 
   // Adiciona a seção de Importação apenas para o setor de Recebimento
   if (userSetor === 'recebimento') {
     sidebarContent += `
-          <!-- Dropdown Importação com status -->
-          <div class="sidebar-dropdown">
-            <button class="sidebar-dropdown-btn" type="button" data-bs-toggle="collapse" data-bs-target="#importCollapse">
-              <div class="link-content">
-                <i class="bi bi-calendar-check"></i>
-                <span>Importação</span>
-              </div>
-              <div class="dropdown-indicator">
-                <span class="status-indicator active"></span>
-                <i class="bi bi-chevron-down"></i>
-              </div>
-            </button>
-
-            <div class="collapse" id="importCollapse">
-              <div class="sidebar-dropdown-menu">
-                <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalImport">
-                  <span>Agendar Importação</span>
-                  <i class="bi bi-plus-circle"></i>
-                </a>
-                <a href="/Home/Agendamento/index.html" class="sidebar-link">
-                  <span>Consulta Programação</span>
-                  <span class="menu-badge warning">5</span>
-                </a>
-              </div>
-            </div>
+      <!-- Dropdown Importação com status -->
+      <div class="sidebar-dropdown">
+        <button class="sidebar-dropdown-btn" type="button" data-bs-toggle="collapse" data-bs-target="#importCollapse">
+          <div class="link-content">
+            <i class="bi bi-calendar-check"></i>
+            <span>Importação</span>
           </div>
-        `;
+          <div class="dropdown-indicator">
+            <span class="status-indicator active"></span>
+            <i class="bi bi-chevron-down"></i>
+          </div>
+        </button>
+        <div class="collapse" id="importCollapse">
+          <div class="sidebar-dropdown-menu">
+            <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalImport">
+              <span>Agendar Importação</span>
+              <i class="bi bi-plus-circle"></i>
+            </a>
+            <a href="/Home/Agendamento/Importação/index.html" class="sidebar-link">
+              <span>Consulta Programação</span>
+              <span class="menu-badge warning">5</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   // Conteúdo específico por setor
@@ -121,140 +80,236 @@ function loadSidebar() {
   switch (userSetor) {
     case 'componentes':
       setorSpecificContent = `
-                <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalInventario">
-                    <div class="link-content">
-                        <i class="bi bi-clipboard-data"></i>
-                        <span>Inventário</span>
-                    </div>
-                    <span class="menu-badge">Atualizar</span>
-                </a>
-            `;
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalInventario">
+          <div class="link-content">
+            <i class="bi bi-clipboard-data"></i>
+            <span>Inventário</span>
+          </div>
+          <span class="menu-badge">Atualizar</span>
+        </a>
+      `;
       break;
     case 'expedicao':
       setorSpecificContent = `
-                <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalEtiquetas">
-                    <div class="link-content">
-                        <i class="bi bi-tags"></i>
-                        <span>Etiquetagem</span>
-                    </div>
-                </a>
-            `;
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalEtiquetas">
+          <div class="link-content">
+            <i class="bi bi-tags"></i>
+            <span>Etiquetagem</span>
+          </div>
+        </a>
+      `;
       break;
     case 'transporte':
       setorSpecificContent = `
-                <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalRotas">
-                    <div class="link-content">
-                        <i class="bi bi-geo-alt"></i>
-                        <span>Gestão de Rotas</span>
-                    </div>
-                </a>
-            `;
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalRotas">
+          <div class="link-content">
+            <i class="bi bi-geo-alt"></i>
+            <span>Gestão de Rotas</span>
+          </div>
+        </a>
+      `;
       break;
     case 'devolucoes':
       setorSpecificContent = `
-                <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalAnalise">
-                    <div class="link-content">
-                        <i class="bi bi-graph-up"></i>
-                        <span>Análise de Devoluções</span>
-                    </div>
-                </a>
-            `;
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalAnalise">
+          <div class="link-content">
+            <i class="bi bi-graph-up"></i>
+            <span>Análise de Devoluções</span>
+          </div>
+        </a>
+      `;
+      break;
+  }
+
+  // NOVO: Conteúdo extra por setor
+  let setorExtraContent = '';
+  switch (userSetor) {
+    case 'componentes':
+      setorExtraContent = `
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalHistoricoComponentes">
+          <div class="link-content">
+            <i class="bi bi-clock"></i>
+            <span>Histórico de Componentes</span>
+          </div>
+        </a>
+      `;
+      break;
+    case 'expedicao':
+      setorExtraContent = `
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalRastreamento">
+          <div class="link-content">
+            <i class="bi bi-truck"></i>
+            <span>Rastreamento de Entregas</span>
+          </div>
+        </a>
+      `;
+      break;
+    case 'transporte':
+      setorExtraContent = `
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalFrota">
+          <div class="link-content">
+            <i class="bi bi-truck-front"></i>
+            <span>Gestão de Frota</span>
+          </div>
+        </a>
+      `;
+      break;
+    case 'devolucoes':
+      setorExtraContent = `
+        <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalEstatisticasDevolucao">
+          <div class="link-content">
+            <i class="bi bi-bar-chart"></i>
+            <span>Estatísticas de Devolução</span>
+          </div>
+        </a>
+      `;
+      break;
+    case 'recebimento':
+      setorExtraContent = `
+      <div class="sidebar-dropdown">
+        <button class="sidebar-dropdown-btn" type="button" data-bs-toggle="collapse" data-bs-target="#agendamentoNacionalCollapse" id="btnAgendamentoNacional">
+          <div class="link-content">
+            <i class="bi bi-globe-americas"></i>
+            <span>Nacional</span>
+          </div>
+          <div class="dropdown-indicator">
+            <span class="status-indicator active"></span>
+            <i class="bi bi-chevron-down" id="iconeAgendamentoNacional"></i>
+          </div>
+        </button>
+        <div class="collapse" id="agendamentoNacionalCollapse">
+          <div class="sidebar-dropdown-menu">
+            <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalAgendarNacional">
+              <span>Agendar Nacional</span>
+              <i class="bi bi-plus-circle"></i>
+            </a>
+            <a href="/Home/Agendamento/Nacional/index.html" class="sidebar-link">
+              <span>Consulta Nacional</span>
+              <i class="bi bi-search"></i>
+            </a>            
+          </div>
+        </div>
+      </div>
+      <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalRecebimentoExtra">
+        <div class="link-content">
+          <i class="bi bi-archive"></i>
+          <span>Recebimento Extra</span>
+        </div>
+      </a>
+    `;
       break;
   }
 
   // Continuação do conteúdo da sidebar
   sidebarContent += `
-          ${setorSpecificContent}
-
-          <!-- Itens comuns a todos os setores -->
-          <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalChecklist">
-            <div class="link-content">
-              <i class="bi bi-clipboard2-check"></i>
-              <span>Checklist</span>
-            </div>
-            <span class="menu-badge danger">Urgente</span>
-          </a>
-
-          <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalRelatorios">
-            <div class="link-content">
-              <i class="bi bi-bar-chart-line"></i>
-              <span>Relatórios</span>
-            </div>
-          </a>
-
-          <div class="sidebar-divider"></div>
-
-          <!-- Seção de Ferramentas -->
-          <div class="sidebar-section-title">
-            <span>Ferramentas</span>
-          </div>
-          
-          <a href="#" class="sidebar-link">
-            <div class="link-content">
-              <i class="bi bi-clock-history"></i>
-              <span>Histórico Rápido</span>
-            </div>
-          </a>
-
-          <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalSuporte">
-            <div class="link-content">
-              <i class="bi bi-headset"></i>
-              <span>Suporte</span>
-            </div>
-            <span class="menu-badge">24/7</span>
-          </a>
-        </nav>
+    ${setorSpecificContent}
+    ${setorExtraContent}
+    <!-- Itens comuns a todos os setores -->
+    <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalChecklist">
+      <div class="link-content">
+        <i class="bi bi-clipboard2-check"></i>
+        <span>Checklist</span>
       </div>
-
-      <!-- Área do Perfil Aprimorada -->
-      <div class="sidebar-profile">
-        <div class="profile-info">
-          <div class="avatar-container">
-            <img src="https://ui-avatars.com/api/?name=${avatarName}&background=random" alt="Avatar" class="profile-avatar">
-            <span class="status-badge online"></span>
-          </div>
-          <div class="profile-text">
-            <div class="name">${userName}</div>
-            <div class="role">${userRole}</div>
-            <div class="email">${userEmail}</div>
-          </div>
-          <button class="profile-settings-btn">
-            <i class="bi bi-gear"></i>
-          </button>
+      <span class="menu-badge danger">Urgente</span>
+    </a>
+    <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalRelatorios">
+      <div class="link-content">
+        <i class="bi bi-bar-chart-line"></i>
+        <span>Relatórios</span>
+      </div>
+    </a>
+    <div class="sidebar-divider"></div>
+    <!-- Seção de Ferramentas -->
+    <div class="sidebar-section-title">
+      <span>Ferramentas</span>
+    </div>
+    <!-- Botão de Aplicativos (substitui o Histórico Rápido) -->
+    <div class="sidebar-dropdown">
+      <button class="sidebar-dropdown-btn" type="button" data-bs-toggle="collapse" data-bs-target="#appsCollapse">
+        <div class="link-content">
+          <i class="bi bi-grid"></i>
+          <span>Aplicativos</span>
         </div>
-
-         <div class="sidebar-actions">
+        <div class="dropdown-indicator">
+          <i class="bi bi-chevron-down"></i>
+        </div>
+      </button>
+      <div class="collapse" id="appsCollapse">
+        <div class="sidebar-dropdown-menu">
+          <a href="mailto:" class="sidebar-link">
+            <i class="bi bi-envelope"></i>
+            <span>E-mail</span>
+          </a>
+          <a href="https://slack.com" target="_blank" class="sidebar-link">
+            <i class="bi bi-slack"></i>
+            <span>Slack</span>
+          </a>
+          <a href="https://sap.com" target="_blank" class="sidebar-link">
+            <i class="bi bi-braces"></i>
+            <span>SAP</span>
+          </a>
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-microsoft-teams"></i>
+            <span>Teams</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#modalSuporte">
+      <div class="link-content">
+        <i class="bi bi-headset"></i>
+        <span>Suporte</span>
+      </div>
+      <span class="menu-badge">24/7</span>
+    </a>
+    </nav>
+  </div>
+  <!-- Área do Perfil Aprimorada -->
+  <div class="sidebar-profile">
+    <div class="profile-info">
+      <div class="avatar-container">
+        <img src="https://ui-avatars.com/api/?name=${avatarName}&background=random" alt="Avatar" class="profile-avatar">
+        <span class="status-badge online"></span>
+      </div>
+      <div class="profile-text">
+        <div class="name">${userName}</div>
+        <div class="role">${userRole}</div>
+        <div class="email">${userEmail}</div>
+      </div>
+      <button class="profile-settings-btn btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#profileSettingsModal">
+        <i class="bi bi-gear"></i>
+      </button>
+    </div>
+    <div class="sidebar-actions">
       <button id="toggleTheme" class="sidebar-btn btn-theme-toggle">
         <i class="bi bi-moon-stars"></i>
         <span>Modo Escuro</span>
       </button>
-
       <div class="quick-actions">
-        <button class="action-btn" onclick="trocarSenha()" title="Trocar Senha">
+        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#modalTrocarSenha" title="Trocar Senha">
           <i class="bi bi-key"></i>
         </button>
-        <button class="action-btn" onclick="trocarConta()" title="Trocar Conta">
-          <i class="bi bi-arrow-left-right"></i>
+        <button class="action-btn" data-bs-toggle="modal" data-bs-target="#modalUsuariosLiberados" title="Usuários Liberados">
+          <i class="bi bi-people"></i>
         </button>
-        <button class="action-btn" title="Notificações">
+        <button class="action-btn" title="Notificações" data-bs-toggle="offcanvas" data-bs-target="#alertasPanel">
           <i class="bi bi-bell"></i>
           <span class="notification-counter">3</span>
         </button>
       </div>
-
-        <a href="/public/Login/Index.html" class="sidebar-btn btn-logout" onclick="logout()" style="text-decoration: none;">
-          <i class="bi bi-box-arrow-right"></i>
-          <span>Sair</span>
-        </a>
-
+      <a href="/public/Login/Index.html" class="sidebar-btn btn-logout" onclick="logout()" style="text-decoration: none;">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Sair</span>
+      </a>
     </div>
-      </div>
-    </div>
-    `;
+  </div>
+</div>
+`;
 
   document.getElementById("sidebar").innerHTML = sidebarContent;
   initializeSidebarFunctions();
 }
+
 
 function initializeSidebarFunctions() {
   // Sistema de busca na sidebar
@@ -263,7 +318,6 @@ function initializeSidebarFunctions() {
     searchInput.addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       const links = document.querySelectorAll('.sidebar-link, .sidebar-dropdown-btn');
-
       links.forEach(link => {
         const text = link.textContent.toLowerCase();
         if (text.includes(searchTerm)) {
@@ -271,9 +325,14 @@ function initializeSidebarFunctions() {
           // Abre dropdowns pai se necessário
           let parentDropdown = link.closest('.sidebar-dropdown');
           if (parentDropdown) {
-            const collapseId = parentDropdown.querySelector('[data-bs-toggle="collapse"]').getAttribute('data-bs-target');
-            const collapseElement = document.querySelector(collapseId);
-            new bootstrap.Collapse(collapseElement, { show: true });
+            const collapseBtn = parentDropdown.querySelector('[data-bs-toggle="collapse"]');
+            if (collapseBtn) {
+              const collapseId = collapseBtn.getAttribute('data-bs-target');
+              const collapseElement = document.querySelector(collapseId);
+              if (collapseElement) {
+                new bootstrap.Collapse(collapseElement, { show: true });
+              }
+            }
           }
         } else {
           link.style.display = 'none';
@@ -312,6 +371,14 @@ function initializeSidebarFunctions() {
     .then(response => response.text())
     .then(html => {
       document.getElementById('modais-container').innerHTML = html;
+
+      // Agora que os modais existem no DOM, adicione o listener:
+      const modalUsuariosLiberados = document.getElementById('modalUsuariosLiberados');
+      if (modalUsuariosLiberados) {
+        // Remove listeners antigos para evitar duplicidade
+        modalUsuariosLiberados.removeEventListener('show.bs.modal', carregarUsuariosLiberados);
+        modalUsuariosLiberados.addEventListener('show.bs.modal', carregarUsuariosLiberados);
+      }
     })
     .catch(error => {
       console.error('Erro ao carregar modais:', error);
@@ -432,8 +499,29 @@ function setupDropdown(collapseId, iconId, buttonId) {
 document.addEventListener('DOMContentLoaded', function () {
   // Usa um pequeno timeout para garantir que a sidebar foi carregada
   setTimeout(setupThemeAndSidebar, 100);
+
+  // NOVO: Dropdown do Agendamento Nacional
+  const collapseElement = document.getElementById('agendamentoNacionalCollapse');
+  const iconElement = document.getElementById('iconeAgendamentoNacional');
+  const buttonElement = document.getElementById('btnAgendamentoNacional');
+
+  if (collapseElement && iconElement && buttonElement) {
+    const bsCollapse = new bootstrap.Collapse(collapseElement, { toggle: false });
+
+    collapseElement.addEventListener('show.bs.collapse', () => {
+      iconElement.classList.replace('bi-chevron-down', 'bi-chevron-up');
+      iconElement.style.transition = 'transform 0.3s ease';
+      iconElement.style.transform = 'rotate(360deg)';
+    });
+
+    collapseElement.addEventListener('hide.bs.collapse', () => {
+      iconElement.classList.replace('bi-chevron-up', 'bi-chevron-down');
+      iconElement.style.transition = 'transform 0.3s ease';
+      iconElement.style.transform = 'rotate(0deg)';
+    });
+
+    buttonElement.addEventListener('click', () => {
+      bsCollapse.toggle();
+    });
+  }
 });
-
-
-
-

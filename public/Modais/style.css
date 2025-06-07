@@ -1324,7 +1324,7 @@
 }
 
 .import-form-group {
-   display: flex;
+  display: flex;
   flex-direction: column;
   min-width: 200px;
   flex: 1;
@@ -1565,4 +1565,469 @@
   }
 }
 
+/* ====== ESTILO MODAL AGENDAR NACIONAL (inspirado no modal de importação) ====== */
+.agendar-nacional-modal-content {
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.agendar-nacional-modal-header {
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #d63384 0%, #2575fc 100%);
+    color: white;
+    border-bottom: none;
+    position: relative;
+}
+[data-bs-theme="dark"] .agendar-nacional-modal-header {
+    background: linear-gradient(135deg, #4a00e0 0%, #1a4b8c 100%);
+}
+.agendar-nacional-modal-body {
+    padding: 2rem;
+}
+.agendar-nacional-sidebar {
+    background: var(--card-bg);
+    min-height: 100%;
+}
+@media (max-width: 992px) {
+    .agendar-nacional-modal-body {
+        padding: 1.5rem;
+    }
+}
+
 /* ==================================== FIM DO CSS AGENDAMENTO ==================================== */
+
+/* ==================================== INICIO DO CSS USUARIOS ==================================== */
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+}
+
+.avatar-upload {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.avatar-upload:hover {
+  transform: scale(1.05);
+}
+
+.avatar-edit-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.avatar-edit-btn:hover {
+  background-color: #0d6efd !important;
+  transform: scale(1.1);
+}
+
+.modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.form-control,
+.input-group-text {
+  border-radius: 8px !important;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+  border-color: #4e73df;
+}
+
+.form-switch .form-check-input:checked {
+  background-color: #4e73df;
+  border-color: #4e73df;
+}
+
+.input-group .input-group-text {
+  margin-right: 8px;
+}
+
+/* ==================================== FIM DO CSS USUARIOS ==================================== */
+
+/* ==================================== INICIO DO CSS USUARIOS / TIME / GESTÃO ==================================== */
+
+/* TEMA CLARO (AVERMELHADO) */
+:root,
+[data-bs-theme="light"] {
+  --modal-header-bg: linear-gradient(135deg, #d54c3a 0%, #ff6b00 100%);
+  --modal-primary: #d54c3a;
+  --modal-primary-hover: #b53e2e;
+  --modal-secondary: #6c757d;
+  --modal-bg: #ffffff;
+  --modal-text: #212529;
+  --modal-border: #dee2e6;
+  --modal-hover: rgba(213, 76, 58, 0.05);
+  --badge-total: #28a745;
+  --badge-parcial: #ffc107;
+  --badge-other: #6c757d;
+  --input-bg: #f8f9fa;
+}
+
+/* TEMA ESCURO (AZULADO) */
+[data-bs-theme="dark"] {
+  --modal-header-bg: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+  --modal-primary: #3a7bd5;
+  --modal-primary-hover: #2a65b5;
+  --modal-secondary: #6c757d;
+  --modal-bg: #212529;
+  --modal-text: #f8f9fa;
+  --modal-border: #495057;
+  --modal-hover: rgba(58, 123, 213, 0.1);
+  --badge-total: #4fd14f;
+  --badge-parcial: #ffe083;
+  --badge-other: #adb5bd;
+  --input-bg: #2b3035;
+}
+
+/* ESTILOS GERAIS */
+.modal-header {
+  background: var(--modal-header-bg);
+  color: white;
+}
+
+.modal-content {
+  background-color: var(--modal-bg);
+  color: var(--modal-text);
+  border-radius: 12px;
+}
+
+.btn-primary {
+  background-color: var(--modal-primary);
+  border-color: var(--modal-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--modal-primary-hover);
+  border-color: var(--modal-primary-hover);
+}
+
+.btn-outline-secondary {
+  border-color: var(--modal-border);
+  color: var(--modal-text);
+}
+
+.table {
+  --bs-table-color: var(--modal-text);
+  --bs-table-bg: var(--modal-bg);
+  --bs-table-border-color: var(--modal-border);
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--modal-hover);
+  transition: background-color 0.2s ease;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--modal-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.badge-access {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-total {
+  background-color: rgba(var(--bs-success-rgb), 0.1);
+  color: var(--badge-total);
+}
+
+.badge-parcial {
+  background-color: rgba(var(--bs-warning-rgb), 0.1);
+  color: var(--badge-parcial);
+}
+
+.badge-other {
+  background-color: rgba(var(--bs-secondary-rgb), 0.1);
+  color: var(--badge-other);
+}
+
+.input-group-text,
+.form-control {
+  background-color: var(--input-bg);
+  border-color: var(--modal-border);
+  color: var(--modal-text);
+}
+
+.dropdown-menu {
+  background-color: var(--modal-bg);
+  border-color: var(--modal-border);
+}
+
+.dropdown-item {
+  color: var(--modal-text);
+}
+
+.dropdown-item:hover {
+  background-color: var(--modal-hover);
+  color: var(--modal-text);
+}
+
+.spinner-border {
+  color: var(--modal-primary);
+}
+
+.text-muted {
+  color: var(--modal-secondary) !important;
+}
+
+/* ==================================== FIM DO CSS USUARIOS / TIME / GESTÃO ==================================== */
+
+/* ==================================== INICIO DO CSS TROCA DE SENHA ==================================== */
+
+/* TEMA CLARO (AVERMELHADO) */
+:root,
+[data-bs-theme="light"] {
+  --modal-header-bg: linear-gradient(135deg, #d54c3a 0%, #c23321 100%);
+  --modal-header-text: #ffffff;
+  --modal-bg: #ffffff;
+  --modal-text: #212529;
+  --modal-border: #e0a8a0;
+  --modal-primary: #d54c3a;
+  --modal-primary-hover: #b53e2e;
+  --modal-secondary: #6c757d;
+  --modal-secondary-hover: #5a6268;
+  --input-bg: #ffffff;
+  --input-border: #ced4da;
+  --input-focus: rgba(213, 76, 58, 0.25);
+  --form-text: #6c757d;
+  --password-weak: #dc3545;
+  --password-medium: #fd7e14;
+  --password-strong: #28a745;
+  --password-very-strong: #0062cc;
+}
+
+/* TEMA ESCURO (AZULADO) */
+[data-bs-theme="dark"] {
+  --modal-header-bg: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+  --modal-header-text: #ffffff;
+  --modal-bg: #212529;
+  --modal-text: #f8f9fa;
+  --modal-border: #495057;
+  --modal-primary: #3a7bd5;
+  --modal-primary-hover: #2a65b5;
+  --modal-secondary: #6c757d;
+  --modal-secondary-hover: #5a6268;
+  --input-bg: #2b3035;
+  --input-border: #495057;
+  --input-focus: rgba(58, 123, 213, 0.25);
+  --form-text: #adb5bd;
+  --password-weak: #dc3545;
+  --password-medium: #fd7e14;
+  --password-strong: #28a745;
+  --password-very-strong: #17a2b8;
+}
+
+/* ESTILOS GERAIS */
+.modal-content {
+  background-color: var(--modal-bg);
+  color: var(--modal-text);
+  border-color: var(--modal-border);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: var(--modal-header-bg);
+  color: var(--modal-header-text);
+  border-bottom: none;
+  padding: 1.2rem 1.5rem;
+}
+
+.modal-header .modal-title {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--modal-border);
+  padding: 1rem 1.5rem;
+}
+
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+.btn-primary {
+  background-color: var(--modal-primary);
+  border-color: var(--modal-primary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--modal-primary-hover);
+  border-color: var(--modal-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--modal-secondary);
+  border-color: var(--modal-secondary);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-secondary:hover {
+  background-color: var(--modal-secondary-hover);
+  border-color: var(--modal-secondary-hover);
+}
+
+.form-control {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--modal-text);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--modal-primary);
+  box-shadow: 0 0 0 0.25rem var(--input-focus);
+}
+
+.form-label {
+  color: var(--modal-text);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-text {
+  color: var(--form-text) !important;
+  font-size: 0.85rem;
+}
+
+.input-group-text {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+}
+
+/* EFEITO GLOW NO BOTÃO PRIMÁRIO */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow:after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(30deg);
+  transition: all 0.3s;
+  opacity: 0;
+}
+
+.btn-glow:hover:after {
+  left: 100%;
+  opacity: 1;
+}
+
+/* ESTILOS PARA OS OLHINHOS (TOGGLE PASSWORD) */
+.toggle-password {
+  border-left: none !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.toggle-password:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-bs-theme="dark"] .toggle-password:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* BARRA DE FORÇA DA SENHA */
+.password-strength {
+  margin-top: 0.5rem;
+}
+
+.password-strength .progress {
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme="dark"] .password-strength .progress {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ÍCONES DE REQUISITOS */
+.password-requirements .fa-circle {
+  font-size: 0.4rem;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  color: var(--form-text);
+}
+
+/* ANIMAÇÕES */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* AJUSTES PARA AUTOFILL */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--modal-text);
+  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ==================================== FIM DO CSS TROCA DE SENHA ==================================== */

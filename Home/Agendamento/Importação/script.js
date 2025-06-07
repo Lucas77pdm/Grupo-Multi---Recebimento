@@ -1,9 +1,10 @@
-// CALENDARIO
-
+// --- CALENDÁRIO E AGENDA DO DIA ---
 document.addEventListener('DOMContentLoaded', function () {
   // Banco de dados de eventos por data
   const eventosPorData = {
     '2025-05-21': [
+      { horario: '14:00', processo: 'NBW288', complexidade: 'Alta' },
+      { horario: '14:00', processo: 'NBW288', complexidade: 'Alta' },
       { horario: '14:00', processo: 'NBW288', complexidade: 'Alta' },
       { horario: '14:00', processo: 'NBW288', complexidade: 'Alta' },
       { horario: '14:00', processo: 'NBW288', complexidade: 'Alta' },
@@ -184,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// 📍 MAPA AGENDAMENTO
+// --- MAPA DE ROTAS (Leaflet) ---
 document.addEventListener('DOMContentLoaded', function () {
   // Inicializa o mapa
   var map = L.map('mapaOperacoes').setView([-23.9618, -46.3289], 7);
@@ -212,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
   map.fitBounds(L.featureGroup([rota1, rota2]).getBounds());
 });
 
-// Exemplo de interação com os cards de horário
+// --- INTERAÇÃO COM CARDS DE HORÁRIO ---
 document.querySelectorAll('.horario-card').forEach(card => {
   card.addEventListener('click', function () {
     // Remove a seleção de todos os cards
@@ -228,8 +229,7 @@ document.querySelectorAll('.horario-card').forEach(card => {
   });
 });
 
-// Agendar eventos
-
+// --- AGENDAMENTO DE PROCESSOS (CRUD local) ---
 document.addEventListener('DOMContentLoaded', function () {
   // Banco de dados de processos
   let processos = [];

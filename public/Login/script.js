@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             'recebimento@grupomulti.com.br': {
                 setor: 'recebimento',
-                nome: 'Gerente de Recebimento',
+                nome: 'Thiago Bastos',
                 cargo: 'Gerente',
                 dashboard: '/Home/Dashboard/Recebimento/index.html'
             }

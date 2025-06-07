@@ -1,0 +1,41 @@
+/* Tabela de processos */
+.table-dark {
+    background: linear-gradient(90deg, #005e5e, #007777);
+    border-color: #007777;
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 120, 120, 0.05);
+}
+
+/* Scroll personalizado Offcanvas */
+.offcanvas-body {
+    scrollbar-width: thin;
+    scrollbar-color: #008888 #f1f1f1;
+}
+.offcanvas-body::-webkit-scrollbar {
+    width: 6px;
+}
+.offcanvas-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.offcanvas-body::-webkit-scrollbar-thumb {
+    background-color: #008888;
+    border-radius: 6px;
+}
+
+/* Scroll personalizado da tabela */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0 0 4px 4px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #008888;
+    border-radius: 4px;
+}
+
+
+
